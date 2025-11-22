@@ -19,7 +19,7 @@ abstract class AppColors {
   static const Color secondary10 = Color(0xFFBCA9FF);
 
   // Neutral Colors
-  static const Color neutral10 = Color(0xFF333333);
+  static Color neutral10 = Color(0xFF333333).withValues(alpha: 0.9);
   static const Color neutral100 = Color(0xFFFFFFFF);
   static const Color neutral200 = Color(0xFFE8E8E8);
   static const Color neutral300 = Color(0xFFD2D2D2);
