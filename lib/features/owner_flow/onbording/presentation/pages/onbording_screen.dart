@@ -1,40 +1,43 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../cubit/onbording_cubit.dart';
 import '../widgets/custome_container_widgets.dart';
 
 class OnbordingScreen extends StatelessWidget{
+  final PageController controller = PageController();
   @override
   Widget build(BuildContext context) {
     final List<List<Widget>> pageImages=[
       //FirstPage
-      [
-        Positioned(
+      [Positioned(
           top:93.h,
           left: -8.w,
-          child: Image.asset('assets/imeges/logo (1).png'
+          child: Image.asset('assets/images/logo (1).png'
             ,width: 320.w,
             height: 299.h,),),
         Positioned(
           top:113.h,
           left: 318.w,
-          child: Image.asset('assets/imeges/Rifq.png'
+          child: Image.asset('assets/images/Rifq.png'
             ,width: 742.w,
             height: 406.h,),),
         Positioned(
           top:48.h,
           left: 1.w,
           child: Image.asset(
-            'assets/imeges/Eight Tips for Taking Good Care of Your Chihuahua\'s Paws 1.png',
+            'assets/images/Eight Tips for Taking.png',
             width: 402.w,
             height: 603.h,),),],
+
       //SecondPage:
       [ //حرف
         Positioned(
           top:113.h,
-          left: -116.w,
+          left: -209.w, //  مقاس المصممين -116
           child: Image.asset(
-            'assets/imeges/Rifq2.png',
+            'assets/images/Rifq2.png',
             width: 817.w,
             height: 406.h,),),
         //صورة الكلب
@@ -42,7 +45,7 @@ class OnbordingScreen extends StatelessWidget{
           top:1.h,
           left: 13.w,
           child: Image.asset(
-            'assets/imeges/download.png',
+            'assets/images/download.png',
             width: 375.w,
             height: 666.h,),),],
 
@@ -50,9 +53,9 @@ class OnbordingScreen extends StatelessWidget{
       [ //حرف
         Positioned(
           top:111.h,
-          left: -503.w,
+          left: -260.w,// مقاس المصممين -503px
           child: Image.asset(
-            'assets/imeges/Rifq3.png',
+            'assets/images/Rifq3.png',
             width: 900.w,
             height: 406.h,),),
 
@@ -61,7 +64,7 @@ class OnbordingScreen extends StatelessWidget{
           top:134.h,
           left: -20.w,
           child: Image.asset(
-            'assets/imeges/Free iPhone 15.png',
+            'assets/images/Free iPhone 15 Pro Hand Mockup .png',
             width: 377.w,
             height: 351.h,),),],];
 
@@ -85,10 +88,18 @@ class OnbordingScreen extends StatelessWidget{
           end: Alignment.bottomCenter,
         ),
       ),
-      child: Scaffold(
+      child: BlocProvider(
+        create: (context) => OnbordingCubit(), 
+        child: BlocBuilder<OnbordingCubit, int>(
+  builder: (context, state) {
+    return Scaffold(
           backgroundColor: Colors.transparent,
           body:PageView.builder(
+              controller: controller,
               itemCount: 3,
+              onPageChanged: (index){
+                context.read<OnbordingCubit>().changePage(index);
+              },
               itemBuilder: (context,index){
                 return Column(
                   children: [
@@ -101,12 +112,18 @@ class OnbordingScreen extends StatelessWidget{
                     ),
                     CustomeContainerWidgets(
                       title: title[index],
-                      subTitle: subTitle[index],)
-                  ],
+                      subTitle: subTitle[index],
+                      pageIndex: state,
+                      controller: controller,
+                    ), ],
                 );
 
               })
-      ),
+      );
+  },
+),
+),
     );
   }
 }
+
