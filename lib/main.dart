@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rifq/core/theme/app_theme.dart';
 
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(360, 690),
+      designSize: const Size(402, 874),
       builder: (_, _) => MaterialApp(home: const HomePage()),
     );
   }
@@ -37,6 +38,28 @@ class HomePage extends StatelessWidget {
             Text(
               'Heading',
               style: context.h1.copyWith(color: context.neutral100),
+            ),
+
+            FormBuilderTextField(
+              name: 'email',
+              decoration: InputDecoration(
+                suffixIcon: Icon(Icons.construction),
+                prefixIcon: Icon(Icons.construction),
+                labelText: 'Email',
+                hintText: 'you@example.com',
+                filled: true,
+                fillColor: context.neutral200,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.r),
+                  borderSide: BorderSide(color: context.neutral300),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.r),
+                  borderSide: BorderSide(color: context.primary300, width: 2),
+                ),
+              ),
+              style: context.body2,
+              cursorColor: context.primary,
             ),
           ],
         ),
