@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rifq/features/owner_flow/onbording/presentation/cubit/onbording_cubit.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../../../../core/theme/app_color.dart';
-import 'custome_button_widgets.dart';
+import '../../../../../core/shared/button_widgets/custome_button_widgets.dart';
 
 class CustomeContainerWidgets extends StatelessWidget{
   final String title;
