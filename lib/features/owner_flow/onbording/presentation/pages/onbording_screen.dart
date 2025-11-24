@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import '../cubit/onbording_cubit.dart';
+import '../widgets/custome_button_widgets.dart';
 import '../widgets/custome_container_widgets.dart';
 
 class OnbordingScreen extends StatelessWidget{
@@ -93,33 +95,108 @@ class OnbordingScreen extends StatelessWidget{
         child: BlocBuilder<OnbordingCubit, int>(
   builder: (context, state) {
     return Scaffold(
-          backgroundColor: Colors.transparent,
-          body:PageView.builder(
-              controller: controller,
-              itemCount: 3,
-              onPageChanged: (index){
-                context.read<OnbordingCubit>().changePage(index);
-              },
-              itemBuilder: (context,index){
-                return Column(
-                  children: [
-                    SizedBox(
-                      height: 0.5.sh,
-                      width: double.infinity,
-                      child: Stack(
-                          children: pageImages[index]
+      backgroundColor: Colors.transparent,
+      body: Stack(
+        children: [
+          PageView.builder(
+            controller: controller,
+            itemCount: 3,
+            onPageChanged: (index) {
+              context.read<OnbordingCubit>().changePage(index);
+            },
+            itemBuilder: (context, index) {
+              return Column(
+                children: [
+                  SizedBox(
+                    height: 0.5.sh,
+                    child: Stack(
+                      children: pageImages[index],
+                    ),
+                  ),
+                  CustomeContainerWidgets(
+                    title: title[index],
+                    subTitle: subTitle[index],
+                    pageIndex: state,
+                    controller: controller,
+                  ),
+                ],
+              );
+            },
+          ),
+
+          Positioned(
+            bottom: 40.h,
+            left: 0,
+            right: 0,
+            child: Column(
+              children: [
+                CustomeButtonWidgets(
+                  titel: state == 2 ? "Get started" : "Next",
+                  onPressed: () {
+                    if (state < 2) {
+                      controller.nextPage(
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.ease,
+                      );
+                      context.read<OnbordingCubit>().nextPage();
+                    }
+                  },
+                  buttonWidth: 366.w,
+                  buttonhight: 58.h,
+                ),
+                SizedBox(height: 12.h),
+                if (state < 2)
+                  TextButton(
+                    onPressed: () {
+                      context.read<OnbordingCubit>().skip();
+                      controller.jumpToPage(2);                    },
+                    child: Text(
+                      "Skip",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                    CustomeContainerWidgets(
-                      title: title[index],
-                      subTitle: subTitle[index],
-                      pageIndex: state,
-                      controller: controller,
-                    ), ],
-                );
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
 
-              })
-      );
+
+// بعد تجربة رند وحاتم احذفه
+
+    // return Scaffold(
+    //       backgroundColor: Colors.transparent,
+    //       body:PageView.builder(
+    //           controller: controller,
+    //           itemCount: 3,
+    //           onPageChanged: (index){
+    //             context.read<OnbordingCubit>().changePage(index);
+    //           },
+    //           itemBuilder: (context,index){
+    //             return Column(
+    //               children: [
+    //                 SizedBox(
+    //                   height: 0.5.sh,
+    //                   width: double.infinity,
+    //                   child: Stack(
+    //                       children: pageImages[index]
+    //                   ),
+    //                 ),
+    //                 CustomeContainerWidgets(
+    //                   title: title[index],
+    //                   subTitle: subTitle[index],
+    //                   pageIndex: state,
+    //                   controller: controller,
+    //                 ), ],
+    //             );
+    //
+    //           })
+    //   );
   },
 ),
 ),

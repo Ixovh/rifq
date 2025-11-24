@@ -12,6 +12,7 @@ class CustomeContainerWidgets extends StatelessWidget{
   final String subTitle;
   final int pageIndex;
   final PageController controller;
+
   const CustomeContainerWidgets({
     super.key, required this.title,
     required this.subTitle,
@@ -63,38 +64,38 @@ class CustomeContainerWidgets extends StatelessWidget{
 
             Text(title,style: TextStyle(color: AppColors.neutral900,fontSize:32.sp,fontWeight: FontWeight.w500)),
             SizedBox(height: 18.h),
-            Text(subTitle,style: TextStyle(color: AppColors.neutral800,fontSize:18.sp,fontWeight: FontWeight.w400)),
+            Text(subTitle,textAlign: TextAlign.center,style: TextStyle(color: AppColors.neutral800,fontSize:18.sp,fontWeight: FontWeight.w400)),
             SizedBox(height: 24.h,),
-            if(pageIndex == 2) // last page
-              CustomeButtonWidgets(
-                titel: 'Get Started',
-                onPressed: () { },
-                buttonWidth: 366.w,
-                buttonhight: 58.h,
-              )
-            else ...[
-              CustomeButtonWidgets(
-                titel: 'Next',
-                onPressed: () {
-                  print("object  $pageIndex");
-                  context.read<OnbordingCubit>().nextPage();
-                  controller.nextPage(duration: Duration(milliseconds: 300),
-                      curve: Curves.ease);
-                },
-                buttonWidth: 366.w,
-                buttonhight: 58.h,
-              ),
-              SizedBox(height: 18.h),
-              TextButton(
-                onPressed: (){
-                  print("skiip  $pageIndex");
-
-                  context.read<OnbordingCubit>().skip();
-                  controller.jumpToPage(2);
-                },
-                child: Text('Skip',style: TextStyle(color: Color(0xFF777777),fontSize: 20.sp,fontWeight: FontWeight.w500), ),
-              ),
-            ],
+            // if(pageIndex == 2) // last pageS
+            //   CustomeButtonWidgets(
+            //     titel: 'Get Started',
+            //     onPressed: () { },
+            //     buttonWidth: 366.w,
+            //     buttonhight: 58.h,
+            //   )
+            // else ...[
+            //   CustomeButtonWidgets(
+            //     titel: 'Next',
+            //     onPressed: () {
+            //       print("Button clicked!!!");
+            //       print("object  $pageIndex");
+            //       context.read<OnbordingCubit>().nextPage();
+            //       controller.nextPage(duration: Duration(milliseconds: 300),
+            //           curve: Curves.ease);
+            //     },
+            //     buttonWidth: 366.w,
+            //     buttonhight: 58.h,
+            //   ),
+            //   SizedBox(height: 18.h),
+            //   TextButton(
+            //     onPressed: (){
+            //       print("skiip  $pageIndex");
+            //       context.read<OnbordingCubit>().skip();
+            //       controller.jumpToPage(2);
+            //     },
+            //     child: Text('Skip',style: TextStyle(color: Color(0xFF777777),fontSize: 20.sp,fontWeight: FontWeight.w500), ),
+            //   ),
+            // ],
           ],
 
     )));
