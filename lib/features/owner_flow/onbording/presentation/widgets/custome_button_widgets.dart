@@ -11,7 +11,7 @@ class CustomeButtonWidgets extends StatelessWidget{
   const CustomeButtonWidgets({super.key, required this.titel, required this.onPressed, required this.buttonWidth, required this.buttonhight});
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(onPressed: (){},
+    return ElevatedButton(onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           fixedSize: Size(buttonWidth, buttonhight),
           backgroundColor: Color(0xFF3AB7A5),),
