@@ -3,6 +3,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rifq/core/di/setup.dart';
 import 'package:rifq/core/theme/app_theme.dart';
+import 'package:rifq/features/owner_flow/add_pet/presentation/pages/add_pet_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       // designSize: const Size(402, 874),
-      builder: (_, _) => MaterialApp(home: const HomePage()),
+      builder: (_, _) => MaterialApp(home: const AddPetScreen()),
     );
   }
 }
