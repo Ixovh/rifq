@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../cubit/onbording_cubit.dart';
-import '../widgets/custome_button_widgets.dart';
+import '../../../../../core/common/widgets/button/custome_button_widgets.dart';
 import '../widgets/custome_container_widgets.dart';
 
 class OnbordingScreen extends StatelessWidget{
@@ -107,10 +107,13 @@ class OnbordingScreen extends StatelessWidget{
             itemBuilder: (context, index) {
               return Column(
                 children: [
-                  SizedBox(
-                    height: 0.5.sh,
+                  Expanded( //كانت sizedBox
+                    // height: 0.5.sh,
                     child: Stack(
-                      children: pageImages[index],
+                      clipBehavior: Clip.none,
+                      children:
+                      pageImages[index],
+
                     ),
                   ),
                   CustomeContainerWidgets(
