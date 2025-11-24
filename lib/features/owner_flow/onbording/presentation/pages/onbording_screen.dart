@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../cubit/onbording_cubit.dart';
-import '../../../../../core/shared/button_widgets/custome_button_widgets.dart';
+import '../../../../../core/common/widgets/button/custome_button_widgets.dart';
 import '../widgets/custome_container_widgets.dart';
 
 class OnbordingScreen extends StatelessWidget{
