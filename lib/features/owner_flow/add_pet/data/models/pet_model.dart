@@ -6,32 +6,34 @@ part 'pet_model.mapper.dart';
 @MappableClass()
 class PetModel extends AddPetEntity with PetModelMappable {
   @MappableField(key: 'owner_id')
-  final String ownerIdMapped;
+  @override
+  final String ownerId;
 
   @MappableField(key: 'photo')
-  final String photoMapped;
+  @override
+  final String photoUrl;
 
   @MappableField(key: 'created_at')
   final DateTime createdAt;
 
   const PetModel({
     required String id,
-    required this.ownerIdMapped,
+    required this.ownerId,
     required String name,
     required String species,
     required String gender,
     required String breed,
     required DateTime birthdate,
-    required this.photoMapped,
+    required this.photoUrl,
     required this.createdAt,
   }) : super(
           id: id,
-          ownerId: ownerIdMapped,
+          ownerId: ownerId,
           name: name,
           species: species,
           gender: gender,
           breed: breed,
           birthdate: birthdate,
-          photoUrl: photoMapped,
+          photoUrl: photoUrl,
         );
 }

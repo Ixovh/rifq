@@ -23,10 +23,10 @@ class PetModelMapper extends ClassMapperBase<PetModel> {
 
   static String _$id(PetModel v) => v.id;
   static const Field<PetModel, String> _f$id = Field('id', _$id);
-  static String _$ownerIdMapped(PetModel v) => v.ownerIdMapped;
-  static const Field<PetModel, String> _f$ownerIdMapped = Field(
-    'ownerIdMapped',
-    _$ownerIdMapped,
+  static String _$ownerId(PetModel v) => v.ownerId;
+  static const Field<PetModel, String> _f$ownerId = Field(
+    'ownerId',
+    _$ownerId,
     key: r'owner_id',
   );
   static String _$name(PetModel v) => v.name;
@@ -42,10 +42,10 @@ class PetModelMapper extends ClassMapperBase<PetModel> {
     'birthdate',
     _$birthdate,
   );
-  static String _$photoMapped(PetModel v) => v.photoMapped;
-  static const Field<PetModel, String> _f$photoMapped = Field(
-    'photoMapped',
-    _$photoMapped,
+  static String _$photoUrl(PetModel v) => v.photoUrl;
+  static const Field<PetModel, String> _f$photoUrl = Field(
+    'photoUrl',
+    _$photoUrl,
     key: r'photo',
   );
   static DateTime _$createdAt(PetModel v) => v.createdAt;
@@ -58,26 +58,26 @@ class PetModelMapper extends ClassMapperBase<PetModel> {
   @override
   final MappableFields<PetModel> fields = const {
     #id: _f$id,
-    #ownerIdMapped: _f$ownerIdMapped,
+    #ownerId: _f$ownerId,
     #name: _f$name,
     #species: _f$species,
     #gender: _f$gender,
     #breed: _f$breed,
     #birthdate: _f$birthdate,
-    #photoMapped: _f$photoMapped,
+    #photoUrl: _f$photoUrl,
     #createdAt: _f$createdAt,
   };
 
   static PetModel _instantiate(DecodingData data) {
     return PetModel(
       id: data.dec(_f$id),
-      ownerIdMapped: data.dec(_f$ownerIdMapped),
+      ownerId: data.dec(_f$ownerId),
       name: data.dec(_f$name),
       species: data.dec(_f$species),
       gender: data.dec(_f$gender),
       breed: data.dec(_f$breed),
       birthdate: data.dec(_f$birthdate),
-      photoMapped: data.dec(_f$photoMapped),
+      photoUrl: data.dec(_f$photoUrl),
       createdAt: data.dec(_f$createdAt),
     );
   }
@@ -141,13 +141,13 @@ abstract class PetModelCopyWith<$R, $In extends PetModel, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call({
     String? id,
-    String? ownerIdMapped,
+    String? ownerId,
     String? name,
     String? species,
     String? gender,
     String? breed,
     DateTime? birthdate,
-    String? photoMapped,
+    String? photoUrl,
     DateTime? createdAt,
   });
   PetModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -164,37 +164,37 @@ class _PetModelCopyWithImpl<$R, $Out>
   @override
   $R call({
     String? id,
-    String? ownerIdMapped,
+    String? ownerId,
     String? name,
     String? species,
     String? gender,
     String? breed,
     DateTime? birthdate,
-    String? photoMapped,
+    String? photoUrl,
     DateTime? createdAt,
   }) => $apply(
     FieldCopyWithData({
       if (id != null) #id: id,
-      if (ownerIdMapped != null) #ownerIdMapped: ownerIdMapped,
+      if (ownerId != null) #ownerId: ownerId,
       if (name != null) #name: name,
       if (species != null) #species: species,
       if (gender != null) #gender: gender,
       if (breed != null) #breed: breed,
       if (birthdate != null) #birthdate: birthdate,
-      if (photoMapped != null) #photoMapped: photoMapped,
+      if (photoUrl != null) #photoUrl: photoUrl,
       if (createdAt != null) #createdAt: createdAt,
     }),
   );
   @override
   PetModel $make(CopyWithData data) => PetModel(
     id: data.get(#id, or: $value.id),
-    ownerIdMapped: data.get(#ownerIdMapped, or: $value.ownerIdMapped),
+    ownerId: data.get(#ownerId, or: $value.ownerId),
     name: data.get(#name, or: $value.name),
     species: data.get(#species, or: $value.species),
     gender: data.get(#gender, or: $value.gender),
     breed: data.get(#breed, or: $value.breed),
     birthdate: data.get(#birthdate, or: $value.birthdate),
-    photoMapped: data.get(#photoMapped, or: $value.photoMapped),
+    photoUrl: data.get(#photoUrl, or: $value.photoUrl),
     createdAt: data.get(#createdAt, or: $value.createdAt),
   );
 
