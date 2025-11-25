@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'features/owner_flow/onbording/presentation/pages/onbording_screen.dart';
+import 'package:rifq/core/di/setup.dart';
 import 'features/owner_flow/profile/presentation/pages/profile_screen.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await configureDependencies();
   runApp(MyApp());
 }
 

@@ -4,10 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rifq/core/theme/app_theme.dart';
 
 class ListTielWidgets extends StatelessWidget {
-  final String images;
+  final String ?images;
   final String text;
-
-  const ListTielWidgets({super.key, required this.images, required this.text});
+  final Widget ?icone;
+  const ListTielWidgets({super.key,  this.images, required this.text,  this.icone});
   @override
   Widget build(BuildContext context) {
    return Card(
@@ -17,7 +17,7 @@ class ListTielWidgets extends StatelessWidget {
        ),
      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
      child: ListTile(
-       leading:Image.asset(images),
+       leading: icone ?? Image.asset(images!),
        title: Text(text,style: TextStyle(fontSize: 16.sp)),
 
      ),
