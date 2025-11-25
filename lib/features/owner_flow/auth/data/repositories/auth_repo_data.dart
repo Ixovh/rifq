@@ -1,4 +1,3 @@
-
 import 'package:injectable/injectable.dart';
 import 'package:multiple_result/multiple_result.dart';
 import '../../../../../core/shared/shared_in_owner_flow/shared_auth/models/auth_model.dart';
@@ -38,4 +37,20 @@ class AuthRepoData implements AuthRepoDomain {
     required String email,
     required String otp,
   }) async => await authDataSource.verifyAccount(email: email, otp: otp);
+  //
+  //
+  //
+
+  @override
+  Future<Result<Null, Object>> anonymousUser() async =>
+      await authDataSource.anonymousUser();
+
+  //
+  //
+  //
+
+  @override
+  Future<Result<Null, Object>> logOut() async {
+    return await authDataSource.logOut();
+  }
 }
