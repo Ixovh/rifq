@@ -3,6 +3,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'features/owner_flow/onbording/presentation/pages/onbording_screen.dart';
+import 'features/owner_flow/profile/presentation/pages/profile_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,7 +16,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(402, 874),
-      builder: (_, _) => MaterialApp(home:OnbordingScreen() ),
+      builder: (_, _) => MaterialApp(
+          home:ProfileScreen()),
+          // OnbordingScreen() ),
     );
   }
 }
