@@ -20,4 +20,10 @@ abstract class AuthRepoDomain {
     required String email,
     required String otp,
   });
+
+  //---------
+  Future<Result<Null, Object>> anonymousUser();
+  
+  //---------
+  Future<Result<Null, Object>> logOut();
 }

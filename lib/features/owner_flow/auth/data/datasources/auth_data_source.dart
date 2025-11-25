@@ -22,6 +22,11 @@ abstract class BaseAuthDataSource {
     required String email,
     required String otp,
   });
+  //---------
+  Future<Result<Null, Object>> anonymousUser();
+
+  //---------
+  Future<Result<Null, Object>> logOut();
 }
 
 @LazySingleton(as: BaseAuthDataSource)
@@ -107,6 +112,34 @@ class SubaBaseDataSource implements BaseAuthDataSource {
       await _box.save();
 
       return Success(res);
+    } catch (e) {
+      return Error(e);
+    }
+  }
+  //
+  //
+  //
+
+  @override
+  Future<Result<Null, Object>> anonymousUser() async {
+    try {
+      await _supabase.auth.signInAnonymously();
+      return Success(null);
+    } catch (e) {
+      return Error(e);
+    }
+  }
+  //
+  //
+  //
+
+  @override
+  Future<Result<Null, Object>> logOut() async {
+    try {
+      await _supabase.auth.signOut();
+      await _box.erase();
+
+      return Success(null);
     } catch (e) {
       return Error(e);
     }

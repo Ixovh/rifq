@@ -1,4 +1,3 @@
-
 import 'package:injectable/injectable.dart';
 import 'package:multiple_result/multiple_result.dart';
 import '../../../../../core/shared/shared_in_owner_flow/shared_auth/entities/auth_entity.dart';
@@ -14,11 +13,14 @@ class AuthUseCase {
     required String name,
     required String email,
     required String password,
-  }) async => await authRepoData.signUp(name: name, email: email,password: password);
+  }) async =>
+      await authRepoData.signUp(name: name, email: email, password: password);
 
-  //------
-  Future<Result<Null, Object>> login({required String email, required String password}) async =>
-      await authRepoData.login(email: email, password: password);
+  //---------
+  Future<Result<Null, Object>> login({
+    required String email,
+    required String password,
+  }) async => await authRepoData.login(email: email, password: password);
 
   //---------
   Future<Result<AuthEntity, Object>> verifyAccount({
@@ -26,5 +28,14 @@ class AuthUseCase {
     required String otp,
   }) async {
     return await authRepoData.verifyAccount(email: email, otp: otp);
+  }
+
+  //---------
+  Future<Result<Null, Object>> anonymousUser() async {
+    return await authRepoData.anonymousUser();
+  }
+  //---------
+  Future<Result<Null, Object>> logOut() async {
+    return await authRepoData.logOut();
   }
 }
