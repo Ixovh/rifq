@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 
 import '../../domain/entities/user_profile_entity.dart';
 import '../../domain/usecases/user_profile_usecase.dart';
@@ -13,12 +12,18 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   Future<void> getUserProfile(String authId) async {
     emit(ProfileLoading());
-
     final result = await usecase.getUserProfile(authId);
-
     result.when(
-          (success) => emit(ProfileLoaded(success)),
-          (error) => emit(ProfileError(error)),
+          (success) {
+            print("ProfileCubit");
+
+            emit(ProfileLoaded(success));
+          },
+          (error) {
+            print(error.toString());
+
+            emit(ProfileError(error));
+          },
     );
   }
 
