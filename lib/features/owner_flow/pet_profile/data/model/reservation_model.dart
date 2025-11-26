@@ -9,15 +9,15 @@ part 'reservation_model.mapper.dart';
 class ReservationModel extends ReservationEntity with ReservationModelMappable {
   ReservationModel({
    required super.id,
-    required super.userId,
-    required super.providerId,
-    required super.serviceTypeId,
-    required super.serviceItemId,
-    required super.petId,
+   @MappableField(key: 'user_id') required super.userId,
+   @MappableField(key: 'provider_id')required super.providerId,
+   @MappableField(key: 'service_type_id') required super.serviceTypeId,
+   @MappableField(key: 'service_item_id') required super.serviceItemId,
+   @MappableField(key: 'pet_id')required super.petId,
     required super.date,
-    required super.startDate,
-    required super.endDate,
+   @MappableField(key: 'start_date')required super.startDate,
+   @MappableField(key: 'end_date')required super.endDate,
     required super.status,
     required super.notes,
-    required super.createdAt});
+   @MappableField(key: 'created_at')required super.createdAt});
 }

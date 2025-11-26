@@ -27,6 +27,7 @@ class HealthRecordModelMapper extends ClassMapperBase<HealthRecordModel> {
   static const Field<HealthRecordModel, String> _f$petId = Field(
     'petId',
     _$petId,
+    key: r'pet_id',
   );
   static String _$type(HealthRecordModel v) => v.type;
   static const Field<HealthRecordModel, String> _f$type = Field('type', _$type);
@@ -49,6 +50,7 @@ class HealthRecordModelMapper extends ClassMapperBase<HealthRecordModel> {
   static const Field<HealthRecordModel, String> _f$clinicName = Field(
     'clinicName',
     _$clinicName,
+    key: r'clinic_name',
   );
 
   @override

@@ -12,10 +12,10 @@ part 'health_record_model.mapper.dart';
 class HealthRecordModel extends HealthRecordEntity with HealthRecordModelMappable {
   HealthRecordModel({
     required super.id,
-    required super.petId,
+    @MappableField(key: 'pet_id')required super.petId,
     required super.type,
     required super.title,
     required super.description,
     required super.date,
-    required super.clinicName});
+    @MappableField(key: 'clinic_name')required super.clinicName});
 }

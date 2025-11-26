@@ -27,26 +27,31 @@ class ReservationModelMapper extends ClassMapperBase<ReservationModel> {
   static const Field<ReservationModel, String> _f$userId = Field(
     'userId',
     _$userId,
+    key: r'user_id',
   );
   static String _$providerId(ReservationModel v) => v.providerId;
   static const Field<ReservationModel, String> _f$providerId = Field(
     'providerId',
     _$providerId,
+    key: r'provider_id',
   );
   static int _$serviceTypeId(ReservationModel v) => v.serviceTypeId;
   static const Field<ReservationModel, int> _f$serviceTypeId = Field(
     'serviceTypeId',
     _$serviceTypeId,
+    key: r'service_type_id',
   );
   static String _$serviceItemId(ReservationModel v) => v.serviceItemId;
   static const Field<ReservationModel, String> _f$serviceItemId = Field(
     'serviceItemId',
     _$serviceItemId,
+    key: r'service_item_id',
   );
   static String _$petId(ReservationModel v) => v.petId;
   static const Field<ReservationModel, String> _f$petId = Field(
     'petId',
     _$petId,
+    key: r'pet_id',
   );
   static DateTime _$date(ReservationModel v) => v.date;
   static const Field<ReservationModel, DateTime> _f$date = Field(
@@ -57,11 +62,13 @@ class ReservationModelMapper extends ClassMapperBase<ReservationModel> {
   static const Field<ReservationModel, DateTime> _f$startDate = Field(
     'startDate',
     _$startDate,
+    key: r'start_date',
   );
   static DateTime _$endDate(ReservationModel v) => v.endDate;
   static const Field<ReservationModel, DateTime> _f$endDate = Field(
     'endDate',
     _$endDate,
+    key: r'end_date',
   );
   static String _$status(ReservationModel v) => v.status;
   static const Field<ReservationModel, String> _f$status = Field(
@@ -77,6 +84,7 @@ class ReservationModelMapper extends ClassMapperBase<ReservationModel> {
   static const Field<ReservationModel, DateTime> _f$createdAt = Field(
     'createdAt',
     _$createdAt,
+    key: r'created_at',
   );
 
   @override

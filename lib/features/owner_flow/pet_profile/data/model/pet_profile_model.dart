@@ -8,15 +8,15 @@ import '../../domain/entity/pet_profile_entity.dart';
 part 'pet_profile_model.mapper.dart';
 
 @MappableClass()
-class UserProfileModel extends PetProfileEntity with UserProfileModelMappable {
-  UserProfileModel({
+class PetProfileModel extends PetProfileEntity with PetProfileModelMappable {
+ PetProfileModel({
    required super.id,
     required super.name,
     required super.breed,
     required super.species,
     required super.birthdate,
     required super.photoUrl,
-    required super.ownerId,
+  @MappableField(key: 'owner_id') required super.ownerId,
     required super.gender,
-    required super.createdAt});
+  @MappableField(key: 'created_at')required super.createdAt});
 }

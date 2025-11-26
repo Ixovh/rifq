@@ -7,62 +7,64 @@
 
 part of 'pet_profile_model.dart';
 
-class UserProfileModelMapper extends ClassMapperBase<UserProfileModel> {
-  UserProfileModelMapper._();
+class PetProfileModelMapper extends ClassMapperBase<PetProfileModel> {
+  PetProfileModelMapper._();
 
-  static UserProfileModelMapper? _instance;
-  static UserProfileModelMapper ensureInitialized() {
+  static PetProfileModelMapper? _instance;
+  static PetProfileModelMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals.use(_instance = UserProfileModelMapper._());
+      MapperContainer.globals.use(_instance = PetProfileModelMapper._());
     }
     return _instance!;
   }
 
   @override
-  final String id = 'UserProfileModel';
+  final String id = 'PetProfileModel';
 
-  static String _$id(UserProfileModel v) => v.id;
-  static const Field<UserProfileModel, String> _f$id = Field('id', _$id);
-  static String _$name(UserProfileModel v) => v.name;
-  static const Field<UserProfileModel, String> _f$name = Field('name', _$name);
-  static String _$breed(UserProfileModel v) => v.breed;
-  static const Field<UserProfileModel, String> _f$breed = Field(
+  static String _$id(PetProfileModel v) => v.id;
+  static const Field<PetProfileModel, String> _f$id = Field('id', _$id);
+  static String _$name(PetProfileModel v) => v.name;
+  static const Field<PetProfileModel, String> _f$name = Field('name', _$name);
+  static String _$breed(PetProfileModel v) => v.breed;
+  static const Field<PetProfileModel, String> _f$breed = Field(
     'breed',
     _$breed,
   );
-  static String _$species(UserProfileModel v) => v.species;
-  static const Field<UserProfileModel, String> _f$species = Field(
+  static String _$species(PetProfileModel v) => v.species;
+  static const Field<PetProfileModel, String> _f$species = Field(
     'species',
     _$species,
   );
-  static DateTime _$birthdate(UserProfileModel v) => v.birthdate;
-  static const Field<UserProfileModel, DateTime> _f$birthdate = Field(
+  static DateTime _$birthdate(PetProfileModel v) => v.birthdate;
+  static const Field<PetProfileModel, DateTime> _f$birthdate = Field(
     'birthdate',
     _$birthdate,
   );
-  static String _$photoUrl(UserProfileModel v) => v.photoUrl;
-  static const Field<UserProfileModel, String> _f$photoUrl = Field(
+  static String _$photoUrl(PetProfileModel v) => v.photoUrl;
+  static const Field<PetProfileModel, String> _f$photoUrl = Field(
     'photoUrl',
     _$photoUrl,
   );
-  static String _$ownerId(UserProfileModel v) => v.ownerId;
-  static const Field<UserProfileModel, String> _f$ownerId = Field(
+  static String _$ownerId(PetProfileModel v) => v.ownerId;
+  static const Field<PetProfileModel, String> _f$ownerId = Field(
     'ownerId',
     _$ownerId,
+    key: r'owner_id',
   );
-  static String _$gender(UserProfileModel v) => v.gender;
-  static const Field<UserProfileModel, String> _f$gender = Field(
+  static String _$gender(PetProfileModel v) => v.gender;
+  static const Field<PetProfileModel, String> _f$gender = Field(
     'gender',
     _$gender,
   );
-  static DateTime _$createdAt(UserProfileModel v) => v.createdAt;
-  static const Field<UserProfileModel, DateTime> _f$createdAt = Field(
+  static DateTime _$createdAt(PetProfileModel v) => v.createdAt;
+  static const Field<PetProfileModel, DateTime> _f$createdAt = Field(
     'createdAt',
     _$createdAt,
+    key: r'created_at',
   );
 
   @override
-  final MappableFields<UserProfileModel> fields = const {
+  final MappableFields<PetProfileModel> fields = const {
     #id: _f$id,
     #name: _f$name,
     #breed: _f$breed,
@@ -74,8 +76,8 @@ class UserProfileModelMapper extends ClassMapperBase<UserProfileModel> {
     #createdAt: _f$createdAt,
   };
 
-  static UserProfileModel _instantiate(DecodingData data) {
-    return UserProfileModel(
+  static PetProfileModel _instantiate(DecodingData data) {
+    return PetProfileModel(
       id: data.dec(_f$id),
       name: data.dec(_f$name),
       breed: data.dec(_f$breed),
@@ -91,64 +93,64 @@ class UserProfileModelMapper extends ClassMapperBase<UserProfileModel> {
   @override
   final Function instantiate = _instantiate;
 
-  static UserProfileModel fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<UserProfileModel>(map);
+  static PetProfileModel fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<PetProfileModel>(map);
   }
 
-  static UserProfileModel fromJson(String json) {
-    return ensureInitialized().decodeJson<UserProfileModel>(json);
+  static PetProfileModel fromJson(String json) {
+    return ensureInitialized().decodeJson<PetProfileModel>(json);
   }
 }
 
-mixin UserProfileModelMappable {
+mixin PetProfileModelMappable {
   String toJson() {
-    return UserProfileModelMapper.ensureInitialized()
-        .encodeJson<UserProfileModel>(this as UserProfileModel);
+    return PetProfileModelMapper.ensureInitialized()
+        .encodeJson<PetProfileModel>(this as PetProfileModel);
   }
 
   Map<String, dynamic> toMap() {
-    return UserProfileModelMapper.ensureInitialized()
-        .encodeMap<UserProfileModel>(this as UserProfileModel);
+    return PetProfileModelMapper.ensureInitialized().encodeMap<PetProfileModel>(
+      this as PetProfileModel,
+    );
   }
 
-  UserProfileModelCopyWith<UserProfileModel, UserProfileModel, UserProfileModel>
+  PetProfileModelCopyWith<PetProfileModel, PetProfileModel, PetProfileModel>
   get copyWith =>
-      _UserProfileModelCopyWithImpl<UserProfileModel, UserProfileModel>(
-        this as UserProfileModel,
+      _PetProfileModelCopyWithImpl<PetProfileModel, PetProfileModel>(
+        this as PetProfileModel,
         $identity,
         $identity,
       );
   @override
   String toString() {
-    return UserProfileModelMapper.ensureInitialized().stringifyValue(
-      this as UserProfileModel,
+    return PetProfileModelMapper.ensureInitialized().stringifyValue(
+      this as PetProfileModel,
     );
   }
 
   @override
   bool operator ==(Object other) {
-    return UserProfileModelMapper.ensureInitialized().equalsValue(
-      this as UserProfileModel,
+    return PetProfileModelMapper.ensureInitialized().equalsValue(
+      this as PetProfileModel,
       other,
     );
   }
 
   @override
   int get hashCode {
-    return UserProfileModelMapper.ensureInitialized().hashValue(
-      this as UserProfileModel,
+    return PetProfileModelMapper.ensureInitialized().hashValue(
+      this as PetProfileModel,
     );
   }
 }
 
-extension UserProfileModelValueCopy<$R, $Out>
-    on ObjectCopyWith<$R, UserProfileModel, $Out> {
-  UserProfileModelCopyWith<$R, UserProfileModel, $Out>
-  get $asUserProfileModel =>
-      $base.as((v, t, t2) => _UserProfileModelCopyWithImpl<$R, $Out>(v, t, t2));
+extension PetProfileModelValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, PetProfileModel, $Out> {
+  PetProfileModelCopyWith<$R, PetProfileModel, $Out> get $asPetProfileModel =>
+      $base.as((v, t, t2) => _PetProfileModelCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
-abstract class UserProfileModelCopyWith<$R, $In extends UserProfileModel, $Out>
+abstract class PetProfileModelCopyWith<$R, $In extends PetProfileModel, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call({
     String? id,
@@ -161,19 +163,19 @@ abstract class UserProfileModelCopyWith<$R, $In extends UserProfileModel, $Out>
     String? gender,
     DateTime? createdAt,
   });
-  UserProfileModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+  PetProfileModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
 }
 
-class _UserProfileModelCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, UserProfileModel, $Out>
-    implements UserProfileModelCopyWith<$R, UserProfileModel, $Out> {
-  _UserProfileModelCopyWithImpl(super.value, super.then, super.then2);
+class _PetProfileModelCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, PetProfileModel, $Out>
+    implements PetProfileModelCopyWith<$R, PetProfileModel, $Out> {
+  _PetProfileModelCopyWithImpl(super.value, super.then, super.then2);
 
   @override
-  late final ClassMapperBase<UserProfileModel> $mapper =
-      UserProfileModelMapper.ensureInitialized();
+  late final ClassMapperBase<PetProfileModel> $mapper =
+      PetProfileModelMapper.ensureInitialized();
   @override
   $R call({
     String? id,
@@ -199,7 +201,7 @@ class _UserProfileModelCopyWithImpl<$R, $Out>
     }),
   );
   @override
-  UserProfileModel $make(CopyWithData data) => UserProfileModel(
+  PetProfileModel $make(CopyWithData data) => PetProfileModel(
     id: data.get(#id, or: $value.id),
     name: data.get(#name, or: $value.name),
     breed: data.get(#breed, or: $value.breed),
@@ -212,8 +214,8 @@ class _UserProfileModelCopyWithImpl<$R, $Out>
   );
 
   @override
-  UserProfileModelCopyWith<$R2, UserProfileModel, $Out2> $chain<$R2, $Out2>(
+  PetProfileModelCopyWith<$R2, PetProfileModel, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
-  ) => _UserProfileModelCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  ) => _PetProfileModelCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
