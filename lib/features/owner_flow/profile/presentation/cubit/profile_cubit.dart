@@ -14,24 +14,14 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(ProfileLoading());
     final result = await usecase.getUserProfile(authId);
     result.when(
-          (success) {
-            print("ProfileCubit");
-
-            emit(ProfileLoaded(success));
-          },
-          (error) {
-            print(error.toString());
-
-            emit(ProfileError(error));
-          },
+          (success)=>emit(ProfileLoaded(success)),
+          (error) => emit(ProfileError(error)),
     );
   }
 
   Future<void> updateUserProfile(UserProfileEntity user) async {
     emit(ProfileLoading());
-
     final result = await usecase.updateUserProfile(user);
-
     result.when(
           (success) => emit(ProfileUpdated(success)),
           (error) => emit(ProfileError(error)),

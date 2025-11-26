@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../../core/di/setup.dart';
+import '../../../../../core/routes/base_routes.dart';
 import '../../domain/entities/user_profile_entity.dart';
 import '../../domain/usecases/user_profile_usecase.dart';
 import '../cubit/profile_cubit.dart';
@@ -62,7 +64,13 @@ class ProfileScreen extends StatelessWidget {
                               ),
                             ),
                             SizedBox(width: 6.w),
-                            IconButton(onPressed: () {}, icon: Icon(Icons.edit_outlined,))],),
+                            IconButton(onPressed: ()
+                            {
+                              context.push(
+                                  Routs.editprofile, extra: context.read<ProfileCubit>()
+                              );
+                              }, icon: Icon(Icons.edit_outlined,))],),
+
                         SizedBox(height: 18.h),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
