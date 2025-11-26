@@ -29,26 +29,31 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
   Widget build(BuildContext context) {
     final keyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
 
-    return BottomSheet(
-    enableDrag: widget.enableDrag,
-    onClosing: () {},
-    backgroundColor: context.neutral100,
-    builder: (context) {
-    return AnimatedContainer(
-    duration: const Duration(milliseconds: 200),
-    curve: Curves.easeOut,
-    width: 402.w,
-    height: keyboardVisible
-    ? (widget.baseHeight + widget.keyboardHeightIncrease).h
-    : widget.baseHeight.h,
-    padding: EdgeInsets.all(20.r),
-    decoration: BoxDecoration(
-    border: Border.all(color: context.neutral400),
-    borderRadius: BorderRadius.circular(50.r),
-    ),
-    child: widget.content,
-    );
-    },
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: BottomSheet(
+        enableDrag: widget.enableDrag,
+        onClosing: () {},
+        backgroundColor: context.neutral100,
+        builder: (context) {
+          return AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeOut,
+            width: 402.w,
+            height: keyboardVisible
+                ? (widget.baseHeight + widget.keyboardHeightIncrease).h
+                : widget.baseHeight.h,
+            padding: EdgeInsets.all(20.r),
+            decoration: BoxDecoration(
+              border: Border.all(color: context.neutral400),
+              borderRadius: BorderRadius.circular(50.r),
+            ),
+            child: widget.content,
+          );
+        },
+      ),
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,31 +8,41 @@ import 'package:rifq/features/owner_flow/auth/presentation/cubit/auth_cubit.dart
 import 'package:rifq/features/owner_flow/auth/presentation/widgets/container_button.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/widgets/custom_form_builder_text_field.dart';
 
-class LoginTab extends StatelessWidget {
-  const LoginTab({super.key});
+class SignUpTab extends StatelessWidget {
+  const SignUpTab({super.key, });
+
+
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<AuthCubit>();
+        final cubit = context.read<AuthCubit>();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 24.h),
         Text(
-          'Please enter your email and Password.',
+          'Please fill in your details to continue.',
           style: context.body1.copyWith(fontSize: 16.sp),
         ),
         SizedBox(height: 24.h),
         FormBuilder(
-          key: cubit.loginFormKey,
+          key: cubit.sinUpFormKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomFormBuilderTextField(
+                name: 'name',
+                label: 'name',
+                iconData: CupertinoIcons.person_alt,
+                controller: cubit.nameController,
+              ),
+              SizedBox(height: 24.h),
+              CustomFormBuilderTextField(
                 name: 'email',
                 label: 'Email',
                 iconData: CupertinoIcons.mail_solid,
-                controller: cubit.loginEmailController,
+                controller: cubit.sinUpEmailController,
                 validators: [
                   FormBuilderValidators.required(),
                   FormBuilderValidators.email(),
@@ -44,7 +53,7 @@ class LoginTab extends StatelessWidget {
                 name: 'password',
                 label: 'Password',
                 iconData: CupertinoIcons.lock_fill,
-                controller: cubit.loginPasswordController,
+                controller: cubit.sinUpPasswordController,
                 isPassword: true,
                 validators: [
                   FormBuilderValidators.required(),
@@ -54,28 +63,52 @@ class LoginTab extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 8.h),
-        TextButton(
-          onPressed: () {},
-          child: Text(
-            'Forgot password?',
-            style: context.body3.copyWith(color: context.primary300),
-          ),
-        ),
         SizedBox(height: 16.h),
         ContainerButton(
-          label: 'Log in',
+          label: 'Sign up',
           containerColor: context.primary300,
           textColor: context.neutral100,
           fontSize: 20,
           onTap: () {
-            if (cubit.loginFormKey.currentState?.saveAndValidate() ?? false) {
-              cubit.login(
-                email: cubit.loginEmailController.text,
-                password: cubit.loginPasswordController.text,
+            if (cubit.sinUpFormKey.currentState?.saveAndValidate() ?? false) {
+              cubit.signUp(
+                name: cubit.nameController.text,
+                email: cubit.sinUpEmailController.text,
+                password: cubit.sinUpPasswordController.text,
               );
             }
           },
+        ),
+        SizedBox(height: 24.h),
+        RichText(
+          text: TextSpan(
+            text: 'By continuing, you agree to our ',
+            style: context.body3.copyWith(
+              color: const Color.fromARGB(255, 0, 0, 0),
+            ),
+            children: <TextSpan>[
+              TextSpan(
+                text: 'Terms & Conditions ',
+                style: context.body3.copyWith(color: context.primary300),
+              ),
+              TextSpan(
+                text: 'and ',
+                style: context.body3.copyWith(
+                  color: const Color.fromARGB(255, 0, 0, 0),
+                ),
+              ),
+              TextSpan(
+                text: 'Privacy Policy',
+                style: context.body3.copyWith(color: context.primary300),
+              ),
+              TextSpan(
+                text: '.',
+                style: context.body3.copyWith(
+                  color: const Color.fromARGB(255, 0, 0, 0),
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );
