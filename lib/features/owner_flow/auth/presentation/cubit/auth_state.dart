@@ -14,6 +14,8 @@ class AuthLoadingState extends AuthState {}
 
 class AuthSuccessState extends AuthState {}
 
+class AuthSignUPSuccessState extends AuthState {}
+
 class AuthAnonymousSuccessState extends AuthState {}
 
 class AuthLogoutSuccessState extends AuthState {}
