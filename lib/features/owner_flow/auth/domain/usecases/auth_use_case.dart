@@ -34,8 +34,19 @@ class AuthUseCase {
   Future<Result<Null, Object>> anonymousUser() async {
     return await authRepoData.anonymousUser();
   }
+
   //---------
   Future<Result<Null, Object>> logOut() async {
     return await authRepoData.logOut();
   }
+
+  //---------
+  Future<Result<Null, Object>> resetPassword({
+    required String newPassword,
+  }) async => await authRepoData.resetPassword(newPassword: newPassword);
+
+  //---------
+  Future<Result<Null, Object>> sendPasswordResetEmail({
+    required String email,
+  }) async => await authRepoData.sendPasswordResetEmail(email: email);
 }

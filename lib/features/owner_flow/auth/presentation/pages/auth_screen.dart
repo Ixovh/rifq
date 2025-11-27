@@ -29,7 +29,7 @@ class AuthScreen extends StatelessWidget {
                   context.go(Routes.home,);
                   break;
                 case AuthSignUPSuccessState _:
-                  context.push(Routes.otpScreen, extra: cubit);
+                  context.push(Routes.otpScreen, extra: {"cubit":cubit, "isPassword": false});
                   break;
                 case AuthErrorState _:
                   ScaffoldMessenger.of(

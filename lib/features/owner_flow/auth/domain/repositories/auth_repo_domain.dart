@@ -26,4 +26,15 @@ abstract class AuthRepoDomain {
   
   //---------
   Future<Result<Null, Object>> logOut();
+  
+  //---------
+  Future<Result<Null, Object>> resetPassword({
+    required String newPassword,
+  });
+  
+  //---------
+  Future<Result<Null, Object>> sendPasswordResetEmail({
+    required String email,
+  });
+
 }

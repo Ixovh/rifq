@@ -27,16 +27,24 @@ abstract class BaseAuthDataSource {
 
   //---------
   Future<Result<Null, Object>> logOut();
+
+  //---------
+  Future<Result<Null, Object>> resetPassword({required String newPassword});
+
+  //---------
+  Future<Result<Null, Object>> sendPasswordResetEmail({required String email});
 }
 
 @LazySingleton(as: BaseAuthDataSource)
 class SubaBaseDataSource implements BaseAuthDataSource {
   final SupabaseClient _supabase;
   final GetStorage _box;
+  String? email;
 
   SubaBaseDataSource({
     required SupabaseClient supabase,
     required GetStorage box,
+    this.email,
   }) : _supabase = supabase,
        _box = box;
 
@@ -148,6 +156,45 @@ class SubaBaseDataSource implements BaseAuthDataSource {
       await _supabase.auth.signOut();
       await _box.erase();
 
+      return Success(null);
+    } catch (e) {
+      return Error(e);
+    }
+  }
+  //
+  //
+  //
+
+  @override
+  Future<Result<Null, Object>> resetPassword({
+    required String newPassword,
+  }) async {
+    try {
+      final response = await _supabase.auth.updateUser(
+        UserAttributes(email: email!, password: newPassword),
+      );
+
+      if (response.user == null) {
+        return Error('Failed to update password. Please try again.');
+      }
+
+      return Success(null);
+    } catch (e) {
+      return Error(e);
+    }
+  }
+
+  //
+  //
+  //
+
+  @override
+  Future<Result<Null, Object>> sendPasswordResetEmail({
+    required String email,
+  }) async {
+    try {
+      await _supabase.auth.resetPasswordForEmail(email);
+      this.email = email;
       return Success(null);
     } catch (e) {
       return Error(e);

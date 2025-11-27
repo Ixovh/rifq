@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:go_router/go_router.dart';
+import 'package:rifq/core/routes/base_routes.dart';
 import 'package:rifq/core/theme/app_theme.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/cubit/auth_cubit.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/widgets/container_button.dart';
@@ -52,12 +54,12 @@ class LoginTab extends StatelessWidget {
                 isPassword: true,
                 validators: [
                   FormBuilderValidators.required(
-                    errorText:
-                        'Includes at least one number or symbol (e.g., @, #, \$, !).',
+                    errorText: 'Incorrect password. Please try again.',
                   ),
                   FormBuilderValidators.minLength(
                     6,
-                    errorText: 'Incorrect password. Please try again.',
+                    errorText:
+                        'Includes at least one number or symbol (e.g., @, #, \$, !).',
                   ),
                 ],
               ),
@@ -66,7 +68,9 @@ class LoginTab extends StatelessWidget {
         ),
         SizedBox(height: 8.h),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            context.push(Routes.sendsToEmail, extra: cubit);
+          },
           child: Text(
             'Forgot password?',
             style: context.body3.copyWith(color: context.primary300),

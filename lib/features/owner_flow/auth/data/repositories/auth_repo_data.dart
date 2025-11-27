@@ -53,4 +53,24 @@ class AuthRepoData implements AuthRepoDomain {
   Future<Result<Null, Object>> logOut() async {
     return await authDataSource.logOut();
   }
+  //
+  //
+  //
+
+  @override
+  Future<Result<Null, Object>> resetPassword({
+    required String newPassword,
+  }) async {
+    return await authDataSource.resetPassword(newPassword: newPassword);
+  }
+
+  //
+  //
+  //
+  @override
+  Future<Result<Null, Object>> sendPasswordResetEmail({
+    required String email,
+  }) async {
+    return await authDataSource.sendPasswordResetEmail(email: email);
+  }
 }

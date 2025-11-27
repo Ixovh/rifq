@@ -17,6 +17,11 @@ class AuthCubit extends Cubit<AuthState> {
   final sinUpPasswordController = TextEditingController();
   final nameController = TextEditingController();
 
+  final resetVerfiyEmailFormKey = GlobalKey<FormBuilderState>();
+  final resetVerfiyPasswordFormKey = GlobalKey<FormBuilderState>();
+  final resetEmailController = TextEditingController();
+  final resetPasswordController = TextEditingController();
+
   String? email;
   final AuthUseCase _authUseCase;
 
@@ -138,13 +143,54 @@ class AuthCubit extends Cubit<AuthState> {
   //
   //
 
-  // @override
-  // Future<void> close() {
-  //   loginEmailController.dispose();
-  //   loginPasswordController.dispose();
-  //   sinUpEmailController.dispose();
-  //   sinUpPasswordController.dispose();
-  //   nameController.dispose();
-  //   return super.close();
-  // }
+  Future sendPasswordResetEmail({required String email}) async {
+    emit(AuthLoadingState());
+    (await _authUseCase.sendPasswordResetEmail(email: email)).when(
+      (success) {
+        this.email = email;
+        emit(AuthPasswordResetEmailSentState(email: email));
+      },
+      (error) {
+        emit(
+          AuthErrorState(
+            msg: CatchErrorMessage(error: error).getWriteMessage(),
+          ),
+        );
+      },
+    );
+  }
+
+  //
+  //
+  //
+
+  Future resetPassword({required String newPassword}) async {
+    emit(AuthLoadingState());
+    (await _authUseCase.resetPassword(newPassword: newPassword)).when(
+      (success) {
+        emit(AuthPasswordResetSuccessState());
+      },
+      (error) {
+        emit(
+          AuthErrorState(
+            msg: CatchErrorMessage(error: error).getWriteMessage(),
+          ),
+        );
+      },
+    );
+  }
+
+  //
+  //
+  //
+
+  @override
+  Future<void> close() {
+    loginEmailController.dispose();
+    loginPasswordController.dispose();
+    sinUpEmailController.dispose();
+    sinUpPasswordController.dispose();
+    nameController.dispose();
+    return super.close();
+  }
 }
