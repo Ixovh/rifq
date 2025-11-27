@@ -48,7 +48,7 @@ abstract class AppColors {
 
   // Semantic color aliases for easier usage
   static const Color background = neutral100;
-  static const Color surface = primary300;
+  static const Color surface = neutral100;
   static const Color error = red200;
   static const Color success = green200;
   static const Color warning = yellow200;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rifq/core/theme/app_color.dart';
+import 'app_color.dart';
 import 'app_text_styles.dart';
 
 extension AppThemeX on BuildContext {
