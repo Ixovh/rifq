@@ -35,8 +35,12 @@ class LoginTab extends StatelessWidget {
                 iconData: CupertinoIcons.mail_solid,
                 controller: cubit.loginEmailController,
                 validators: [
-                  FormBuilderValidators.required(),
-                  FormBuilderValidators.email(),
+                  FormBuilderValidators.required(
+                    errorText: '(e.g., username@example.com).',
+                  ),
+                  FormBuilderValidators.email(
+                    errorText: '(e.g., username@example.com).',
+                  ),
                 ],
               ),
               SizedBox(height: 24.h),
@@ -47,8 +51,14 @@ class LoginTab extends StatelessWidget {
                 controller: cubit.loginPasswordController,
                 isPassword: true,
                 validators: [
-                  FormBuilderValidators.required(),
-                  FormBuilderValidators.minLength(6),
+                  FormBuilderValidators.required(
+                    errorText:
+                        'Includes at least one number or symbol (e.g., @, #, \$, !).',
+                  ),
+                  FormBuilderValidators.minLength(
+                    6,
+                    errorText: 'Incorrect password. Please try again.',
+                  ),
                 ],
               ),
             ],
@@ -68,9 +78,9 @@ class LoginTab extends StatelessWidget {
           containerColor: context.primary300,
           textColor: context.neutral100,
           fontSize: 20,
-          onTap: () {
+          onTap: () async {
             if (cubit.loginFormKey.currentState?.saveAndValidate() ?? false) {
-              cubit.login(
+              await cubit.login(
                 email: cubit.loginEmailController.text,
                 password: cubit.loginPasswordController.text,
               );

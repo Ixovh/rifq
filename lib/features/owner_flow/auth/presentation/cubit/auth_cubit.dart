@@ -19,7 +19,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   String? email;
   final AuthUseCase _authUseCase;
-  
+
   AuthCubit(this._authUseCase) : super(AuthInitial());
 
   Future signUp({
@@ -36,7 +36,7 @@ class AuthCubit extends Cubit<AuthState> {
     )).when(
       (whenSuccess) {
         this.email = email;
-        emit(AuthSuccessState());
+        emit(AuthSignUPSuccessState());
       },
       (whenError) {
         emit(
@@ -95,21 +95,21 @@ class AuthCubit extends Cubit<AuthState> {
   //
   //
   //
-  
+
   Future anonymousUser() async {
     emit(AuthLoadingState());
 
     (await _authUseCase.anonymousUser()).when(
-    (whenSuccess) {
-    emit(AuthSuccessState());
-    },
-    (whenError) {
-    emit(
-    AuthErrorState(
-    msg: CatchErrorMessage(error: whenError).getWriteMessage(),
-    ),
-    );
-    },
+      (whenSuccess) {
+        emit(AuthAnonymousSuccessState());
+      },
+      (whenError) {
+        emit(
+          AuthErrorState(
+            msg: CatchErrorMessage(error: whenError).getWriteMessage(),
+          ),
+        );
+      },
     );
   }
 
@@ -121,16 +121,16 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthLoadingState());
 
     (await _authUseCase.logOut()).when(
-    (whenSuccess) {
-    emit(AuthSuccessState());
-    },
-    (whenError) {
-    emit(
-    AuthErrorState(
-    msg: CatchErrorMessage(error: whenError).getWriteMessage(),
-    ),
-    );
-    },
+      (whenSuccess) {
+        emit(AuthLogoutSuccessState());
+      },
+      (whenError) {
+        emit(
+          AuthErrorState(
+            msg: CatchErrorMessage(error: whenError).getWriteMessage(),
+          ),
+        );
+      },
     );
   }
 
@@ -138,14 +138,13 @@ class AuthCubit extends Cubit<AuthState> {
   //
   //
 
-  @override
-  Future<void> close() {
-    loginEmailController.dispose();
-    loginPasswordController.dispose();
-    sinUpEmailController.dispose();
-    sinUpPasswordController.dispose();
-    nameController.dispose();
-    return super.close();
-  }
+  // @override
+  // Future<void> close() {
+  //   loginEmailController.dispose();
+  //   loginPasswordController.dispose();
+  //   sinUpEmailController.dispose();
+  //   sinUpPasswordController.dispose();
+  //   nameController.dispose();
+  //   return super.close();
+  // }
 }
- 

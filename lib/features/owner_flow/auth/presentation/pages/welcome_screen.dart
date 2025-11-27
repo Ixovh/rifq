@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:rifq/core/routes/base_routes.dart';
 import '../../../../../core/theme/app_theme.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'auth_screen.dart';
 import '../widgets/container_button.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -58,13 +59,7 @@ class WelcomeScreen extends StatelessWidget {
                       textColor: context.neutral100,
                       fontSize: 20,
                       onTap: () {
-                        // TODO: create and change go route
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AuthScreen(),
-                          ),
-                        );
+                        context.go(Routes.auth);
                       },
                     ),
                     SizedBox(height: 18.h),

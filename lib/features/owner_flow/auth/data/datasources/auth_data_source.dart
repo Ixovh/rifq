@@ -47,6 +47,15 @@ class SubaBaseDataSource implements BaseAuthDataSource {
     required String password,
   }) async {
     try {
+      final existingProfile = await _supabase
+          .from('users')
+          .select('id')
+          .eq('email', email)
+          .maybeSingle();
+
+      if (existingProfile != null) {
+        return Error('This email is already registered. Please login instead.');
+      }
       await _supabase.auth.signUp(
         email: email,
         password: password,

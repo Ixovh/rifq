@@ -9,13 +9,11 @@ import 'package:rifq/features/owner_flow/auth/presentation/widgets/container_but
 import 'package:rifq/features/owner_flow/auth/presentation/widgets/custom_form_builder_text_field.dart';
 
 class SignUpTab extends StatelessWidget {
-  const SignUpTab({super.key, });
-
-
+  const SignUpTab({super.key});
 
   @override
   Widget build(BuildContext context) {
-        final cubit = context.read<AuthCubit>();
+    final cubit = context.read<AuthCubit>();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,8 +42,12 @@ class SignUpTab extends StatelessWidget {
                 iconData: CupertinoIcons.mail_solid,
                 controller: cubit.sinUpEmailController,
                 validators: [
-                  FormBuilderValidators.required(),
-                  FormBuilderValidators.email(),
+                  FormBuilderValidators.required(
+                    errorText: '(e.g., username@example.com).',
+                  ),
+                  FormBuilderValidators.email(
+                    errorText: '(e.g., username@example.com).',
+                  ),
                 ],
               ),
               SizedBox(height: 24.h),
@@ -56,8 +58,14 @@ class SignUpTab extends StatelessWidget {
                 controller: cubit.sinUpPasswordController,
                 isPassword: true,
                 validators: [
-                  FormBuilderValidators.required(),
-                  FormBuilderValidators.minLength(6),
+                  FormBuilderValidators.required(
+                    errorText:
+                        'Includes at least one number or symbol (e.g., @, #, \$, !).',
+                  ),
+                  FormBuilderValidators.minLength(
+                    6,
+                    errorText: 'Incorrect password. Please try again.',
+                  ),
                 ],
               ),
             ],
@@ -69,9 +77,9 @@ class SignUpTab extends StatelessWidget {
           containerColor: context.primary300,
           textColor: context.neutral100,
           fontSize: 20,
-          onTap: () {
+          onTap: () async {
             if (cubit.sinUpFormKey.currentState?.saveAndValidate() ?? false) {
-              cubit.signUp(
+              await cubit.signUp(
                 name: cubit.nameController.text,
                 email: cubit.sinUpEmailController.text,
                 password: cubit.sinUpPasswordController.text,

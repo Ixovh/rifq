@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
+import 'package:rifq/core/routes/base_routes.dart';
 import 'package:rifq/features/owner_flow/auth/domain/usecases/auth_use_case.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/auth_tab_bar.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/login_tab.dart';
@@ -19,32 +21,23 @@ class AuthScreen extends StatelessWidget {
       create: (context) => AuthCubit(GetIt.I.get<AuthUseCase>()),
       child: Builder(
         builder: (context) {
-          final _ = context.read<AuthCubit>();
+          final cubit = context.read<AuthCubit>();
           return BlocListener<AuthCubit, AuthState>(
             listener: (context, state) {
               switch (state) {
                 case AuthSuccessState _:
-                  Navigator.of(context).pop();
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text("welcome home!")));
-                  // TODO: create home screen and add routes it home
-                  // context.go(Routes.home, extra: cubit);
+                  context.go(Routes.home,);
                   break;
-
+                case AuthSignUPSuccessState _:
+                  context.push(Routes.otpScreen, extra: cubit);
+                  break;
                 case AuthErrorState _:
-                  Navigator.of(context).pop();
                   ScaffoldMessenger.of(
                     context,
                   ).showSnackBar(SnackBar(content: Text(state.msg)));
                   break;
-
                 case AuthLoadingState _:
                   Center(child: CircularProgressIndicator());
-                  break;
-
-                default:
-                  Navigator.of(context).pop();
                   break;
               }
             },
@@ -58,12 +51,7 @@ class AuthScreen extends StatelessWidget {
                     children: [
                       const AuthTabBar(),
                       Expanded(
-                        child: TabBarView(
-                          children: [
-                            LoginTab(),
-                            SignUpTab(),
-                          ],
-                        ),
+                        child: TabBarView(children: [LoginTab(), SignUpTab()]),
                       ),
                     ],
                   ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rifq/core/routes/base_routes.dart';
 import 'core/di/setup.dart';
-import 'features/owner_flow/auth/presentation/pages/welcome_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(402, 874),
-      builder: (_, _) => MaterialApp(home: const WelcomeScreen()),
+      builder: (_, _) => MaterialApp.router(routerConfig: Routes.routers),
     );
   }
 }
