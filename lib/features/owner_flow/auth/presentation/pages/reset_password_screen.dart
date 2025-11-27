@@ -1,19 +1,21 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pinput/pinput.dart';
 import 'package:rifq/core/routes/base_routes.dart';
 import 'package:rifq/core/theme/app_theme.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/cubit/auth_cubit.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/widgets/container_button.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/widgets/custom_bottom_sheet.dart';
+import 'package:rifq/features/owner_flow/auth/presentation/widgets/custom_form_builder_text_field.dart';
 
+class ResetPasswordScreen extends StatelessWidget {
+  const ResetPasswordScreen({super.key});
 
-class OtpScreen extends StatelessWidget {
-  const OtpScreen({super.key, this.isResetPassword = false});
-  final bool? isResetPassword;
   @override
   Widget build(BuildContext context) {
     return Builder(
@@ -22,8 +24,8 @@ class OtpScreen extends StatelessWidget {
         return BlocListener<AuthCubit, AuthState>(
           listener: (context, state) {
             switch (state) {
-              case AuthSuccessState _:
-                context.go(Routes.home);
+              case AuthPasswordResetSuccessState _:
+                context.push(Routes.auth);
                 break;
               case AuthLoadingState _:
                 Center(child: CircularProgressIndicator());
@@ -47,7 +49,7 @@ class OtpScreen extends StatelessWidget {
                 crossAxisAlignment: .center,
                 children: [
                   Text(
-                    isResetPassword! ? 'Reset Password' : 'Email Verification',
+                    'Reset Password',
                     style: context.h5.copyWith(
                       fontSize: 24.sp,
                       fontWeight: FontWeight.w500,
@@ -57,69 +59,50 @@ class OtpScreen extends StatelessWidget {
                   SizedBox(height: 8.h),
 
                   Text(
-                    'We have sent an OTP to your email address',
-                    style: context.body2.copyWith(color: context.neutral800),
-                  ),
-                  SizedBox(height: 8.h),
-
-                  Text(
-                    cubit.email!,
-                    style: context.body2.copyWith(
-                      fontWeight: FontWeight.w500,
-                      color: const Color.fromARGB(255, 0, 0, 0),
-                    ),
-                  ),
-                  SizedBox(height: 8.h),
-
-                  Text(
-                    'Please enter the OTP below',
+                    'Please enter your new password to proceed.',
                     style: context.body2.copyWith(color: context.neutral800),
                   ),
                   SizedBox(height: 24.h),
-
-                  Pinput(
-                    defaultPinTheme: PinTheme(
-                      width: 50.h,
-                      height: 60.h,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: context.primary500),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                    length: 6,
-                    focusedPinTheme: PinTheme(
-                      width: 50.h,
-                      height: 60.h,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: const Color.fromARGB(255, 0, 0, 0),
+                  FormBuilder(
+                    key: cubit.resetVerfiyPasswordFormKey,
+                    child: CustomFormBuilderTextField(
+                      name: 'password',
+                      label: 'Password',
+                      iconData: CupertinoIcons.lock_fill,
+                      controller: cubit.resetPasswordController,
+                      isPassword: true,
+                      validators: [
+                        FormBuilderValidators.required(
+                          errorText: 'Incorrect password. Please try again.',
                         ),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
+                        FormBuilderValidators.minLength(
+                          6,
+                          errorText:
+                              'Includes at least one number or symbol (e.g., @, #, \$, !).',
+                        ),
+                      ],
                     ),
-                    onCompleted: (pin) async {
-                      if (!isResetPassword!) {
-                        await cubit.verifyAccount(
-                          email: cubit.email!,
-                          otp: pin,
-                        );
-                      } else {
-                        context.push(Routes.resetPassword, extra:  cubit);
-                      }
-                    },
                   ),
-                  Spacer(),
+                  SizedBox(height: 32.h),
+
                   ContainerButton(
-                    label: 'Cancel',
-                    containerColor: context.neutral100,
-                    textColor: context.primary300,
+                    label: 'verfiy',
+                    containerColor: context.primary300,
+                    textColor: context.neutral100,
                     fontSize: 20,
-                    onTap: () {
-                      if (context.canPop()) {
-                        context.pop();
+                    onTap: () async {
+                      if (cubit.resetVerfiyPasswordFormKey.currentState
+                              ?.saveAndValidate() ??
+                          false) {
+                        await cubit.resetPassword(
+                          newPassword: cubit.resetPasswordController.text,
+                        );
                       }
                     },
                   ),
+                  SizedBox(height: 12.h),
+
+                  Spacer(),
                 ],
               ),
             ),

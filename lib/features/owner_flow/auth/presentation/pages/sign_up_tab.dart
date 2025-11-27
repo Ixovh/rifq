@@ -59,12 +59,12 @@ class SignUpTab extends StatelessWidget {
                 isPassword: true,
                 validators: [
                   FormBuilderValidators.required(
-                    errorText:
-                        'Includes at least one number or symbol (e.g., @, #, \$, !).',
+                    errorText: 'Incorrect password. Please try again.',
                   ),
                   FormBuilderValidators.minLength(
                     6,
-                    errorText: 'Incorrect password. Please try again.',
+                    errorText:
+                        'Includes at least one number or symbol (e.g., @, #, \$, !).',
                   ),
                 ],
               ),
