@@ -53,7 +53,7 @@ class AddPetScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final supabase = Supabase.instance.client;
+    final _ = Supabase.instance.client;
 
     // Future<String?> getOwnerId() async {
     //   final authId = supabase.auth.currentUser?.id;

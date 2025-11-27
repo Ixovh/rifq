@@ -33,7 +33,7 @@ class AddPetDataSource implements BaseAddPetDataSource {
 
     final fileName = '${DateTime.now().millisecondsSinceEpoch}_${photoFile.path.split('/').last}';
 
-    final uploadResult = await supabase.storage
+    await supabase.storage
         .from('pets')
         .upload(fileName, photoFile);
 
