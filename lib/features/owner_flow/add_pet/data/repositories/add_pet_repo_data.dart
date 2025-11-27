@@ -1,4 +1,4 @@
-
+import 'dart:io';
 import 'package:injectable/injectable.dart';
 import 'package:rifq/features/owner_flow/add_pet/data/datasources/add_pet_data_source.dart';
 import 'package:rifq/features/owner_flow/add_pet/domain/entities/add_pet_entity.dart';
@@ -18,8 +18,18 @@ class AddPetRepoData implements AddPetRepoDomain {
     required String gender,
     required String breed,
     required DateTime birthdate,
-    required String photoUrl,
+    required File photoFile,
   }) async {
-    throw UnimplementedError("Change photoUrl → photoFile in domain!");
+    final model = await dataSource.addPet(
+      ownerId: ownerId,
+      name: name,
+      species: species,
+      gender: gender,
+      breed: breed,
+      birthdate: birthdate,
+      photoFile: photoFile,
+    );
+
+    return model;
   }
 }

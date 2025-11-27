@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:rifq/features/owner_flow/add_pet/data/models/pet_model.dart';
 
@@ -13,7 +14,7 @@ abstract class BaseAddPetDataSource {
     required File photoFile,
   });
 }
-
+@LazySingleton(as: BaseAddPetDataSource)
 class AddPetDataSource implements BaseAddPetDataSource {
   final SupabaseClient supabase;
 
@@ -32,9 +33,9 @@ class AddPetDataSource implements BaseAddPetDataSource {
 
     final fileName = '${DateTime.now().millisecondsSinceEpoch}_${photoFile.path.split('/').last}';
 
-    // final uploadResult = await supabase.storage
-    //     .from('pets')
-    //     .upload(fileName, photoFile);
+    final uploadResult = await supabase.storage
+        .from('pets')
+        .upload(fileName, photoFile);
 
     final photoUrl = supabase.storage
         .from('pets')
