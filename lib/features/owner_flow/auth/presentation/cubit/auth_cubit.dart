@@ -191,6 +191,8 @@ class AuthCubit extends Cubit<AuthState> {
     sinUpEmailController.dispose();
     sinUpPasswordController.dispose();
     nameController.dispose();
+    resetEmailController.dispose();
+    resetPasswordController.dispose();
     return super.close();
   }
 }
