@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rifq/core/routes/base_routes.dart';
+import 'package:rifq/features/owner_flow/auth/domain/usecases/auth_use_case.dart';
+import 'package:rifq/features/owner_flow/auth/presentation/cubit/auth_cubit.dart';
 import '../../../../../core/theme/app_theme.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../widgets/container_button.dart';
@@ -11,70 +15,102 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: context.background,
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: .spaceBetween,
-          crossAxisAlignment: .start,
-          children: [
-            Center(child: SvgPicture.asset('assets/icon/logo.svg')),
+    return BlocProvider(
+      create: (context) => AuthCubit(GetIt.I.get<AuthUseCase>()),
+      child: Builder(
+        builder: (context) {
+          final cubit = context.read<AuthCubit>();
 
-            SizedBox(
-              child: Padding(
-                padding: EdgeInsets.only(left: 18.r),
+          return BlocListener<AuthCubit, AuthState>(
+            listener: (context, state) {
+              switch (state) {
+                case AuthAnonymousSuccessState _:
+                  context.go(Routes.home);
+                  break;
+
+                case AuthErrorState _:
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(state.msg)));
+                  break;
+                case AuthLoadingState _:
+                  Center(child: CircularProgressIndicator());
+                  break;
+              }
+            },
+            child: Scaffold(
+              backgroundColor: context.background,
+              body: SafeArea(
                 child: Column(
+                  mainAxisAlignment: .spaceBetween,
                   crossAxisAlignment: .start,
                   children: [
-                    Text(
-                      'Welcome to Rifq',
-                      style: context.h3.copyWith(color: context.primary300),
+                    Center(child: SvgPicture.asset('assets/icon/logo.svg')),
+
+                    SizedBox(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 18.r),
+                        child: Column(
+                          crossAxisAlignment: .start,
+                          children: [
+                            Text(
+                              'Welcome to Rifq',
+                              style: context.h3.copyWith(
+                                color: context.primary300,
+                              ),
+                            ),
+                            Text(
+                              'Your trusted space for pet care and services.',
+                              style: context.bodyLarge.copyWith(
+                                color: context.neutral700,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                    Text(
-                      'Your trusted space for pet care and services.',
-                      style: context.bodyLarge.copyWith(
-                        color: context.neutral700,
+                    SizedBox(
+                      child: Padding(
+                        padding: EdgeInsets.all(18.r),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Sign in to continue caring with ease.',
+                              style: context.bodyMedium.copyWith(
+                                color: context.neutral900,
+                                fontSize: 18.sp,
+                              ),
+                            ),
+                            SizedBox(height: 24.h),
+                            ContainerButton(
+                              label: 'Sign in',
+                              containerColor: context.primary300,
+                              textColor: context.neutral100,
+                              fontSize: 20,
+                              onTap: () {
+                                context.go(Routes.auth);
+                              },
+                            ),
+                            SizedBox(height: 18.h),
+                            ContainerButton(
+                              onTap: () async {
+                                await cubit.anonymousUser();
+                              },
+                              label: 'Continue as Guest',
+                              containerColor: context.neutral100,
+                              textColor: context.primary300,
+                              fontSize: 20,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
             ),
-            SizedBox(
-              child: Padding(
-                padding: EdgeInsets.all(18.r),
-                child: Column(
-                  children: [
-                    Text(
-                      'Sign in to continue caring with ease.',
-                      style: context.bodyMedium.copyWith(
-                        color: context.neutral900,
-                        fontSize: 18.sp,
-                      ),
-                    ),
-                    SizedBox(height: 24.h),
-                    ContainerButton(
-                      label: 'Sign in',
-                      containerColor: context.primary300,
-                      textColor: context.neutral100,
-                      fontSize: 20,
-                      onTap: () {
-                        context.go(Routes.auth);
-                      },
-                    ),
-                    SizedBox(height: 18.h),
-                    ContainerButton(
-                      label: 'Continue as Guest',
-                      containerColor: context.neutral100,
-                      textColor: context.primary300,
-                      fontSize: 20,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
