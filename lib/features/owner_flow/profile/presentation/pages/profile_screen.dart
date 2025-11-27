@@ -18,6 +18,7 @@ class ProfileScreen extends StatelessWidget {
       create: (context) => ProfileCubit(getIt<UserProfileUsecase>()),
       child: Builder(
         builder: (context) {
+          // TODO change it real id
           final cubit = context.read<ProfileCubit>().getUserProfile("52fc04dc-adac-432d-a3a2-20d80e93463f");
           return BlocBuilder<ProfileCubit, ProfileState>(
             builder: (context, state) {
@@ -67,7 +68,7 @@ class ProfileScreen extends StatelessWidget {
                             IconButton(onPressed: ()
                             {
                               context.push(
-                                  Routs.editprofile, extra: context.read<ProfileCubit>()
+                                  Routes.editprofile, extra: context.read<ProfileCubit>()
                               );
                               }, icon: Icon(Icons.edit_outlined,))],),
 
