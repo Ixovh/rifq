@@ -128,6 +128,12 @@ class SubaBaseDataSource implements BaseAuthDataSource {
       await _box.write('login', res.toJson());
       await _box.save();
 
+      // by doing this query user id will equal auth.id
+      await _supabase
+          .from('users')
+          .update({'id': user.user!.id})
+          .eq('auth_id', user.user!.id);
+
       return Success(res);
     } catch (e) {
       return Error(e);
