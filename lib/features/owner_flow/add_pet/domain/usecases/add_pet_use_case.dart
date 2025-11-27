@@ -1,6 +1,10 @@
+import 'dart:io';
+
+import 'package:injectable/injectable.dart';
 import 'package:rifq/features/owner_flow/add_pet/domain/entities/add_pet_entity.dart';
 import 'package:rifq/features/owner_flow/add_pet/domain/repositories/add_pet_repo_domain.dart';
 
+@injectable
 class AddPetUseCase {
   final AddPetRepoDomain repository;
 
@@ -13,7 +17,7 @@ class AddPetUseCase {
     required String gender,
     required String breed,
     required DateTime birthdate,
-    required String photoUrl,
+    required File photoFile,
   }) {
     return repository.addPet(
       ownerId: ownerId,
@@ -22,7 +26,7 @@ class AddPetUseCase {
       gender: gender,
       breed: breed,
       birthdate: birthdate,
-      photoUrl: photoUrl,
+      photoFile: photoFile,
     );
   }
 }
