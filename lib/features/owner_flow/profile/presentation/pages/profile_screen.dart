@@ -76,7 +76,7 @@ class ProfileScreen extends StatelessWidget {
                         SizedBox(width: 6.w),
                         IconButton(
                           onPressed: () {
-                            context.push(Routs.editprofile,
+                            context.push(Routes.editprofile,
                                 extra: context.read<ProfileCubit>());
                           },
                           icon: Icon(Icons.edit_outlined),
