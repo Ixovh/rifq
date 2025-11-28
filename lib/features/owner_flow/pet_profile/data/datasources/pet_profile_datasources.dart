@@ -1,3 +1,29 @@
+import 'package:injectable/injectable.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../sup_features/pet_info_card/data/model/pet_profile_model.dart';
+
+abstract class PetProfileDataSource {
+  Future<PetProfileModel> updatePetProfile(PetProfileModel pet);
+}
+
+@LazySingleton(as: PetProfileDataSource)
+class PetProfileDataSourceImpl implements PetProfileDataSource {
+  final SupabaseClient supabase;
+
+  PetProfileDataSourceImpl(this.supabase);
+
+  @override
+  Future<PetProfileModel> updatePetProfile(PetProfileModel pet) async {
+    final response = await supabase
+        .from('pets') // التعديل يكون على الجدول الأساسي
+        .update(pet.toMap())
+        .eq('id', pet.id);
+    return response.isNotEmpty;
+  }
+
+}
+
+
 //
 //
 // import 'package:injectable/injectable.dart';

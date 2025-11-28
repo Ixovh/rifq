@@ -12,9 +12,9 @@ class HealthRecordUsecase {
   Future<Result<List<HealthRecordEntity>, String>> getRecordsByPet(String petId) async {
     try {
       final records = await repository.getRecordsByPet(petId);
-      return Success(records);
+      return Result.success(records);
     } catch (e) {
-      return Error(e.toString());
+      return Result.error(e.toString());
     }
   }
 }

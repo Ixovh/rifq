@@ -22,28 +22,40 @@ class PetProfileModelMapper extends ClassMapperBase<PetProfileModel> {
   final String id = 'PetProfileModel';
 
   static String _$id(PetProfileModel v) => v.id;
-  static const Field<PetProfileModel, String> _f$id = Field('id', _$id);
+  static const Field<PetProfileModel, String> _f$id = Field(
+    'id',
+    _$id,
+    key: r'pet_id',
+  );
   static String _$name(PetProfileModel v) => v.name;
-  static const Field<PetProfileModel, String> _f$name = Field('name', _$name);
+  static const Field<PetProfileModel, String> _f$name = Field(
+    'name',
+    _$name,
+    key: r'pet_name',
+  );
   static String _$breed(PetProfileModel v) => v.breed;
   static const Field<PetProfileModel, String> _f$breed = Field(
     'breed',
     _$breed,
+    key: r'pet_breed',
   );
   static String _$species(PetProfileModel v) => v.species;
   static const Field<PetProfileModel, String> _f$species = Field(
     'species',
     _$species,
+    key: r'pet_species',
   );
   static DateTime _$birthdate(PetProfileModel v) => v.birthdate;
   static const Field<PetProfileModel, DateTime> _f$birthdate = Field(
     'birthdate',
     _$birthdate,
+    key: r'pet_birthdate',
   );
   static String _$photoUrl(PetProfileModel v) => v.photoUrl;
   static const Field<PetProfileModel, String> _f$photoUrl = Field(
     'photoUrl',
     _$photoUrl,
+    key: r'pet_photo',
   );
   static String _$ownerId(PetProfileModel v) => v.ownerId;
   static const Field<PetProfileModel, String> _f$ownerId = Field(
@@ -55,12 +67,13 @@ class PetProfileModelMapper extends ClassMapperBase<PetProfileModel> {
   static const Field<PetProfileModel, String> _f$gender = Field(
     'gender',
     _$gender,
+    key: r'pet_gender',
   );
   static DateTime _$createdAt(PetProfileModel v) => v.createdAt;
   static const Field<PetProfileModel, DateTime> _f$createdAt = Field(
     'createdAt',
     _$createdAt,
-    key: r'created_at',
+    key: r'pet_created_at',
   );
 
   @override

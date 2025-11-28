@@ -12,9 +12,9 @@ class ReservationUsecase {
   Future<Result<List<ReservationEntity>, String>> getReservationsByPet(String petId) async {
     try {
       final reservations = await repository.getReservationsByPet(petId);
-      return Success(reservations);
+      return Result.success(reservations);
     } catch (e) {
-      return Error(e.toString());
+      return Result.error(e.toString());
     }
   }
 }

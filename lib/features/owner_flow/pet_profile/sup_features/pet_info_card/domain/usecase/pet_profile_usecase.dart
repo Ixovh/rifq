@@ -34,12 +34,12 @@ class PetProfileUsecase {
   //
   //
 
-  Future<Result<PetProfileEntity, String>> updatePet(PetProfileEntity pet) async {
-    try {
-      final updatedPet = await repository.updatePet(pet);
-      return Result.success(updatedPet);
-    } catch (e) {
-      return Result.error(e.toString());
-    }
-  }
+  // Future<Result<PetProfileEntity, String>> updatePetProfile(PetProfileEntity pet) async {
+  //   try {
+  //     final updatedPet = await repository.updatePetProfile(pet);
+  //     return Result.success(updatedPet);
+  //   } catch (e) {
+  //     return Result.error(e.toString());
+  //   }
+  // }
 }
