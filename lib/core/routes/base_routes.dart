@@ -1,29 +1,35 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rifq/core/common/choose_path/presentation/pages/choose_path_screen.dart';
+import 'package:rifq/core/common/splash/presentation/pages/splash_screen.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/cubit/auth_cubit.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/auth_screen.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/otp_screen.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/reset_password_screen.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/sends_to_email_screen.dart';
+import 'package:rifq/features/owner_flow/auth/presentation/pages/welcome_screen.dart';
+import 'package:rifq/features/owner_flow/hotel/data/model/hotel_model.dart';
+import 'package:rifq/features/owner_flow/hotel/presentation/cubit/hotel_cubit.dart';
+import 'package:rifq/features/owner_flow/hotel/presentation/pages/hotel_details_screen.dart';
+import 'package:rifq/features/owner_flow/hotel/presentation/pages/hotel_home_screen.dart';
 import 'package:rifq/features/owner_flow/onbording/presentation/pages/onbording_screen.dart';
+import 'package:rifq/features/owner_flow/pet_profile/sup_features/edit_pet_profile/presentaion/pages/edit_pet_profile.dart';
+import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_info_card/domain/entity/pet_entity.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/cubit/profile_cubit.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/edit_profile_screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/home_screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/profile_screen.dart';
-import '../../features/owner_flow/hotel/data/model/hotel_model.dart';
-import '../../features/owner_flow/hotel/presentation/cubit/hotel_cubit.dart';
-import '../../features/owner_flow/hotel/presentation/pages/hotel_details_screen.dart';
-import '../../features/owner_flow/hotel/presentation/pages/hotel_home_screen.dart';
-import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/presentaion/pages/edit_pet_profile.dart';
-import '../../features/owner_flow/pet_profile/sup_features/pet_info_card/domain/entity/pet_entity.dart';
 
 abstract class Routes {
-  static String init = '/';
+  static String splash = '/';
+  static String choosePath = '/choosePath';
+  static String ownerOnboarding = '/ownerOnboarding';
+   static String welcomeScreen = '/welcomeScreen';
+  // static String providerOnboarding = '/providerOnboarding';
   static String auth = '/auth';
   static String otpScreen = '/otp';
   static String home = '/home';
-  static String onbording = '/onbording';
   static String profile = '/userprofile';
   static String editprofile = '/usereditprofile';
   static String petprofile = '/petprofi';
@@ -33,15 +39,26 @@ abstract class Routes {
   static String hotel = '/HotelHome';
   static String detailsHotel = '/DetailsHotel';
 
-
-
   static final routers = GoRouter(
-    initialLocation: hotel,
+    initialLocation: splash,
     routes: [
+      GoRoute(path: splash, builder: (context, state) =>  SplashScreen()),
+
       GoRoute(
-        path: onbording,
+        path: choosePath,
+        builder: (context, state) =>  ChoosePathScreen(),
+      ),
+
+      GoRoute(
+        path: ownerOnboarding,
         builder: (context, state) => OnbordingScreen(),
       ),
+
+      GoRoute(
+        path: welcomeScreen,
+        builder: (context, state) => WelcomeScreen(),
+      ),
+
 
       //------//
       //------//
@@ -63,7 +80,7 @@ abstract class Routes {
           final data = state.extra as Map<String, dynamic>;
           return BlocProvider.value(
             value: data['cubit'] as AuthCubit,
-            child: OtpScreen(isResetPassword: data["isPassword"] as bool,),
+            child: OtpScreen(isResetPassword: data["isPassword"] as bool),
           );
         },
       ),
@@ -103,29 +120,16 @@ abstract class Routes {
           return HomeScreen();
         },
       ),
-	GoRoute(
-        path: profile,
-        builder: (context, state) => ProfileScreen(),
-      ),
-      //------//
-      //------//
-      //------//
-      //------//
+      GoRoute(path: profile, builder: (context, state) => ProfileScreen()),
       GoRoute(
         path: editprofile,
         builder: (context, state) {
           final cubit = state.extra as ProfileCubit;
-          return BlocProvider.value(
-            value: cubit,
-            child: EditProfileScreen(),
-          );
+          return BlocProvider.value(value: cubit, child: EditProfileScreen());
         },
       ),
-      //------//
-      //------//
-      //------//
-      //------//
-      GoRoute(
+
+    GoRoute(
         path: editpetprofile,
         builder: (context, state) {
           final pet = state.extra;
@@ -136,10 +140,7 @@ abstract class Routes {
           return EditPetProfileScreen(pet: pet);
         },
       ),
-      //------//
-      //------//
-      //------//
-      //------//
+
       GoRoute(
         path: hotel,
         builder: (context, state) {
@@ -172,29 +173,6 @@ abstract class Routes {
           );
         },
       ),
-
-
-
-
-
-
-      // GoRoute(
-      //   path: editpetprofile,
-      //   builder: (context, state) {
-      //     final pet = state.extra as PetProfileEntity;
-      //     return EditPetProfileScreen(pet: pet);
-      //   },
-      // ),
-
-
-      // GoRoute(
-      //   path: editpetprofile,
-      //   builder: (context, state) {
-      //     final pet = state.extra as PetProfileEntity;
-      //     return EditPetProfileScreen(pet: pet);
-      //   },
-      // ),
     ],
   );
 }
-
