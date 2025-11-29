@@ -44,7 +44,7 @@ class SubaBaseDataSource implements BaseAuthDataSource {
   SubaBaseDataSource({
     required SupabaseClient supabase,
     required GetStorage box,
-    this.email,
+    // this.email,
   }) : _supabase = supabase,
        _box = box;
 
