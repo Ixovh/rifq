@@ -2,12 +2,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rifq/core/common/choose_path/presentation/pages/choose_path_screen.dart';
 import 'package:rifq/core/common/splash/presentation/pages/splash_screen.dart';
+import 'package:rifq/features/owner_flow/add_pet/presentation/pages/add_pet_screen.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/cubit/auth_cubit.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/auth_screen.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/otp_screen.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/reset_password_screen.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/sends_to_email_screen.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/welcome_screen.dart';
+import 'package:rifq/features/owner_flow/nav/presentation/cubit/nav_cubit.dart';
+import 'package:rifq/features/owner_flow/nav/presentation/pages/nav_screen.dart';
 import 'package:rifq/features/owner_flow/onbording/presentation/pages/onbording_screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/cubit/profile_cubit.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/edit_profile_screen.dart';
@@ -18,7 +21,7 @@ abstract class Routes {
   static String splash = '/';
   static String choosePath = '/choosePath';
   static String ownerOnboarding = '/ownerOnboarding';
-   static String welcomeScreen = '/welcomeScreen';
+  static String welcomeScreen = '/welcomeScreen';
   // static String providerOnboarding = '/providerOnboarding';
   static String auth = '/auth';
   static String otpScreen = '/otp';
@@ -30,14 +33,17 @@ abstract class Routes {
   static String sendsToEmail = '/sendsToEmail';
   static String resetPassword = '/resetPassword';
 
+  static String navbar = '/navbar';
+  static String addpet = '/addpet';
+
   static final routers = GoRouter(
-    initialLocation: splash,
+    initialLocation: navbar,
     routes: [
-      GoRoute(path: splash, builder: (context, state) =>  SplashScreen()),
+      GoRoute(path: splash, builder: (context, state) => SplashScreen()),
 
       GoRoute(
         path: choosePath,
-        builder: (context, state) =>  ChoosePathScreen(),
+        builder: (context, state) => ChoosePathScreen(),
       ),
 
       GoRoute(
@@ -49,7 +55,6 @@ abstract class Routes {
         path: welcomeScreen,
         builder: (context, state) => WelcomeScreen(),
       ),
-
 
       //------//
       //------//
@@ -105,12 +110,12 @@ abstract class Routes {
       //------//
       //------//
       //------//
-      GoRoute(
-        path: home,
-        builder: (context, state) {
-          return HomeScreen();
-        },
-      ),
+      // GoRoute(
+      //   path: home,
+      //   builder: (context, state) {
+      //     return HomeScreen();
+      //   },
+      // ),
       GoRoute(path: profile, builder: (context, state) => ProfileScreen()),
       GoRoute(
         path: editprofile,
@@ -119,6 +124,15 @@ abstract class Routes {
           return BlocProvider.value(value: cubit, child: EditProfileScreen());
         },
       ),
+
+      GoRoute(
+        path: navbar,
+        builder: (context, state) {
+          return BlocProvider(create: (_) => NavCubit(), child: NavScreen());
+        },
+      ),
+
+      GoRoute(path: addpet, builder: (context, state) => AddPetScreen()),
     ],
   );
 }
