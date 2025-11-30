@@ -12,6 +12,7 @@ import 'package:rifq/features/owner_flow/profile/presentation/pages/edit_profile
 import 'package:rifq/features/owner_flow/profile/presentation/pages/home_screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/profile_screen.dart';
 
+import '../../features/owner_flow/hotel/presentation/pages/hotel_home_screen.dart';
 import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/presentaion/pages/edit_pet_profile.dart';
 import '../../features/owner_flow/pet_profile/sup_features/pet_info_card/domain/entity/pet_profile_entity.dart';
 
@@ -28,8 +29,11 @@ abstract class Routes {
   static String sendsToEmail = '/sendsToEmail';
   static String resetPassword = '/resetPassword';
 
+  static String hotel = '/HotelHome';
+
+
   static final routers = GoRouter(
-    initialLocation: profile,
+    initialLocation: hotel,
     routes: [
       GoRoute(
         path: onbording,
@@ -100,6 +104,10 @@ abstract class Routes {
         path: profile,
         builder: (context, state) => ProfileScreen(),
       ),
+      //------//
+      //------//
+      //------//
+      //------//
       GoRoute(
         path: editprofile,
         builder: (context, state) {
@@ -110,6 +118,10 @@ abstract class Routes {
           );
         },
       ),
+      //------//
+      //------//
+      //------//
+      //------//
       GoRoute(
         path: editpetprofile,
         builder: (context, state) {
@@ -121,6 +133,17 @@ abstract class Routes {
           return EditPetProfileScreen(pet: pet);
         },
       ),
+      //------//
+      //------//
+      //------//
+      //------//
+      GoRoute(
+        path: hotel,
+        builder: (context, state) {
+          return HotelHomeScreen();
+        },
+      ),
+
       // GoRoute(
       //   path: editpetprofile,
       //   builder: (context, state) {
