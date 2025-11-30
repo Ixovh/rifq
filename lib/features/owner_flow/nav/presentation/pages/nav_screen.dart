@@ -6,8 +6,11 @@ import 'package:rifq/features/owner_flow/nav/presentation/cubit/nav_state.dart';
 
 class NavScreen extends StatelessWidget {
   const NavScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
+    return Builder(
+      builder: (context) {
     final cubit = context.read<NavCubit>();
     return BlocBuilder<NavCubit, NavState>(
       builder: (context, state) {
@@ -20,13 +23,16 @@ class NavScreen extends StatelessWidget {
             },
             items: [
               BottomNavigationBarItem(label: "Home", icon: Icon(Icons.home)),
-              BottomNavigationBarItem(label: "Login", icon: Icon(Icons.home)),
-              BottomNavigationBarItem(label: "Login", icon: Icon(Icons.home)),
+              BottomNavigationBarItem(label: "Health", icon: Icon(Icons.home)),
+              BottomNavigationBarItem(label: "Hotel", icon: Icon(Icons.home)),
+              // BottomNavigationBarItem(label: "Adoption", icon: Icon(Icons.pets)),
             ],
           ),
 
           body: cubit.screens[cubit.currentIndex],
         );
+      },
+    );
       },
     );
   }
