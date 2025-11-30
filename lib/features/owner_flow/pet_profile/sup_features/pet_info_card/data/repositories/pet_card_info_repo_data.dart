@@ -22,10 +22,6 @@ class RepoDataPet implements PetProfileRepoDomain {
   }
 
 
-// @override
-// Future<PetProfileEntity> updatePetProfile(PetProfileEntity petId) {
-//   // TODO: implement updatePetProfile
-//   throw UnimplementedError();
-// }
+
 
 }

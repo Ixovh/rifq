@@ -30,135 +30,161 @@ class ProfileScreen extends StatelessWidget {
             icon: Icon(Icons.arrow_back_ios, color: Colors.black),
           ),
         ),
-
-        body: BlocBuilder<ProfileCubit, ProfileState>(
-          builder: (context, state) {
-            if (state is ProfileLoading) {
-              return Center(child: CircularProgressIndicator());
-            }
-
-            UserProfileEntity? user;
-            if (state is ProfileLoaded) {
-              user = state.user;
-            }
-
-            return SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
-                child: Column(
-                  children: [
-                    SizedBox(height: 10.h),
-                    Center(
-                      child: CircleAvatar(
-                        radius: 60.r,
-                        backgroundColor: Color(0xFFBBE9E3),
-                        child: Text(
-                          user != null ? user.name[0].toUpperCase() : "?",
-                          style: TextStyle(
-                            fontSize: 48.sp,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 16.h),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          user != null ? user.name : "Loading...",
-                          style: TextStyle(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        SizedBox(width: 6.w),
-                        IconButton(
-                          onPressed: () {
-                            context.push(Routes.editprofile,
-                                extra: context.read<ProfileCubit>());
-                          },
-                          icon: Icon(Icons.edit_outlined),
-                        )
-                      ],
-                    ),
-
-                    SizedBox(height: 18.h),
-
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TextField(
-                          decoration: InputDecoration(
-                            hintText: user?.email ?? "Email",
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    SizedBox(height: 20.h),
-
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TextField(
-                          decoration: InputDecoration(
-                            hintText: user?.name ?? "Name",
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 32.h),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: BlocProvider(
-                        create: (context) =>
-                        PetInfoCubit(getIt<PetProfileUsecase>())..getPets(user!.id),
-                        child: BlocBuilder<PetInfoCubit, PetInfoState>(
-                          builder: (context, state) {
-                            if (state is PetLoading) {
-                              return Center(child: CircularProgressIndicator());
-                            }
-                            if (state is PetLoaded) {
-                              return Row(
-                                children: state.pets.map((pet) => ContainerPetCardWidgets(
-                                  pet: pet,
-
-                                )).toList(),
-                              );
-                            }
-                            if (state is PetError) {
-                              return Text(state.msg);
-                            }
-                            return Container();
-                          },
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 16.h),
-                    ListTielWidgets(
-                      images: 'assets/images/material.png',
-                      text: 'Security & Privacy',),
-                    SizedBox(height: 13.h),
-                    ListTielWidgets(
-                      icone: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.language, size: 28.r),),
-                      text: 'Language',),
-                    SizedBox(height: 13.h),
-                    ListTielWidgets(
-                      icone: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.logout, size: 28.r),
-                      ),
-                      text: 'Log out',
-                    ),
-                  ],
-                ),
-              ),
-            );
+        body: BlocListener<ProfileCubit, ProfileState>(
+          listener: (context, state) {
+           if(state is ProfileUpdated){
+             context.read<ProfileCubit>().getUserProfile("52fc04dc-adac-432d-a3a2-20d80e93463f");
+           }
           },
+          child: BlocBuilder<ProfileCubit, ProfileState>(
+            builder: (context, state) {
+              if (state is ProfileLoading) {
+                return Center(child: CircularProgressIndicator());
+              }
+              UserProfileEntity? user;
+              if (state is ProfileLoaded) {
+                user = state.user;
+              }
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 10.h),
+                      Center(
+                        child: CircleAvatar(
+                          radius: 60.r,
+                          backgroundColor: Color(0xFFBBE9E3),
+                          child: Text(
+                            user != null ? user.name[0].toUpperCase() : "?",
+                            style: TextStyle(
+                              fontSize: 48.sp,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 16.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            user != null ? user.name : "Loading...",
+                            style: TextStyle(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.w600,
+                            ),),
+                          SizedBox(width: 6.w),
+                          IconButton(
+                            onPressed: () {
+                              context.push(Routes.editprofile,
+                                  extra: context.read<ProfileCubit>());
+                            },
+                            icon: Icon(Icons.edit_outlined),
+                          )
+                        ],),
+                      SizedBox(height: 18.h),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextField(
+                            decoration: InputDecoration(
+                              hintText: user?.email ?? "Email",
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20.h),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextField(
+                            decoration: InputDecoration(
+                              hintText: user?.name ?? "Name",
+                            ),
+                          ),
+                        ],),
+                      SizedBox(height: 32.h),
+                      user == null
+                          ? Center(child: CircularProgressIndicator())
+                          : SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: BlocProvider(
+                          create: (context) =>
+                          PetInfoCubit(getIt<PetProfileUsecase>())
+                            ..getPets(user!.id),
+                          child: BlocBuilder<PetInfoCubit, PetInfoState>(
+                            builder: (context, state) {
+                              if (state is PetLoading) {
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              }
+                              if (state is PetLoaded) {
+                                return Row(
+                                  children: state.pets
+                                      .map((pet) =>
+                                      ContainerPetCardWidgets(
+                                        pet: pet,
+                                      ))
+                                      .toList(),
+                                );
+                              }
+                              if (state is PetError) {
+                                return Text(state.msg);
+                              }
+                              return Container();
+                            },
+                          ),
+                        ),
+                      ),
+                      // SingleChildScrollView(
+                      //   scrollDirection: Axis.horizontal,
+                      //   child: BlocProvider(
+                      //     create: (context) =>
+                      //     PetInfoCubit(getIt<PetProfileUsecase>())..getPets(user!.id),
+                      //
+                      //     child: BlocBuilder<PetInfoCubit, PetInfoState>(
+                      //       builder: (context, state) {
+                      //         if (state is PetLoading) {
+                      //           return Center(child: CircularProgressIndicator());
+                      //         }
+                      //         if (state is PetLoaded) {
+                      //           return Row(
+                      //             children: state.pets.map((pet) => ContainerPetCardWidgets(
+                      //               pet: pet,
+                      //             )).toList(),
+                      //           );
+                      //         }
+                      //         if (state is PetError) {
+                      //           return Text(state.msg);
+                      //         }
+                      //         return Container();
+                      //       },
+                      //     ),),),
+                      SizedBox(height: 16.h),
+                      ListTielWidgets(
+                        images: 'assets/images/material.png',
+                        text: 'Security & Privacy',),
+                      SizedBox(height: 13.h),
+                      ListTielWidgets(
+                        icone: IconButton(
+                          onPressed: () {},
+                          icon: Icon(Icons.language, size: 28.r),),
+                        text: 'Language',),
+                      SizedBox(height: 13.h),
+                      ListTielWidgets(
+                        icone: IconButton(
+                          onPressed: () {},
+                          icon: Icon(Icons.logout, size: 28.r),
+                        ),
+                        text: 'Log out',
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

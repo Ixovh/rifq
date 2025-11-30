@@ -130,7 +130,6 @@ class EditProfileScreen extends StatelessWidget {
                           name: nameController.text,
                           id: currentUser.id,
                             createdAt: currentUser.createdAt
-
                         );
                         cubit.updateUserProfile(updatedUser);
                       }

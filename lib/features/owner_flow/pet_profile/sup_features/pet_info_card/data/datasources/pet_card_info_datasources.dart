@@ -8,6 +8,7 @@ abstract class PatCard{
   Future<PetProfileModel> getPetById(String petId);
 
 }
+
 @LazySingleton(as:PatCard )
 class PetCardInfoDatasources  implements PatCard {
   final SupabaseClient supabase;
@@ -20,7 +21,6 @@ class PetCardInfoDatasources  implements PatCard {
         .select()
         .eq('id', petId)
         .single();
-
     return PetProfileModelMapper.fromMap(response);
   }
 

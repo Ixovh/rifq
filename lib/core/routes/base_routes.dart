@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/cubit/auth_cubit.dart';
@@ -10,6 +11,9 @@ import 'package:rifq/features/owner_flow/profile/presentation/cubit/profile_cubi
 import 'package:rifq/features/owner_flow/profile/presentation/pages/edit_profile_screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/home_screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/profile_screen.dart';
+
+import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/presentaion/pages/edit_pet_profile.dart';
+import '../../features/owner_flow/pet_profile/sup_features/pet_info_card/domain/entity/pet_profile_entity.dart';
 
 abstract class Routes {
   static String init = '/';
@@ -106,6 +110,33 @@ abstract class Routes {
           );
         },
       ),
+      GoRoute(
+        path: editpetprofile,
+        builder: (context, state) {
+          final pet = state.extra;
+          print(pet.toString());
+          if (pet is! PetProfileEntity) {
+            return Center(child: Text("data"));
+          }
+          return EditPetProfileScreen(pet: pet);
+        },
+      ),
+      // GoRoute(
+      //   path: editpetprofile,
+      //   builder: (context, state) {
+      //     final pet = state.extra as PetProfileEntity;
+      //     return EditPetProfileScreen(pet: pet);
+      //   },
+      // ),
+
+
+      // GoRoute(
+      //   path: editpetprofile,
+      //   builder: (context, state) {
+      //     final pet = state.extra as PetProfileEntity;
+      //     return EditPetProfileScreen(pet: pet);
+      //   },
+      // ),
     ],
   );
 }

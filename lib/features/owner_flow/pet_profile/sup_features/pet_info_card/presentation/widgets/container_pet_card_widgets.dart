@@ -1,10 +1,11 @@
-
 import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rifq/core/theme/app_color.dart';
 import 'package:rifq/core/theme/app_theme.dart';
 
+import '../../../../../../../core/routes/base_routes.dart';
 import '../../domain/entity/pet_profile_entity.dart';
 class ContainerPetCardWidgets extends StatelessWidget {
   final PetProfileEntity pet;
@@ -45,23 +46,27 @@ class ContainerPetCardWidgets extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
-          /// Pet Profile + edit icon
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Pet Profile",
-                style: context.body3.copyWith(color: context.neutral500)
+                "Pet Profile", style: context.body3.copyWith(color: context.neutral500)
               ),
-              IconButton(onPressed: (){},
-                  icon: Icon(Icons.edit_outlined, color: AppColors.neutral900))
+              IconButton(
+                onPressed: () {
+                  print(pet);
+                    context.push(Routes.editpetprofile, extra: pet);
+                    }, icon: Icon(Icons.edit_outlined),
+              )
+
+              // IconButton(onPressed: (){
+              //   context.push(Routes.editpetprofile);
+              //   },
+              //     icon: Icon(Icons.edit_outlined, color: AppColors.neutral900))
             ],
           ),
 
           SizedBox(height: 12.h),
-
-          /// Card Header with mint background
           Container(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
             decoration: BoxDecoration(
