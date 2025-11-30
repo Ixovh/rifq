@@ -4,10 +4,10 @@ import 'package:rifq/core/routes/base_routes.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'core/di/setup.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await configureDependencies();
- //عشان اسجل خروج "بحذفها بعد مانسوي لوق اوت "
+  //عشان اسجل خروج "بحذفها بعد مانسوي لوق اوت "
   // await Supabase.instance.client.auth.signOut();
 
   runApp(MyApp());
