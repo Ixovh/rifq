@@ -5,7 +5,7 @@ import '../datasources/edit_pet_profile_datasources.dart';
 
 @LazySingleton(as: EditPetProfileRepoDomain)
 class EditPetProfileRepo implements EditPetProfileRepoDomain {
-  final EditPetProfileDatasources dataSource;
+  final BaseEditPetProfile dataSource;
 
   EditPetProfileRepo(this.dataSource);
 
