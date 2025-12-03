@@ -12,6 +12,9 @@ import 'package:rifq/features/owner_flow/profile/presentation/pages/edit_profile
 import 'package:rifq/features/owner_flow/profile/presentation/pages/home_screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/profile_screen.dart';
 
+import '../../features/owner_flow/hotel/data/model/hotel_model.dart';
+import '../../features/owner_flow/hotel/presentation/cubit/hotel_cubit.dart';
+import '../../features/owner_flow/hotel/presentation/pages/hotel_details_screen.dart';
 import '../../features/owner_flow/hotel/presentation/pages/hotel_home_screen.dart';
 import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/presentaion/pages/edit_pet_profile.dart';
 import '../../features/owner_flow/pet_profile/sup_features/pet_info_card/domain/entity/pet_profile_entity.dart';
@@ -28,8 +31,9 @@ abstract class Routes {
   static String editpetprofile = '/editpetprofi';
   static String sendsToEmail = '/sendsToEmail';
   static String resetPassword = '/resetPassword';
-
   static String hotel = '/HotelHome';
+  static String detailsHotel = '/DetailsHotel';
+
 
 
   static final routers = GoRouter(
@@ -143,6 +147,36 @@ abstract class Routes {
           return HotelHomeScreen();
         },
       ),
+      //------//
+      //------//
+      //------//
+      // GoRoute(
+      //   path: detailsHotel,
+      //   builder: (context, state) {
+      //     final hotel = state.extra as HotelModel;
+      //     return HotelDetailsScreen(hotel: hotel);
+      //   },
+      // ),
+
+
+      GoRoute(
+        path: detailsHotel,
+        builder: (context, state) {
+          // map لاني ارسل اكثر من قيمه
+          final extra = state.extra as Map<String, dynamic>;
+          final hotel = extra['hotel'] as HotelModel;
+          final cubit = extra['cubit'] as HotelCubit;
+          return BlocProvider.value(
+            value: cubit,
+            child: HotelDetailsScreen(hotel: hotel),
+          );
+        },
+      ),
+
+
+
+
+
 
       // GoRoute(
       //   path: editpetprofile,

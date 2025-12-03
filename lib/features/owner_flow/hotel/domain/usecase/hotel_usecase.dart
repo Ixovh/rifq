@@ -1,16 +1,15 @@
+import 'package:injectable/injectable.dart';
 import 'package:multiple_result/multiple_result.dart';
-
-import '../entity/provider_entity.dart';
+import '../entity/provider_service_entity.dart';
 import '../repository/hotel_repo_domain.dart';
 
+@lazySingleton
 class HotelUsecase {
-
-final HotelRepoDomain hotelDomain;
-
-HotelUsecase(this.hotelDomain);
+  final HotelRepoDomain hotelDomain;
+  HotelUsecase(this.hotelDomain);
 
 //كل الفنادق
-  Future<Result<List<ProviderEntity>, String>> getAllHotel()async{
+  Future<Result<List<ProviderServiceViewEntity>, String>> getAllHotel()async{
     final hotelresult=await hotelDomain.getAllHotel();
     return hotelresult;
   }
@@ -18,7 +17,7 @@ HotelUsecase(this.hotelDomain);
   //
   
 // تفاصيل فندق معين
-  Future<Result<ProviderEntity, String>> getHotelById(String id) async {
+  Future<Result<ProviderServiceViewEntity, String>> getHotelById(String id) async {
     if (id.isEmpty) {
       return Result.error("Hotel ID cannot be empty");
     }try {

@@ -95,111 +95,134 @@
 // }
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:rifq/core/di/setup.dart';
 import 'package:rifq/core/theme/app_theme.dart';
-
+import '../../../../../core/routes/base_routes.dart';
+import '../../domain/usecase/hotel_usecase.dart';
+import '../cubit/hotel_cubit.dart';
 import '../widgets/card_hotel.dart';
 
-class HotelHomeScreen extends StatelessWidget {
-  final List<Map<String, dynamic>> dummyHotels = [
-    {
-      "image": "assets/images/logo (1).png",
-      "name": "The Pets Hotel",
-      "location": "Riyadh",
-      "price": "start 50",
-      "services": "Boarding / Daycare / VIP Room",
-    },
-    {
-      "image": "assets/images/logo (1).png",
-      "name": "Cat Heaven Resort",
-      "location": "Riyadh",
-      "price": "start 80",
-      "services": "VIP Room / Grooming",
-    },
-    {
-      "image": "assets/images/logo (1).png",
-      "name": "Pet Paradise",
-      "location": "Riyadh",
-      "price": "start 60",
-      "services": "Boarding / Play Area",
-    },
-    {
-      "image": "assets/images/logo (1).png",
-      "name": "Pet Paradise",
-      "location": "Riyadh",
-      "price": "start 60",
-      "services": "Boarding / Play Area",
-    },    {
-      "image": "assets/images/logo (1).png",
-      "name": "Pet Paradise",
-      "location": "Riyadh",
-      "price": "start 60",
-      "services": "Boarding / Play Area",
-    },
-  ];
 
+class HotelHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
+    return BlocProvider(
+      create: (context) => HotelCubit(getIt<HotelUsecase>())..fetchAllHotels(),
+      child: Scaffold(
         backgroundColor: Colors.white,
-        scrolledUnderElevation: 0,
-        leading: CircleAvatar(),
-        title: Text("Hotel", style: context.body1.copyWith(color: context.primary300),
-        ),
-        centerTitle: true,
-        actions: [
-          GestureDetector(
-            onTap: () {},
-            child: Image.asset("assets/images/notification-bing.png"),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          scrolledUnderElevation: 0,
+          leading: CircleAvatar(),
+          title: Text(
+            "Hotel", style: context.body1.copyWith(color: context.primary300),
           ),
-        ],
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 10),
-            child: TextField(
-              onChanged: (value) {
-                //  كيوبت
-              },
-              decoration: InputDecoration(
-                hintText: "Search here...",
-                prefixIcon: Icon(Icons.search),
-                filled: true,
-                fillColor: Colors.white,
-                contentPadding: EdgeInsets.symmetric(vertical: 12.h),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.r),
-                  borderSide: BorderSide(
-                    color: Color(0xFFECECEC),
-                    width: 1.w,
+          centerTitle: true,
+          actions: [
+            GestureDetector(
+              onTap: () {},
+              child: Image.asset("assets/images/notification-bing.png"),
+            ),
+          ],
+        ),
+        body: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 10),
+              child: TextField(
+                onChanged: (value) {
+                  context.read<HotelCubit>().fetchAllHotels();
+                },
+                decoration: InputDecoration(
+                  hintText: "Search here...",
+                  prefixIcon: Icon(Icons.search),
+                  filled: true,
+                  fillColor: Colors.white,
+                  contentPadding: EdgeInsets.symmetric(vertical: 12.h),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: BorderSide(
+                      color: Color(0xFFECECEC),
+                      width: 1.w,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
+            Expanded(
+              child: BlocBuilder<HotelCubit, HotelState>(
+                builder: (context, state) {
+                  if (state is HotelLoading) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (state is HotelLoaded) {
+                    final hotels = state.hotels; // البيانات من Cubit
+                    return ListView.separated(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      itemCount: hotels.length,
+                      separatorBuilder: (context, index) => SizedBox(height: 11.h),
+                      itemBuilder: (context, index) {
+                        final hotel = hotels[index]; // نوعه ProviderServiceViewEntity / HotelModel
+                        return CardHotel(
+                          imageHotel: hotel.image,
+                          nameHotle: hotel.providerName,
+                          location: hotel.location,
+                          price: "start ${hotel.price}",       // السعر
+                          services: hotel.itemName, // الخدمات
+                          // onTap: (){
+                          //   context.push(Routes.detailsHotel,extra: hotel);
+                          // },
+                          onTap: () {
+                            final cubit = context.read<HotelCubit>();
+                            context.push(Routes.detailsHotel, extra: {'hotel': hotel, 'cubit': cubit});
+                          },
 
-          Expanded(
-            child: ListView.separated(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              itemCount: dummyHotels.length,
-              separatorBuilder: (context, index) => SizedBox(height: 11.h),
-              itemBuilder: (context, index) {
-                final hotel = dummyHotels[index];
+                        );
+                      },
+                    );
+                  } else if (state is HotelError) {
+                    return Center(child: Text(state.message));
+                  }
 
-                return CardHotel(
-                  imageHotel: hotel["image"],
-                  nameHotle: hotel["name"],
-                  location: hotel["location"],
-                  price: hotel["price"],
-                  services: hotel["services"],
-                );
-              },
-            ),
-          ),
-        ],
+                  return SizedBox();
+                },
+              ),
+            )
+
+
+            // Expanded(
+            //   child: BlocBuilder<HotelCubit, HotelState>(
+            //     builder: (context, state) {
+            //       if(state is HotelLoading){
+            //         return Center(child:  CircularProgressIndicator(),);
+            //       }
+            //       if(state is HotelLoaded){
+            //
+            //       }
+            //       return ListView.separated(
+            //         padding: EdgeInsets.symmetric(horizontal: 16.w),
+            //         itemCount: dummyHotels.length,
+            //         separatorBuilder: (context, index) =>
+            //             SizedBox(height: 11.h),
+            //         itemBuilder: (context, index) {
+            //           final hotel = dummyHotels[index];
+            //
+            //           return CardHotel(
+            //             imageHotel: hotel["image"],
+            //             nameHotle: hotel["name"],
+            //             location: hotel["location"],
+            //             price: hotel["price"],
+            //             services: hotel["services"],
+            //           );
+            //         },
+            //       );
+            //     },
+            //   ),
+            // ),
+          ],
+        ),
       ),
     );
   }

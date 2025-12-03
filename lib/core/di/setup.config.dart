@@ -32,6 +32,14 @@ import '../../features/owner_flow/auth/domain/repositories/auth_repo_domain.dart
     as _i693;
 import '../../features/owner_flow/auth/domain/usecases/auth_use_case.dart'
     as _i1001;
+import '../../features/owner_flow/hotel/data/datasource/hotel_datasource.dart'
+    as _i49;
+import '../../features/owner_flow/hotel/data/repository/hotel_repo_data.dart'
+    as _i60;
+import '../../features/owner_flow/hotel/domain/repository/hotel_repo_domain.dart'
+    as _i390;
+import '../../features/owner_flow/hotel/domain/usecase/hotel_usecase.dart'
+    as _i4;
 import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/data/datasources/edit_pet_profile_datasources.dart'
     as _i131;
 import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/data/repositories/edit_pet_profile_repo.dart'
@@ -91,6 +99,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1071.BaseAddPetDataSource>(
       () => _i1071.AddPetDataSource(gh<_i454.SupabaseClient>()),
     );
+    gh.lazySingleton<_i49.BaseHotelDataSourc>(
+      () => _i49.HotelDataBase(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i386.BaseAuthDataSource>(
       () => _i386.SubaBaseDataSource(
         supabase: gh<_i454.SupabaseClient>(),
@@ -115,6 +126,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i591.UserProfileUsecase>(
       () => _i591.UserProfileUsecase(userProfileData: gh<_i754.RepoDomain>()),
+    );
+    gh.lazySingleton<_i390.HotelRepoDomain>(
+      () => _i60.HotelRepoData(gh<_i49.BaseHotelDataSourc>()),
+    );
+    gh.lazySingleton<_i4.HotelUsecase>(
+      () => _i4.HotelUsecase(gh<_i390.HotelRepoDomain>()),
     );
     gh.factory<_i1001.AuthUseCase>(
       () => _i1001.AuthUseCase(authRepoData: gh<_i693.AuthRepoDomain>()),
