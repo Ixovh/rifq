@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rifq/core/common/choose_path/presentation/pages/choose_path_screen.dart';
 import 'package:rifq/core/common/splash/presentation/pages/splash_screen.dart';
+import 'package:rifq/features/owner_flow/adoption/presentation/pages/adoption_screen.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/cubit/auth_cubit.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/auth_screen.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/otp_screen.dart';
@@ -11,14 +12,14 @@ import 'package:rifq/features/owner_flow/auth/presentation/pages/welcome_screen.
 import 'package:rifq/features/owner_flow/onbording/presentation/pages/onbording_screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/cubit/profile_cubit.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/edit_profile_screen.dart';
-import 'package:rifq/features/owner_flow/profile/presentation/pages/home_screen.dart';
+import 'package:rifq/home_screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/profile_screen.dart';
 
 abstract class Routes {
   static String splash = '/';
   static String choosePath = '/choosePath';
   static String ownerOnboarding = '/ownerOnboarding';
-   static String welcomeScreen = '/welcomeScreen';
+  static String welcomeScreen = '/welcomeScreen';
   // static String providerOnboarding = '/providerOnboarding';
   static String auth = '/auth';
   static String otpScreen = '/otp';
@@ -29,15 +30,16 @@ abstract class Routes {
   static String editpetprofile = '/editpetprofi';
   static String sendsToEmail = '/sendsToEmail';
   static String resetPassword = '/resetPassword';
+  static String adoption = '/adoption';
 
   static final routers = GoRouter(
     initialLocation: splash,
     routes: [
-      GoRoute(path: splash, builder: (context, state) =>  SplashScreen()),
+      GoRoute(path: splash, builder: (context, state) => SplashScreen()),
 
       GoRoute(
         path: choosePath,
-        builder: (context, state) =>  ChoosePathScreen(),
+        builder: (context, state) => ChoosePathScreen(),
       ),
 
       GoRoute(
@@ -49,7 +51,6 @@ abstract class Routes {
         path: welcomeScreen,
         builder: (context, state) => WelcomeScreen(),
       ),
-
 
       //------//
       //------//
@@ -109,6 +110,16 @@ abstract class Routes {
         path: home,
         builder: (context, state) {
           return HomeScreen();
+        },
+      ),
+      //------//
+      //------//
+      //------//
+      //------//
+      GoRoute(
+        path: adoption,
+        builder: (context, state) {
+          return AdoptionScreen();
         },
       ),
       GoRoute(path: profile, builder: (context, state) => ProfileScreen()),
