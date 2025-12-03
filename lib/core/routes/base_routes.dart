@@ -11,7 +11,6 @@ import 'package:rifq/features/owner_flow/profile/presentation/cubit/profile_cubi
 import 'package:rifq/features/owner_flow/profile/presentation/pages/edit_profile_screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/home_screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/profile_screen.dart';
-
 import '../../features/owner_flow/hotel/data/model/hotel_model.dart';
 import '../../features/owner_flow/hotel/presentation/cubit/hotel_cubit.dart';
 import '../../features/owner_flow/hotel/presentation/pages/hotel_details_screen.dart';
@@ -147,6 +146,7 @@ abstract class Routes {
           return HotelHomeScreen();
         },
       ),
+
       //------//
       //------//
       //------//

@@ -9,6 +9,7 @@ part 'hotel_state.dart';
 
 class HotelCubit extends Cubit<HotelState> {
   final HotelUsecase usecase;
+  String? selectedRoomId; // للغرف يختار
   HotelCubit(this.usecase) : super(HotelInitial());
 
 
@@ -48,7 +49,6 @@ class HotelCubit extends Cubit<HotelState> {
     }
 
     emit(HotelLoading());
-
     try {
       final uri = Uri.parse(url);
       await launchUrl(uri, mode: LaunchMode.externalApplication);
@@ -58,4 +58,16 @@ class HotelCubit extends Cubit<HotelState> {
     }
   }
 
+
+//
+//
+//
+
+  void selectRoom(String roomId) {
+    selectedRoomId = roomId;
+    emit(RoomSelectionChanged(roomId));
+  }
+
 }
+
+

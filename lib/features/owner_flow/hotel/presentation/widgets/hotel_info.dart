@@ -19,27 +19,27 @@ class HotelInfoTabContent extends StatelessWidget {
         children: [
           Text("About the Hotel :"),
           Text(hotel.itemDescription),
-          SizedBox(height: 16.h),
+          SizedBox(height: 12.h),
           Text(" Rules & Requirements : ",style: TextStyle(color:Colors.black),),
-          SizedBox(width: 16.w),
+          SizedBox(height: 20.h),
           Row(
             children: [
               Image.asset('assets/images/mdi_checkbox-outline.png'),
-              SizedBox(width: 10.w),
+              SizedBox(width: 12.w),
               Text("Must be vaccinated"),
               SizedBox(width: 20.w),
               Image.asset('assets/images/mdi_checkbox-outline.png'),
-              SizedBox(width: 10.w),
+              SizedBox(width: 12.w),
               Text("Late Fee Applies"),
             ],),
           Row(
             children: [
               Image.asset('assets/images/mdi_checkbox-outline.png'),
-              SizedBox(width: 10.w),
+              SizedBox(width: 12.w),
               Text("Pets must be flea-free"),
               SizedBox(width: 20.w),
               Image.asset('assets/images/mdi_checkbox-outline.png'),
-              SizedBox(width: 10.w),
+              SizedBox(width: 12.w),
               Text("Bring Food if Allergic"),
             ],),
           Row(
@@ -48,21 +48,22 @@ class HotelInfoTabContent extends StatelessWidget {
              SizedBox(width: 10.w),
              Text("Pet passport required"),
            ],),
-
+          SizedBox(height: 30.h),
           if (hotel.locationUrl != null && hotel.locationUrl!.isNotEmpty)
-            ElevatedButton.icon(
-              onPressed: () {
-                context.read<HotelCubit>().openLocation(hotel.locationUrl);
-              },
-              icon: Icon(Icons.location_on),
-              label: Text("Open Location"),
+            //عشان النص و الصوره استخدمت   icon.
+            SizedBox(
+              width: 339.w,
+              height: 26.h,
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  context.read<HotelCubit>().openLocation(hotel.locationUrl);
+                },
+                icon: Icon(Icons.location_on,color: Colors.grey,),
+                label: Text("Location",style: TextStyle(color: Colors.black),),
+              ),
             ),
-          SizedBox(height: 16.h),
 
-
-
-
-        ],
+        ]
       ),
     );
   }

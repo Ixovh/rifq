@@ -24,3 +24,7 @@ class HotelError extends HotelState {
 
 class HotelLocationOpened extends HotelState {}
 
+class RoomSelectionChanged extends HotelState {
+  final String roomId;
+  RoomSelectionChanged(this.roomId);
+}
