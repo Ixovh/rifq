@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-
-import '../../domain/entity/pet_profile_entity.dart';
+import '../../../../../hotel/sup_feauter/booking_hotel/domain/entity/pet_entity.dart';
+import '../../domain/entity/pet_entity.dart';
 import '../../domain/usecase/pet_profile_usecase.dart';
 
 part 'pet_info_state.dart';

@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import '../../../pet_info_card/domain/entity/pet_entity.dart';
 import '../../domain/usecase/edit_pet_profile_usecase.dart';
-import '../../../pet_info_card/domain/entity/pet_profile_entity.dart';
 
 part 'edit_pet_profile_state.dart';
 

@@ -16,7 +16,7 @@ import '../../features/owner_flow/hotel/presentation/cubit/hotel_cubit.dart';
 import '../../features/owner_flow/hotel/presentation/pages/hotel_details_screen.dart';
 import '../../features/owner_flow/hotel/presentation/pages/hotel_home_screen.dart';
 import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/presentaion/pages/edit_pet_profile.dart';
-import '../../features/owner_flow/pet_profile/sup_features/pet_info_card/domain/entity/pet_profile_entity.dart';
+import '../../features/owner_flow/pet_profile/sup_features/pet_info_card/domain/entity/pet_entity.dart';
 
 abstract class Routes {
   static String init = '/';

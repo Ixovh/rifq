@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_info_card/domain/entity/pet_profile_entity.dart';
+import '../../domain/entity/pet_entity.dart';
 import '../../domain/repositories/pet_profile_repo_domain.dart';
 import '../datasources/pet_card_info_datasources.dart';
 

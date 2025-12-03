@@ -1,6 +1,6 @@
-import 'package:multiple_result/multiple_result.dart';
 
-import '../entity/pet_profile_entity.dart';
+import '../../../../../hotel/sup_feauter/booking_hotel/domain/entity/pet_entity.dart';
+import '../entity/pet_entity.dart';
 
 
 abstract class PetProfileRepoDomain {
