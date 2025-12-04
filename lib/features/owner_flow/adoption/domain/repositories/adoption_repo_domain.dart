@@ -3,7 +3,6 @@ import 'package:rifq/features/owner_flow/add_pet/domain/entities/add_pet_entity.
 import 'package:rifq/features/owner_flow/adoption/domain/entities/adoption_request_entity.dart';
 
 abstract class AdoptionRepoDomain {
-  
   // ========== For Adoption Tab (Other Users) ==========
   /// Get list of all pets available for adoption
   Future<Result<List<AddPetEntity>, Object>> getPetsForAdoption();
@@ -45,12 +44,8 @@ abstract class AdoptionRepoDomain {
   /// Reject an adoption request
   Future<Result<Null, Object>> rejectAdoptionRequest(String requestId);
 
-  // ========== Additional Methods ==========
   /// Cancel adoption (if pet was already adopted)
   Future<Result<Null, Object>> cancelAdoption(String petId);
-
-  /// Delete pet permanently
-  Future<Result<Null, Object>> deletePet(String petId);
 
   /// Get list of adopted pets
   Future<Result<List<AddPetEntity>, Object>> getAdoptedPets(String ownerId);
@@ -58,5 +53,15 @@ abstract class AdoptionRepoDomain {
   /// Get cancelled adoptions
   Future<Result<List<AdoptionRequestEntity>, Object>> getCancelledAdoptions(
     String ownerId,
+  );
+
+  /// Get owner names for multiple owner IDs
+  Future<Result<Map<String, String?>, Object>> getOwnerNamesForPets(
+    List<String> ownerIds,
+  );
+
+  /// Get adoption request counts for multiple pet IDs
+  Future<Result<Map<String, int>, Object>> getAdoptionRequestCountsForPets(
+    List<String> petIds,
   );
 }

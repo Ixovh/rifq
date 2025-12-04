@@ -26,6 +26,8 @@ import '../../features/owner_flow/add_pet/presentation/cubit/add_pet_cubit.dart'
     as _i763;
 import '../../features/owner_flow/adoption/data/datasources/adoption_data_soruce.dart'
     as _i719;
+import '../../features/owner_flow/adoption/data/repositories/adoption_repo_data_soruce.dart'
+    as _i598;
 import '../../features/owner_flow/adoption/domain/repositories/adoption_repo_domain.dart'
     as _i979;
 import '../../features/owner_flow/adoption/domain/usecases/adotion_use_case.dart'
@@ -97,6 +99,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i116.ReservationUsecase>(
       () => _i116.ReservationUsecase(gh<_i219.ReservationRepository>()),
     );
+    gh.lazySingleton<_i979.AdoptionRepoDomain>(
+      () => _i598.AdoptionRepoData(gh<_i719.AdoptionDataSource>()),
+    );
     gh.lazySingleton<_i754.RepoDomain>(
       () => _i332.RepoData(gh<_i972.BaseUserProfileDataSourc>()),
     );
@@ -106,11 +111,11 @@ extension GetItInjectableX on _i174.GetIt {
         box: gh<_i792.GetStorage>(),
       ),
     );
-    gh.lazySingleton<_i557.PetProfileRepoDomain>(
-      () => _i384.RepoDataPet(gh<_i918.PatCard>()),
-    );
     gh.lazySingleton<_i796.AdoptionUseCase>(
       () => _i796.AdoptionUseCase(gh<_i979.AdoptionRepoDomain>()),
+    );
+    gh.lazySingleton<_i557.PetProfileRepoDomain>(
+      () => _i384.RepoDataPet(gh<_i918.PatCard>()),
     );
     gh.lazySingleton<_i585.AddPetRepoDomain>(
       () => _i891.AddPetRepoData(gh<_i1071.BaseAddPetDataSource>()),
