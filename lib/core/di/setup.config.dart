@@ -115,7 +115,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i693.AuthRepoDomain>(
       () => _i64.AuthRepoData(authDataSource: gh<_i386.BaseAuthDataSource>()),
     );
-    gh.factory<_i1001.AuthUseCase>(
+    gh.lazySingleton<_i1001.AuthUseCase>(
       () => _i1001.AuthUseCase(authRepoData: gh<_i693.AuthRepoDomain>()),
     );
     gh.factory<_i763.AddPetCubit>(

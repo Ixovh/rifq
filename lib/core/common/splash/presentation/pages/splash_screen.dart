@@ -24,9 +24,9 @@ class _SplashScreenState extends State<SplashScreen> {
     final user = Supabase.instance.client.auth.currentUser; //يشيك اذا اليوزر عنده توكن
 
     if (user == null) {
-      context.push(Routes.choosePath);
+      context.go(Routes.choosePath);
     } else {
-      context.push(Routes.home);
+      context.go(Routes.navbar);
     }
   }
 

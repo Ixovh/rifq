@@ -9,7 +9,6 @@ import 'package:rifq/features/owner_flow/auth/presentation/pages/auth_tab_bar.da
 import 'package:rifq/features/owner_flow/auth/presentation/pages/login_tab.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/sign_up_tab.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/widgets/custom_bottom_sheet.dart';
-import 'package:rifq/features/owner_flow/nav/presentation/cubit/nav_cubit.dart';
 import '../../../../../core/theme/app_theme.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/cubit/auth_cubit.dart';
 
