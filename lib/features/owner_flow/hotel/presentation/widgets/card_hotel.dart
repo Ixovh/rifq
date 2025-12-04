@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -13,6 +14,7 @@ class CardHotel extends StatelessWidget {
     super.key,
     this.onTap,
      required this.imageHotel,
+
     required this.nameHotle,
     required this.location,
     required this.price,
@@ -21,6 +23,7 @@ class CardHotel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return InkWell(
       onTap: onTap,
       child: Card(
@@ -94,5 +97,6 @@ class CardHotel extends StatelessWidget {
       ),
     );
   }
+
 }
 

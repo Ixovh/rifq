@@ -25,7 +25,11 @@ class WelcomeScreen extends StatelessWidget {
             listener: (context, state) {
               switch (state) {
                 case AuthAnonymousSuccessState _:
-                  context.go(Routes.home);
+                  context.go(Routes.navbar); //!!!!!!!
+                  break;
+
+                case AuthSuccessState _: //!!!!
+                  context.go(Routes.navbar);
                   break;
 
                 case AuthErrorState _:
@@ -33,8 +37,9 @@ class WelcomeScreen extends StatelessWidget {
                     context,
                   ).showSnackBar(SnackBar(content: Text(state.msg)));
                   break;
+
                 case AuthLoadingState _:
-                  Center(child: CircularProgressIndicator());
+                  // Center(child: CircularProgressIndicator());
                   break;
               }
             },
@@ -93,8 +98,9 @@ class WelcomeScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 18.h),
                             ContainerButton(
-                              onTap: () async {
-                                await cubit.anonymousUser();
+                              onTap: ()  {
+                                // await cubit.anonymousUser();
+                                  context.go(Routes.navbar);
                               },
                               label: 'Continue as Guest',
                               containerColor: context.neutral100,

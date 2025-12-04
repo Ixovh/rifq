@@ -4,15 +4,20 @@ import 'package:go_router/go_router.dart';
 import 'package:rifq/core/common/choose_path/presentation/pages/choose_path_screen.dart';
 import 'package:rifq/core/common/splash/presentation/pages/splash_screen.dart';
 import 'package:rifq/features/owner_flow/add_pet/presentation/pages/add_pet_screen.dart';
+import 'package:rifq/features/owner_flow/ai/presentation/pages/ai_screen.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/cubit/auth_cubit.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/auth_screen.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/otp_screen.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/reset_password_screen.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/sends_to_email_screen.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/welcome_screen.dart';
+
 import 'package:rifq/features/owner_flow/hotel/data/model/hotel_model.dart';
 import 'package:rifq/features/owner_flow/hotel/presentation/cubit/hotel_cubit.dart';
 import 'package:rifq/features/owner_flow/hotel/presentation/pages/hotel_details_screen.dart';
+
+import 'package:rifq/features/owner_flow/health/health_screen.dart';
+
 import 'package:rifq/features/owner_flow/hotel/presentation/pages/hotel_home_screen.dart';
 import 'package:rifq/features/owner_flow/nav/presentation/cubit/nav_cubit.dart';
 import 'package:rifq/features/owner_flow/nav/presentation/pages/nav_screen.dart';
@@ -21,7 +26,6 @@ import 'package:rifq/features/owner_flow/pet_profile/sup_features/edit_pet_profi
 import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_info_card/domain/entity/pet_entity.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/cubit/profile_cubit.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/edit_profile_screen.dart';
-import 'package:rifq/features/owner_flow/profile/presentation/pages/home_screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/profile_screen.dart';
 
 abstract class Routes {
@@ -41,8 +45,17 @@ abstract class Routes {
   static String resetPassword = '/resetPassword';
   static String navbar = '/navbar';
   static String addpet = '/addpet';
+
     static String hotel = '/HotelHome';
   static String detailsHotel = '/DetailsHotel';
+
+
+  static String aiScreen = '/aiScreen';
+  static String healthScreen = '/healthScreen';
+
+  static String hotelScreen = '/hotelScreen';
+  static String adoptionScreen = '/adoptionScreen';
+
   static final routers = GoRouter(
     initialLocation: splash,
     routes: [
@@ -123,7 +136,16 @@ abstract class Routes {
       //     return HomeScreen();
       //   },
       // ),
-      GoRoute(path: profile, builder: (context, state) => ProfileScreen()),
+      // GoRoute(path: profile, builder: (context, state) => ProfileScreen()),
+      GoRoute(
+        path: profile,
+        name: Routes.profile,
+        builder: (context, state) {
+          final userId = state.extra as String;
+          return ProfileScreen(userId: userId);
+        },
+      ),
+
       GoRoute(
         path: editprofile,
         builder: (context, state) {
@@ -137,6 +159,7 @@ abstract class Routes {
           return BlocProvider(create: (_) => NavCubit(), child: NavScreen());
         },
       ),
+
 
        GoRoute(path: addpet, builder: (context, state) => AddPetScreen()),
 
@@ -172,6 +195,18 @@ abstract class Routes {
           );
         },
       ),
+
+      GoRoute(path: addpet, builder: (context, state) => AddPetScreen()),
+
+      GoRoute(path: aiScreen, builder: (context, state) => AiScreen()),
+      GoRoute(path: healthScreen, builder: (context, state) => HealthScreen()),
+
+      GoRoute(
+        path: hotelScreen,
+        builder: (context, state) => HotelHomeScreen(),
+      ),
+      // GoRoute(path: adoptionScreen, builder: (context, state) => Ad()),
+
     ],
   );
 }

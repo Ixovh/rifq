@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rifq/core/theme/app_color.dart';
 import 'package:rifq/core/theme/app_theme.dart';
-
 import '../../../../../../../core/routes/base_routes.dart';
 import '../../../../../hotel/sup_feauter/booking_hotel/domain/entity/pet_entity.dart';
 import '../../domain/entity/pet_entity.dart';
+
 class ContainerPetCardWidgets extends StatelessWidget {
   final PetProfileEntity pet;
 
@@ -40,17 +40,19 @@ class ContainerPetCardWidgets extends StatelessWidget {
             color: Colors.black12,
             blurRadius: 12,
             offset: Offset(0, 4),
-          )
+          ),
         ],
       ),
 
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
+
                 "Pet Profile", style: context.body3.copyWith(color: context.neutral500)
               ),
               IconButton(
@@ -64,6 +66,7 @@ class ContainerPetCardWidgets extends StatelessWidget {
               //   context.push(Routes.editpetprofile);
               //   },
               //     icon: Icon(Icons.edit_outlined, color: AppColors.neutral900))
+
             ],
           ),
 
@@ -79,7 +82,16 @@ class ContainerPetCardWidgets extends StatelessWidget {
                 CircleAvatar(
                   radius: 22.r,
                   backgroundColor: Colors.white,
-                  child: Image.asset(pet.photoUrl),
+                  child: ClipOval(
+                    child: Image.network(
+                      pet.photoUrl,
+                      width: 44.r,
+                      height: 44.r,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, _) =>
+                          Icon(Icons.pets, size: 28, color: Colors.grey),
+                    ),
+                  ),
                 ),
 
                 SizedBox(width: 12.w),
@@ -93,15 +105,26 @@ class ContainerPetCardWidgets extends StatelessWidget {
                     ),
                   ),
                 ),
-                IconButton(onPressed: (){}, 
-                    icon: Icon(Icons.arrow_forward_ios,size: 20.r,))
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.arrow_forward_ios, size: 20.r),
+                ),
               ],
             ),
           ),
           SizedBox(height: 18.h),
-          Text("Gender: ${pet.gender}",style: TextStyle(color: AppColors.neutral500),),
-          Text("Age:  ${pet.birthdate}",style: TextStyle(color: AppColors.neutral500),),
-          Text("Breed:  ${pet.breed}",style: TextStyle(color: AppColors.neutral500),),
+          Text(
+            "Gender: ${pet.gender}",
+            style: TextStyle(color: AppColors.neutral500),
+          ),
+          Text(
+            "Age:  ${pet.birthdate}",
+            style: TextStyle(color: AppColors.neutral500),
+          ),
+          Text(
+            "Breed:  ${pet.breed}",
+            style: TextStyle(color: AppColors.neutral500),
+          ),
         ],
       ),
     );
