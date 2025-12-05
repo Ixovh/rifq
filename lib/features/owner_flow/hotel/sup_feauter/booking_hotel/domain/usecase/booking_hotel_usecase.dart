@@ -1,6 +1,5 @@
 import 'package:injectable/injectable.dart';
 import 'package:multiple_result/multiple_result.dart';
-import 'package:rifq/features/owner_flow/hotel/sup_feauter/booking_hotel/domain/entity/pet_entity.dart';
 
 import '../../../../../pet_profile/sup_features/pet_info_card/domain/entity/pet_entity.dart';
 import '../entity/booking_hotel_entity.dart';
@@ -19,6 +18,9 @@ class BookingHotelUsecase  {
     }
     if (booking.providerId.isEmpty) {
       return Result.error("Provider ID is required");
+    }
+    if(booking.startDate.isAfter(booking.endDate)){
+      return Result.error("Invalid date range ");
     }
     return bookinkhotel.createBooking(booking);
 

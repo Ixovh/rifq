@@ -49,8 +49,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../../core/common/widgets/button/custome_button_widgets.dart';
 import '../../../../../core/routes/base_routes.dart';
-import '../../../../../core/theme/app_color.dart';
-import '../../../pet_profile/sup_features/pet_info_card/domain/entity/pet_entity.dart';
 import '../../data/model/hotel_model.dart';
 import '../cubit/hotel_cubit.dart';
 
@@ -75,7 +73,7 @@ class RoomsTabContent extends StatelessWidget {
                 builder: (context, state) {
                   final isSelected = cubit.selectedRoomId == room.itemId;
                   return GestureDetector(
-                    onTap: () => cubit.selectRoom(room.itemId),
+                    onTap: () => cubit.selectRoom(room.itemId,room),
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
                       padding: EdgeInsets.all(12),
@@ -113,8 +111,8 @@ class RoomsTabContent extends StatelessWidget {
                 buttonWidth: 366.w,
                 buttonhight: 58.h,
               );
-            },
-          )
+    },
+    )  ,
         ],
       ),
     );

@@ -58,6 +58,7 @@ class BookingHotelDatasource implements BaseBookingHotelDataSource {
     }
   }
 
+
   @override
   Future<Result<List<PetProfileModel>, String>> getPetForUser(String userId) async {
     try {
@@ -65,14 +66,31 @@ class BookingHotelDatasource implements BaseBookingHotelDataSource {
           .from('pet_profile_view')
           .select()
           .eq('owner_id', userId);
-
-      final pets = (response as List)
-          .map((e) => PetProfileModelMapper.fromMap(e))
+      final pets = response
+          .map((e) => PetProfileModelMapper.fromMap(Map<String, dynamic>.from(e)))
           .toList();
-
       return Result.success(pets);
     } catch (e) {
-      return Result.error(e.toString());
+    return Result.error(e.toString());
     }
   }
+
+
+// @override
+  // Future<Result<List<PetProfileModel>, String>> getPetForUser(String userId) async {
+  //   try {
+  //     final response = await supabase
+  //         .from('pet_profile_view')
+  //         .select()
+  //         .eq('owner_id', userId);
+  //
+  //     final pets = (response as List)
+  //         .map((e) => PetProfileModelMapper.fromMap(e))
+  //         .toList();
+  //
+  //     return Result.success(pets);
+  //   } catch (e) {
+  //     return Result.error(e.toString());
+  //   }
+  // }
 }

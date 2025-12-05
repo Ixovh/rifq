@@ -171,8 +171,6 @@ abstract class Routes {
       //------//
       //------//
       //------//
-
-
       GoRoute(
         path: bookingHotel,
         builder: (context, state) {

@@ -10,6 +10,8 @@ part 'hotel_state.dart';
 class HotelCubit extends Cubit<HotelState> {
   final HotelUsecase usecase;
   String? selectedRoomId; // للغرف يختار
+
+  ProviderServiceViewEntity? selectedRoomDetails;
   HotelCubit(this.usecase) : super(HotelInitial());
 
 
@@ -62,9 +64,20 @@ class HotelCubit extends Cubit<HotelState> {
 //
 //
 
-  void selectRoom(String roomId) {
+  // void selectRoom(String roomId) {
+  //   selectedRoomId = roomId;
+  //   emit(RoomSelectionChanged(roomId));
+  // }
+
+
+  void selectRoom(String roomId, ProviderServiceViewEntity roomDetails) {
+
     selectedRoomId = roomId;
+
+    selectedRoomDetails = roomDetails;
+
     emit(RoomSelectionChanged(roomId));
+
   }
 
 }

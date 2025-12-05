@@ -1,6 +1,5 @@
 import 'package:injectable/injectable.dart';
 import 'package:multiple_result/multiple_result.dart';
-import '../../../../../hotel/sup_feauter/booking_hotel/domain/entity/pet_entity.dart';
 import '../entity/pet_entity.dart';
 import '../repositories/pet_profile_repo_domain.dart';
 
