@@ -6,7 +6,6 @@ import 'package:rifq/core/theme/app_color.dart';
 import 'package:rifq/core/theme/app_theme.dart';
 
 import '../../../../../../../core/routes/base_routes.dart';
-import '../../../../../hotel/sup_feauter/booking_hotel/domain/entity/pet_entity.dart';
 import '../../domain/entity/pet_entity.dart';
 class ContainerPetCardWidgets extends StatelessWidget {
   final PetProfileEntity pet;

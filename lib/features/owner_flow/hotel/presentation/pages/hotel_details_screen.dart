@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../pet_profile/sup_features/pet_info_card/domain/entity/pet_entity.dart';
 import '../../data/model/hotel_model.dart';
 import '../widgets/hotel_image_carousel.dart';
 import '../widgets/hotel_info.dart';
@@ -10,7 +11,7 @@ import '../widgets/tab_bar.dart';
 
 class HotelDetailsScreen extends StatelessWidget {
   final HotelModel hotel;
-  const HotelDetailsScreen({super.key, required this.hotel});
+  const HotelDetailsScreen({super.key, required this.hotel, });
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +53,7 @@ class HotelDetailsScreen extends StatelessWidget {
             Expanded(
               child: TabBarView(
                 children: [
-                  RoomsTabContent(hotel: hotel),
+                  RoomsTabContent(hotel: hotel,),
                   HotelInfoTabContent(hotel: hotel),
                 ],
               ),

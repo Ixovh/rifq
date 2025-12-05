@@ -47,7 +47,6 @@ class HotelCubit extends Cubit<HotelState> {
       emit(HotelError("Location URL not available"));
       return;
     }
-
     emit(HotelLoading());
     try {
       final uri = Uri.parse(url);

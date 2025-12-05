@@ -48,14 +48,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../core/common/widgets/button/custome_button_widgets.dart';
+import '../../../../../core/routes/base_routes.dart';
 import '../../../../../core/theme/app_color.dart';
+import '../../../pet_profile/sup_features/pet_info_card/domain/entity/pet_entity.dart';
 import '../../data/model/hotel_model.dart';
 import '../cubit/hotel_cubit.dart';
 
 class RoomsTabContent extends StatelessWidget {
   final HotelModel hotel;
 
-  const RoomsTabContent({super.key, required this.hotel});
+  const RoomsTabContent({super.key, required this.hotel, });
 
   @override
   Widget build(BuildContext context) {
@@ -101,10 +103,11 @@ class RoomsTabContent extends StatelessWidget {
                 titel: 'Book Now',
                 onPressed: cubit.selectedRoomId != null
                     ? () {
-                  context.push('/booking', extra: {
-                    'hotel': hotel,
-                    'roomId': cubit.selectedRoomId,
-                  });
+                  context.push(Routes.bookingHotel);
+                  // context.push(Routes.bookingHotel, extra: {
+                  //   'hotel': hotel,
+                  //   'roomId': cubit.selectedRoomId,
+                  // });
                 }
                     : () {}, //  هنا زر معطل
                 buttonWidth: 366.w,

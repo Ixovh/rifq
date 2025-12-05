@@ -30,11 +30,6 @@ class HotelUsecase {
 
   //
   //
-  
-//حجز فندق
-//Todo:  احتاج اعرف هل لازم امرر له براميتر ؟
 
-//   Future<Result<bool, String>> bokingHotel()async{
-//     return await hotelDomain.bokingHotel();
-//   }
+
 }

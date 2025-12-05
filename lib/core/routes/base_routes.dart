@@ -15,6 +15,7 @@ import '../../features/owner_flow/hotel/data/model/hotel_model.dart';
 import '../../features/owner_flow/hotel/presentation/cubit/hotel_cubit.dart';
 import '../../features/owner_flow/hotel/presentation/pages/hotel_details_screen.dart';
 import '../../features/owner_flow/hotel/presentation/pages/hotel_home_screen.dart';
+import '../../features/owner_flow/hotel/sup_feauter/booking_hotel/presentation/pages/booking_hotel.dart';
 import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/presentaion/pages/edit_pet_profile.dart';
 import '../../features/owner_flow/pet_profile/sup_features/pet_info_card/domain/entity/pet_entity.dart';
 
@@ -32,6 +33,8 @@ abstract class Routes {
   static String resetPassword = '/resetPassword';
   static String hotel = '/HotelHome';
   static String detailsHotel = '/DetailsHotel';
+  static String bookingHotel = '/BookingHotel';
+
 
 
 
@@ -150,13 +153,6 @@ abstract class Routes {
       //------//
       //------//
       //------//
-      // GoRoute(
-      //   path: detailsHotel,
-      //   builder: (context, state) {
-      //     final hotel = state.extra as HotelModel;
-      //     return HotelDetailsScreen(hotel: hotel);
-      //   },
-      // ),
 
 
       GoRoute(
@@ -172,28 +168,19 @@ abstract class Routes {
           );
         },
       ),
+      //------//
+      //------//
+      //------//
 
 
+      GoRoute(
+        path: bookingHotel,
+        builder: (context, state) {
+          // final pet = state.extra as PetProfileEntity;
+          return BookingHotel();
+        },
+      ),
 
-
-
-
-      // GoRoute(
-      //   path: editpetprofile,
-      //   builder: (context, state) {
-      //     final pet = state.extra as PetProfileEntity;
-      //     return EditPetProfileScreen(pet: pet);
-      //   },
-      // ),
-
-
-      // GoRoute(
-      //   path: editpetprofile,
-      //   builder: (context, state) {
-      //     final pet = state.extra as PetProfileEntity;
-      //     return EditPetProfileScreen(pet: pet);
-      //   },
-      // ),
     ],
   );
 }

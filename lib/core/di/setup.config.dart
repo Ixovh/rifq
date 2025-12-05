@@ -40,6 +40,14 @@ import '../../features/owner_flow/hotel/domain/repository/hotel_repo_domain.dart
     as _i390;
 import '../../features/owner_flow/hotel/domain/usecase/hotel_usecase.dart'
     as _i4;
+import '../../features/owner_flow/hotel/sup_feauter/booking_hotel/data/datasource/booking_hotel_datasource.dart'
+    as _i771;
+import '../../features/owner_flow/hotel/sup_feauter/booking_hotel/data/repository/booking_hotel_repo_data.dart'
+    as _i797;
+import '../../features/owner_flow/hotel/sup_feauter/booking_hotel/domain/repository/booking_hotel_repo_domain.dart'
+    as _i104;
+import '../../features/owner_flow/hotel/sup_feauter/booking_hotel/domain/usecase/booking_hotel_usecase.dart'
+    as _i189;
 import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/data/datasources/edit_pet_profile_datasources.dart'
     as _i131;
 import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/data/repositories/edit_pet_profile_repo.dart'
@@ -96,8 +104,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i972.BaseUserProfileDataSourc>(
       () => _i972.DataBaseDataSource(gh<_i454.SupabaseClient>()),
     );
+    gh.lazySingleton<_i771.BaseBookingHotelDataSource>(
+      () => _i771.BookingHotelDatasource(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i1071.BaseAddPetDataSource>(
       () => _i1071.AddPetDataSource(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i104.BookingHotelRepoDomain>(
+      () => _i797.BookingHotelRepoData(gh<_i771.BaseBookingHotelDataSource>()),
     );
     gh.lazySingleton<_i49.BaseHotelDataSourc>(
       () => _i49.HotelDataBase(gh<_i454.SupabaseClient>()),
@@ -108,6 +122,9 @@ extension GetItInjectableX on _i174.GetIt {
         box: gh<_i792.GetStorage>(),
         email: gh<String>(),
       ),
+    );
+    gh.lazySingleton<_i189.BookingHotelUsecase>(
+      () => _i189.BookingHotelUsecase(gh<_i104.BookingHotelRepoDomain>()),
     );
     gh.lazySingleton<_i485.ReservationUsecase>(
       () => _i485.ReservationUsecase(gh<_i968.ReservationRepository>()),

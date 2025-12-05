@@ -9,13 +9,6 @@ import '../model/hotel_model.dart';
 class HotelRepoData implements HotelRepoDomain {
   final BaseHotelDataSourc dataHotel;
   HotelRepoData(this.dataHotel);
-
-  @override
-  Future<Result<bool, String>> bokingHotel() {
-    // TODO: implement bokingHotel
-    throw UnimplementedError();
-  }
-
   @override
   Future<Result<List<HotelModel>, String>> getAllHotel() async{
   final result= await dataHotel.getAllHotel();
