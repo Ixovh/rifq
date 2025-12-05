@@ -10,86 +10,101 @@ class AdoptionUseCase {
 
   AdoptionUseCase(this.repoDomain);
 
-  Future<Result<List<AddPetEntity>, Object>> getPetsForAdoption() async {
-    return await repoDomain.getPetsForAdoption();
-  }
+  // ==============================
+  // Pet Owner Methods
+  // ==============================
 
-  Future<Result<AddPetEntity, Object>> getPetDetails(String petId) async {
-    return await repoDomain.getPetDetails(petId);
-  }
+  /// Pet owner can get all their pets (to choose which one to offer for adoption)
+  Future<Result<List<AddPetEntity>, Object>> getMyPets() async =>
+      await repoDomain.getMyPets();
 
-  Future<Result<AdoptionRequestEntity, Object>> sendAdoptionRequest({
+  /// Pet owner can add his/her pet for adoption
+  /// Pet owner can add his/her pet for adoption
+  Future<Result<AddPetEntity, Object>> addPetForAdoption({
+    required AddPetEntity pet,
+  }) async => await repoDomain.addPetForAdoption(pet: pet);
+
+  /// Pet owner can see the number of requests on his/her offered pet
+  Future<Result<int, Object>> getAdoptionRequestCountForPet({
     required String petId,
     required String ownerId,
+  }) async => await repoDomain.getAdoptionRequestCountForPet(
+    petId: petId,
+    ownerId: ownerId,
+  );
+
+  /// Pet owner can see all adoption requests for a specific pet
+  Future<Result<List<AdoptionRequestEntity>, Object>>
+  getAdoptionRequestsForPet({
+    required String petId,
+    required String ownerId, // to verify ownership
+  }) async => await repoDomain.getAdoptionRequestsForPet(
+    petId: petId,
+    ownerId: ownerId,
+  );
+
+  /// Pet owner can remove his/her own pet from being adopted
+  Future<Result<Null, Object>> removePetFromAdoption({
+    required String petId,
+    required String ownerId,
+  }) async =>
+      await repoDomain.removePetFromAdoption(petId: petId, ownerId: ownerId);
+
+  /// Pet owner can get all their pets that are currently offered for adoption
+  Future<Result<List<AddPetEntity>, Object>>
+  getOfferedPetsForAdoption() async =>
+      await repoDomain.getOfferedPetsForAdoption();
+
+  /// Pet owner can accept or reject a request coming from a user
+  /// [status] should be: 'adopted' (accepted) or 'reserved' (rejected)
+  Future<Result<AdoptionRequestEntity, Object>> updateAdoptionRequestStatus({
+    required String requestId,
+    required String ownerId, // to ensure only the pet owner can decide
+    required String status, // 'adopted' | 'reserved'
+  }) async => await repoDomain.updateAdoptionRequestStatus(
+    requestId: requestId,
+    ownerId: ownerId,
+    status: status,
+  );
+
+  // ==============================
+  // Regular User Methods
+  // ==============================
+
+  /// Regular user can see all the pets that are available to be adopted
+  Future<Result<List<AddPetEntity>, Object>>
+  getAvailablePetsForAdoption() async =>
+      await repoDomain.getAvailablePetsForAdoption();
+
+  /// Regular user can send a request to pet owner to adopt their pet
+  Future<Result<AdoptionRequestEntity, Object>> sendAdoptionRequest({
+    required String petId,
+    required String userId, // adopter's user id
     required String title,
     required String description,
-  }) async {
-    return await repoDomain.sendAdoptionRequest(
-      petId: petId,
-      ownerId: ownerId,
-      title: title,
-      description: description,
-    );
-  }
+  }) async => await repoDomain.sendAdoptionRequest(
+    petId: petId,
+    userId: userId,
+    title: title,
+    description: description,
+  );
 
-  // ========== My Pets Tab (Pet Owner) ==========
-  Future<Result<List<AddPetEntity>, Object>> getMyPets(String ownerId) async {
-    return await repoDomain.getMyPets(ownerId);
-  }
+  /// Regular user can see details of a pet available to be adopted
+  Future<Result<AddPetEntity, Object>> getPetDetails({
+    required String petId,
+  }) async => await repoDomain.getPetDetails(petId: petId);
 
-  Future<Result<Null, Object>> addPetForAdoption(String petId) async {
-    return await repoDomain.addPetForAdoption(petId);
-  }
+  /// Regular user can see all their own adoption requests
+  Future<Result<List<AdoptionRequestEntity>, Object>> getUserAdoptionRequests({
+    required String userId,
+  }) async => await repoDomain.getUserAdoptionRequests(userId: userId);
 
-  Future<Result<Null, Object>> removePetFromAdoption(String petId) async {
-    return await repoDomain.removePetFromAdoption(petId);
-  }
-
-  Future<Result<List<AdoptionRequestEntity>, Object>> getAdoptionRequests(
-    String ownerId,
-  ) async {
-    return await repoDomain.getAdoptionRequests(ownerId);
-  }
-
-  Future<Result<List<AdoptionRequestEntity>, Object>> getAdoptionRequestsByPet(
-    String petId,
-  ) async {
-    return await repoDomain.getAdoptionRequestsByPet(petId);
-  }
-
-  Future<Result<Null, Object>> acceptAdoptionRequest(String requestId) async {
-    return await repoDomain.acceptAdoptionRequest(requestId);
-  }
-
-  Future<Result<Null, Object>> rejectAdoptionRequest(String requestId) async {
-    return await repoDomain.rejectAdoptionRequest(requestId);
-  }
-
-  Future<Result<Null, Object>> cancelAdoption(String petId) async {
-    return await repoDomain.cancelAdoption(petId);
-  }
-
-  Future<Result<List<AddPetEntity>, Object>> getAdoptedPets(
-    String ownerId,
-  ) async {
-    return await repoDomain.getAdoptedPets(ownerId);
-  }
-
-  Future<Result<List<AdoptionRequestEntity>, Object>> getCancelledAdoptions(
-    String ownerId,
-  ) async {
-    return await repoDomain.getCancelledAdoptions(ownerId);
-  }
-
-  Future<Result<Map<String, String?>, Object>> getOwnerNamesForPets(
-    List<String> ownerIds,
-  ) async {
-    return await repoDomain.getOwnerNamesForPets(ownerIds);
-  }
-
-  Future<Result<Map<String, int>, Object>> getAdoptionRequestCountsForPets(
-    List<String> petIds,
-  ) async {
-    return await repoDomain.getAdoptionRequestCountsForPets(petIds);
-  }
+  /// Regular user can cancel their own adoption request
+  Future<Result<AdoptionRequestEntity, Object>> cancelAdoptionRequest({
+    required String requestId,
+    required String userId,
+  }) async => await repoDomain.cancelAdoptionRequest(
+    requestId: requestId,
+    userId: userId,
+  );
 }

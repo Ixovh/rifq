@@ -2,10 +2,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rifq/core/common/choose_path/presentation/pages/choose_path_screen.dart';
 import 'package:rifq/core/common/splash/presentation/pages/splash_screen.dart';
-import 'package:rifq/features/owner_flow/add_pet/domain/entities/add_pet_entity.dart';
 import 'package:rifq/features/owner_flow/adoption/presentation/cubit/adoption_cubit.dart';
 import 'package:rifq/features/owner_flow/adoption/presentation/pages/adoption_screen.dart';
-import 'package:rifq/features/owner_flow/adoption/presentation/pages/pet_details_screen.dart';
+import 'package:rifq/features/owner_flow/adoption/presentation/pages/select_pet_for_adoption_screen.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/cubit/auth_cubit.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/auth_screen.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/otp_screen.dart';
@@ -34,7 +33,7 @@ abstract class Routes {
   static String sendsToEmail = '/sendsToEmail';
   static String resetPassword = '/resetPassword';
   static String adoption = '/adoption';
-  static String petDetails = '/petDetails';
+  static String selectPetForAdoption = '/selectPetForAdoption';
 
   static final routers = GoRouter(
     initialLocation: splash,
@@ -127,18 +126,11 @@ abstract class Routes {
         },
       ),
       GoRoute(
-        path: petDetails,
+        path: selectPetForAdoption,
         builder: (context, state) {
-          final data = state.extra as Map<String, dynamic>;
-          final cubit = data['cubit'] as AdoptionCubit?;
           return BlocProvider.value(
-            value: cubit ?? context.read<AdoptionCubit>(),
-            child: PetDetailsScreen(
-              pet: data['pet'] as AddPetEntity,
-              location: data['location'] as String?,
-              ownerName: data['ownerName'] as String?,
-              isMyPet: data['isMyPet'] as bool? ?? false,
-            ),
+            value: state.extra as AdoptionCubit,
+            child: SelectPetForAdoptionScreen(),
           );
         },
       ),

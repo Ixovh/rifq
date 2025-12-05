@@ -1,10 +1,10 @@
 class AdoptionRequestEntity {
   final String id;
   final String petId;
-  final String ownerId; 
+  final String ownerId;
   final String title;
   final String description;
-  final String status; // 'pending', 'accepted', 'rejected', 'cancelled'
+  final String status; // 'active', 'reserved', 'adopted'
   final DateTime createdAt;
 
   const AdoptionRequestEntity({

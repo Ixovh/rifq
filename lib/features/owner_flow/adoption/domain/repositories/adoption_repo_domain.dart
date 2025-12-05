@@ -3,65 +3,76 @@ import 'package:rifq/features/owner_flow/add_pet/domain/entities/add_pet_entity.
 import 'package:rifq/features/owner_flow/adoption/domain/entities/adoption_request_entity.dart';
 
 abstract class AdoptionRepoDomain {
-  // ========== For Adoption Tab (Other Users) ==========
-  /// Get list of all pets available for adoption
-  Future<Result<List<AddPetEntity>, Object>> getPetsForAdoption();
+  // ==============================
+  // Pet Owner Methods
+  // ==============================
 
-  /// Get pet details by ID (for viewing pet details)
-  Future<Result<AddPetEntity, Object>> getPetDetails(String petId);
+  /// Pet owner can get all their pets (to choose which one to offer for adoption)
+  /// Uses the currently logged-in user's ID
+  Future<Result<List<AddPetEntity>, Object>> getMyPets();
 
-  /// Send adoption request for a pet
+  /// Pet owner can add his/her pet for adoption
+  Future<Result<AddPetEntity, Object>> addPetForAdoption({
+    required AddPetEntity pet,
+  });
+
+  /// Pet owner can see the number of requests on his/her offered pet
+  Future<Result<int, Object>> getAdoptionRequestCountForPet({
+    required String petId,
+    required String ownerId,
+  });
+
+  /// Pet owner can see all adoption requests for a specific pet
+  Future<Result<List<AdoptionRequestEntity>, Object>>
+  getAdoptionRequestsForPet({
+    required String petId,
+    required String ownerId, // to verify ownership
+  });
+
+  /// Pet owner can remove his/her own pet from being adopted
+  Future<Result<Null, Object>> removePetFromAdoption({
+    required String petId,
+    required String ownerId,
+  });
+
+  /// Pet owner can get all their pets that are currently offered for adoption
+  /// Uses the currently logged-in user's ID
+  Future<Result<List<AddPetEntity>, Object>> getOfferedPetsForAdoption();
+
+  /// Pet owner can accept or reject a request coming from a user
+  /// [status] should be: 'adopted' (accepted) or 'reserved' (rejected)
+  Future<Result<AdoptionRequestEntity, Object>> updateAdoptionRequestStatus({
+    required String requestId,
+    required String ownerId, // to ensure only the pet owner can decide
+    required String status, // 'adopted' | 'reserved'
+  });
+
+  // ==============================
+  // Regular User Methods
+  // ==============================
+
+  /// Regular user can see all the pets that are available to be adopted
+  Future<Result<List<AddPetEntity>, Object>> getAvailablePetsForAdoption();
+
+  /// Regular user can send a request to pet owner to adopt their pet
   Future<Result<AdoptionRequestEntity, Object>> sendAdoptionRequest({
     required String petId,
-    required String ownerId, // Requester ID
+    required String userId, // adopter's user id
     required String title,
     required String description,
   });
 
-  // ========== My Pets Tab (Pet Owner) ==========
-  /// Get owner's pets (both for adoption and not for adoption)
-  Future<Result<List<AddPetEntity>, Object>> getMyPets(String ownerId);
+  /// Regular user can see details of a pet available to be adopted
+  Future<Result<AddPetEntity, Object>> getPetDetails({required String petId});
 
-  /// Add pet for adoption
-  Future<Result<Null, Object>> addPetForAdoption(String petId);
+  /// Regular user can see all their own adoption requests
+  Future<Result<List<AdoptionRequestEntity>, Object>> getUserAdoptionRequests({
+    required String userId,
+  });
 
-  /// Remove pet from adoption (but keep the pet)
-  Future<Result<Null, Object>> removePetFromAdoption(String petId);
-
-  /// Get adoption requests for owner's pets
-  Future<Result<List<AdoptionRequestEntity>, Object>> getAdoptionRequests(
-    String ownerId,
-  );
-
-  /// Get adoption requests for a specific pet
-  Future<Result<List<AdoptionRequestEntity>, Object>> getAdoptionRequestsByPet(
-    String petId,
-  );
-
-  /// Accept an adoption request
-  Future<Result<Null, Object>> acceptAdoptionRequest(String requestId);
-
-  /// Reject an adoption request
-  Future<Result<Null, Object>> rejectAdoptionRequest(String requestId);
-
-  /// Cancel adoption (if pet was already adopted)
-  Future<Result<Null, Object>> cancelAdoption(String petId);
-
-  /// Get list of adopted pets
-  Future<Result<List<AddPetEntity>, Object>> getAdoptedPets(String ownerId);
-
-  /// Get cancelled adoptions
-  Future<Result<List<AdoptionRequestEntity>, Object>> getCancelledAdoptions(
-    String ownerId,
-  );
-
-  /// Get owner names for multiple owner IDs
-  Future<Result<Map<String, String?>, Object>> getOwnerNamesForPets(
-    List<String> ownerIds,
-  );
-
-  /// Get adoption request counts for multiple pet IDs
-  Future<Result<Map<String, int>, Object>> getAdoptionRequestCountsForPets(
-    List<String> petIds,
-  );
+  /// Regular user can cancel their own adoption request
+  Future<Result<AdoptionRequestEntity, Object>> cancelAdoptionRequest({
+    required String requestId,
+    required String userId,
+  });
 }

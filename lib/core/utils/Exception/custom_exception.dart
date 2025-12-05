@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-
 class CustomException implements Exception {
   /// A message describing the format error.
   final String message;
@@ -10,19 +9,33 @@ class CustomException implements Exception {
   const CustomException({this.message = ""});
 }
 
-
 class CatchErrorMessage {
   final Object error;
 
   CatchErrorMessage({required this.error});
 
   String getWriteMessage() {
-
     String? errorMessage;
 
     switch (error) {
       case PostgrestException error:
-        errorMessage = jsonDecode(error.message)['message'];
+        // Try to parse as JSON first, if that fails use the message directly
+        try {
+          final decoded = jsonDecode(error.message);
+          errorMessage = decoded is Map
+              ? decoded['message']
+              : decoded.toString();
+        } catch (e) {
+          // If JSON parsing fails, use the message directly or details
+          // PostgrestException.details often contains the actual database error message
+          if (error.message.isNotEmpty) {
+            errorMessage = error.message;
+          } else if (error.details != null && error.details is String) {
+            errorMessage = error.details as String;
+          } else {
+            errorMessage = error.toString();
+          }
+        }
         break;
       case AuthApiException error:
         errorMessage = error.message;
@@ -46,8 +59,9 @@ class CatchErrorMessage {
         errorMessage = "Empty data update";
         break;
       default:
-        errorMessage = error.toString();
+        // Use errorMessage instead of error.toString()
+        break;
     }
-    return errorMessage;
+    return errorMessage ?? error.toString();
   }
 }

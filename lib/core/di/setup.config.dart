@@ -24,10 +24,10 @@ import '../../features/owner_flow/add_pet/domain/usecases/add_pet_use_case.dart'
     as _i22;
 import '../../features/owner_flow/add_pet/presentation/cubit/add_pet_cubit.dart'
     as _i763;
-import '../../features/owner_flow/adoption/data/datasources/adoption_data_soruce.dart'
-    as _i719;
-import '../../features/owner_flow/adoption/data/repositories/adoption_repo_data_soruce.dart'
-    as _i598;
+import '../../features/owner_flow/adoption/data/datasources/adoption_data_source.dart'
+    as _i1014;
+import '../../features/owner_flow/adoption/data/repositories/adoption_repo_data.dart'
+    as _i320;
 import '../../features/owner_flow/adoption/domain/repositories/adoption_repo_domain.dart'
     as _i979;
 import '../../features/owner_flow/adoption/domain/usecases/adotion_use_case.dart'
@@ -81,9 +81,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i694.PetProfileDataSource>(
       () => _i694.PetProfileDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
-    gh.lazySingleton<_i719.AdoptionDataSource>(
-      () => _i719.AdoptionDataBaseSoruce(gh<_i454.SupabaseClient>()),
-    );
     gh.lazySingleton<_i918.PatCard>(
       () => _i918.PetCardInfoDatasources(gh<_i454.SupabaseClient>()),
     );
@@ -96,14 +93,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1071.BaseAddPetDataSource>(
       () => _i1071.AddPetDataSource(gh<_i454.SupabaseClient>()),
     );
+    gh.lazySingleton<_i1014.AdoptionDataSource>(
+      () => _i1014.AdoptionDataBaseSoruce(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i116.ReservationUsecase>(
       () => _i116.ReservationUsecase(gh<_i219.ReservationRepository>()),
     );
-    gh.lazySingleton<_i979.AdoptionRepoDomain>(
-      () => _i598.AdoptionRepoData(gh<_i719.AdoptionDataSource>()),
-    );
     gh.lazySingleton<_i754.RepoDomain>(
       () => _i332.RepoData(gh<_i972.BaseUserProfileDataSourc>()),
+    );
+    gh.lazySingleton<_i979.AdoptionRepoDomain>(
+      () => _i320.AdoptionRepoData(gh<_i1014.AdoptionDataSource>()),
     );
     gh.lazySingleton<_i386.BaseAuthDataSource>(
       () => _i386.SubaBaseDataSource(

@@ -5,8 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:rifq/core/routes/base_routes.dart';
 import 'package:rifq/core/theme/app_theme.dart';
 import 'package:rifq/features/owner_flow/adoption/presentation/cubit/adoption_cubit.dart';
-import 'package:rifq/features/owner_flow/adoption/presentation/widgets/my_pet_card_widget.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class MyPetsTab extends StatelessWidget {
   const MyPetsTab({super.key});
@@ -14,154 +13,149 @@ class MyPetsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<AdoptionCubit>();
+    final currentState = cubit.state;
+
+    if (currentState is! OfferedPetsLoaded &&
+        currentState is! AdoptionLoading &&
+        currentState is! AdoptionError) {
+      // Use addPostFrameCallback to avoid calling during build
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final state = cubit.state;
+        // Double-check state hasn't changed before calling
+        if (state is! OfferedPetsLoaded && state is! AdoptionLoading) {
+          cubit.getOfferedPetsForAdoption();
+        }
+      });
+    }
+
     return BlocBuilder<AdoptionCubit, AdoptionState>(
       builder: (context, state) {
         if (state is AdoptionLoading) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        if (state is AdoptionError) {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.error_outline,
-                  size: 64.r,
-                  color: context.neutral400,
+                SvgPicture.asset(
+                  'assets/icon/logo.svg',
+                  colorFilter: ColorFilter.mode(
+                    context.neutral300,
+                    BlendMode.srcIn,
+                  ),
                 ),
-                SizedBox(height: 16.h),
                 Text(
-                  state.message,
-                  style: context.body2.copyWith(color: context.neutral500),
-                  textAlign: TextAlign.center,
+                  'just a moment we will load your pets',
+                  style: context.body2.copyWith(color: context.neutral300),
                 ),
               ],
             ),
           );
         }
-
-        if (state is PetRemovedFromAdoption) {
-          // Refresh pets list after removal
-          final currentUserId = Supabase.instance.client.auth.currentUser?.id;
-          if (currentUserId != null) {
-            cubit.getMyPets(currentUserId);
-          }
-          return const Center(child: CircularProgressIndicator());
+        if (state is AdoptionError) {
+          return Center(child: Text(state.message));
         }
-
-        if (state is MyPetsLoaded) {
+        if (state is OfferedPetsLoaded) {
           if (state.pets.isEmpty) {
+            // Show empty state when no pets are offered for adoption
             return Center(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: .center,
                 children: [
-                  Icon(
-                    Icons.pets_outlined,
-                    size: 64.r,
-                    color: context.neutral400,
+                  Text(
+                    'you don\'t have any pet to offer for adoption yet',
+                    style: context.body2.copyWith(color: context.neutral300),
                   ),
                   SizedBox(height: 16.h),
-                  Text(
-                    'No pets found',
-                    style: context.body2.copyWith(color: context.neutral500),
+                  AddingNewPet(
+                    onTap: () {
+                      context.push(Routes.selectPetForAdoption, extra: cubit);
+                    },
                   ),
                 ],
               ),
             );
           }
-
           return Column(
             children: [
               Expanded(
                 child: ListView.builder(
-                  padding: EdgeInsets.only(top: 20.r),
                   itemCount: state.pets.length,
                   itemBuilder: (context, index) {
-                    final pet = state.pets[index];
-                    final ownerName = state.ownerNames[pet.ownerId];
-                    final requestCount = state.requestCounts[pet.id] ?? 0;
-
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 20.h),
-                      child: MyPetCardWidget(
-                        pet: pet,
-                        location: null, // No location field in database
-                        requestCount: requestCount,
-                        onTap: () {
-                          context.push(
-                            Routes.petDetails,
-                            extra: {
-                              'pet': pet,
-                              'location': null, // No location field in database
-                              'ownerName': ownerName,
-                              'cubit': cubit, // Pass cubit for the new route
-                              'isMyPet':
-                                  true, // Flag to show remove from adoption option
-                            },
-                          );
-                        },
-                        onRequestsTap: () {
-                          cubit.getAdoptionRequestsByPet(pet.id);
-                        },
-                      ),
-                    );
+                    return Text(state.pets[index].species);
                   },
                 ),
               ),
-              // Add Pet for Adoption Button
-              Container(
-                width: double.infinity,
-                margin: EdgeInsets.only(top: 20.h, bottom: 20.h),
-                child: ElevatedButton(
-                  onPressed: () {
-                    // TODO: Navigate to add pet for adoption screen
+              Padding(
+                padding: EdgeInsets.all(16.r),
+                child: AddingNewPet(
+                  onTap: () {
+                    context.push(Routes.selectPetForAdoption, extra: cubit);
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: context.primary100,
-                    foregroundColor: context.primary300,
-                    padding: EdgeInsets.symmetric(vertical: 16.h),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    elevation: 0,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Add Pet for Adoption',
-                        style: context.body2.copyWith(
-                          color: context.primary300,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14.sp,
-                        ),
-                      ),
-                      SizedBox(width: 8.w),
-                      Icon(Icons.add, size: 20.r, color: context.primary300),
-                    ],
-                  ),
                 ),
               ),
             ],
           );
         }
-        cubit.getMyPets(Supabase.instance.client.auth.currentUser!.id);
 
         return Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: .center,
             children: [
-              Icon(Icons.pets_outlined, size: 64.r, color: context.neutral400),
-              SizedBox(height: 16.h),
               Text(
-                'Loading your pets...',
-                style: context.body2.copyWith(color: context.neutral500),
+                'you don\'t have any pet to offer for adoption yet',
+                style: context.body2.copyWith(color: context.neutral300),
+              ),
+              SizedBox(height: 16.h),
+              AddingNewPet(
+                onTap: () {
+                  context.push(Routes.selectPetForAdoption, extra: cubit);
+                },
               ),
             ],
           ),
         );
       },
+    );
+  }
+}
+
+class AddingNewPet extends StatelessWidget {
+  const AddingNewPet({super.key, this.onTap});
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        width: double.infinity,
+        height: 56.h,
+        decoration: BoxDecoration(
+          color: context.neutral100,
+          borderRadius: BorderRadius.circular(8.r),
+          boxShadow: [
+            BoxShadow(
+              color: Color(0x3F656565),
+              blurRadius: 4,
+              offset: Offset(0, 0),
+              spreadRadius: 0,
+            ),
+          ],
+        ),
+
+        child: Center(
+          child: Row(
+            mainAxisAlignment: .center,
+            children: [
+              Text(
+                'Add Pet for Adoption',
+                style: context.body2.copyWith(color: context.primary),
+              ),
+              SizedBox(width: 4.w),
+              Icon(Icons.add, color: context.primary),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

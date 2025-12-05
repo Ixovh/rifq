@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:rifq/core/utils/Exception/custom_exception.dart';
 import 'package:rifq/features/owner_flow/add_pet/domain/entities/add_pet_entity.dart';
 import 'package:rifq/features/owner_flow/adoption/domain/entities/adoption_request_entity.dart';
 import 'package:rifq/features/owner_flow/adoption/domain/usecases/adotion_use_case.dart';
@@ -12,190 +11,181 @@ class AdoptionCubit extends Cubit<AdoptionState> {
 
   AdoptionCubit(this._useCase) : super(AdoptionInitial());
 
-  // ========== For Adoption Tab (Other Users) ==========
+  // ==============================
+  // Pet Owner Methods
+  // ==============================
 
-  /// Get list of all pets available for adoption
-  Future<void> getPetsForAdoption() async {
+  /// Pet owner can get all their pets (to choose which one to offer for adoption)
+  Future<void> getMyPets() async {
     emit(AdoptionLoading());
-    (await _useCase.getPetsForAdoption()).when(
-      (success) => emit(PetsForAdoptionLoaded(success)),
-      (error) => emit(
-        AdoptionError(CatchErrorMessage(error: error).getWriteMessage()),
-      ),
+    final result = await _useCase.getMyPets();
+    result.when(
+      (pets) => emit(MyPetsLoaded(pets)),
+      (error) => emit(AdoptionError(error.toString())),
     );
   }
 
-  /// Get pet details by ID
-  Future<void> getPetDetails(String petId) async {
+  /// Pet owner can add his/her pet for adoption
+  Future<void> addPetForAdoption({required AddPetEntity pet}) async {
     emit(AdoptionLoading());
-    (await _useCase.getPetDetails(petId)).when(
-      (success) => emit(PetDetailsLoaded(success)),
-      (error) => emit(
-        AdoptionError(CatchErrorMessage(error: error).getWriteMessage()),
-      ),
+    final result = await _useCase.addPetForAdoption(pet: pet);
+    result.when(
+      (pet) => emit(PetAddedForAdoptionSuccess(pet)),
+      (error) => emit(AdoptionError(error.toString())),
     );
   }
 
-  /// Send adoption request for a pet
-  Future<void> sendAdoptionRequest({
+  /// Pet owner can see the number of requests on his/her offered pet
+  Future<void> getAdoptionRequestCountForPet({
     required String petId,
     required String ownerId,
+  }) async {
+    emit(AdoptionLoading());
+    final result = await _useCase.getAdoptionRequestCountForPet(
+      petId: petId,
+      ownerId: ownerId,
+    );
+    result.when(
+      (count) => emit(PetRequestCountLoaded(petId: petId, count: count)),
+      (error) => emit(AdoptionError(error.toString())),
+    );
+  }
+
+  /// Pet owner can see all adoption requests for a specific pet
+  /// Load both my pets and offered pets together
+  Future<void> getMyPetsAndOffered() async {
+    emit(AdoptionLoading());
+
+    // Call both use cases
+    final myPetsResult = await _useCase.getMyPets();
+    final offeredPetsResult = await _useCase.getOfferedPetsForAdoption();
+
+    // Handle results
+    if (myPetsResult.isError() || offeredPetsResult.isError()) {
+      final error = myPetsResult.isError()
+          ? myPetsResult.tryGetError()
+          : offeredPetsResult.tryGetError();
+      emit(AdoptionError(error.toString()));
+      return;
+    }
+
+    final allPets = myPetsResult.tryGetSuccess() ?? [];
+    final offeredPets = offeredPetsResult.tryGetSuccess() ?? [];
+
+    emit(MyPetsAndOfferedLoaded(allPets: allPets, offeredPets: offeredPets));
+  }
+
+  /// Pet owner can remove his/her own pet from being adopted
+  Future<void> removePetFromAdoption({
+    required String petId,
+    required String ownerId,
+  }) async {
+    emit(AdoptionLoading());
+    final result = await _useCase.removePetFromAdoption(
+      petId: petId,
+      ownerId: ownerId,
+    );
+    result.when(
+      (_) => emit(PetRemovedFromAdoptionSuccess(petId)),
+      (error) => emit(AdoptionError(error.toString())),
+    );
+  }
+
+  /// Pet owner can get all their pets that are currently offered for adoption
+  Future<void> getOfferedPetsForAdoption() async {
+    emit(AdoptionLoading());
+    final result = await _useCase.getOfferedPetsForAdoption();
+    result.when(
+      (pets) => emit(OfferedPetsLoaded(pets)),
+      (error) => emit(AdoptionError(error.toString())),
+    );
+  }
+
+  /// Pet owner can accept or reject a request coming from a user
+  Future<void> updateAdoptionRequestStatus({
+    required String requestId,
+    required String ownerId,
+    required String status, // 'adopted' | 'reserved'
+  }) async {
+    emit(AdoptionLoading());
+    final result = await _useCase.updateAdoptionRequestStatus(
+      requestId: requestId,
+      ownerId: ownerId,
+      status: status,
+    );
+    result.when(
+      (request) => emit(AdoptionRequestStatusUpdated(request)),
+      (error) => emit(AdoptionError(error.toString())),
+    );
+  }
+
+  // ==============================
+  // Regular User Methods
+  // ==============================
+
+  /// Regular user can see all the pets that are available to be adopted
+  Future<void> getAvailablePetsForAdoption() async {
+    emit(AdoptionLoading());
+    final result = await _useCase.getAvailablePetsForAdoption();
+    result.when(
+      (pets) => emit(AvailablePetsLoaded(pets)),
+      (error) => emit(AdoptionError(error.toString())),
+    );
+  }
+
+  /// Regular user can send a request to pet owner to adopt their pet
+  Future<void> sendAdoptionRequest({
+    required String petId,
+    required String userId,
     required String title,
     required String description,
   }) async {
     emit(AdoptionLoading());
-    (await _useCase.sendAdoptionRequest(
+    final result = await _useCase.sendAdoptionRequest(
       petId: petId,
-      ownerId: ownerId,
+      userId: userId,
       title: title,
       description: description,
-    )).when(
-      (success) => emit(AdoptionRequestSent(success)),
-      (error) => emit(
-        AdoptionError(CatchErrorMessage(error: error).getWriteMessage()),
-      ),
+    );
+    result.when(
+      (request) => emit(AdoptionRequestSent(request)),
+      (error) => emit(AdoptionError(error.toString())),
     );
   }
 
-  // ========== My Pets Tab (Pet Owner) ==========
-
-  /// Get owner's pets
-  Future<void> getMyPets(String ownerId) async {
+  /// Regular user can see details of a pet available to be adopted
+  Future<void> getPetDetails({required String petId}) async {
     emit(AdoptionLoading());
-    (await _useCase.getMyPets(ownerId)).when(
-      (success) async {
-        // Get unique owner IDs and pet IDs
-        final ownerIds = success.map((pet) => pet.ownerId).toSet().toList();
-        final petIds = success.map((pet) => pet.id).toList();
-
-        // Fetch owner names and request counts in parallel
-        final ownerNamesResult = await _useCase.getOwnerNamesForPets(ownerIds);
-        final requestCountsResult = await _useCase
-            .getAdoptionRequestCountsForPets(petIds);
-
-        Map<String, String?> ownerNames = {};
-        Map<String, int> requestCounts = {};
-
-        ownerNamesResult.when(
-          (success) => ownerNames = success,
-          (error) => ownerNames = {},
-        );
-
-        requestCountsResult.when(
-          (success) => requestCounts = success,
-          (error) => requestCounts = {},
-        );
-
-        emit(
-          MyPetsLoaded(
-            success,
-            ownerNames: ownerNames,
-            requestCounts: requestCounts,
-          ),
-        );
-      },
-      (error) => emit(
-        AdoptionError(CatchErrorMessage(error: error).getWriteMessage()),
-      ),
+    final result = await _useCase.getPetDetails(petId: petId);
+    result.when(
+      (pet) => emit(PetDetailsLoaded(pet)),
+      (error) => emit(AdoptionError(error.toString())),
     );
   }
 
-  /// Add pet for adoption
-  Future<void> addPetForAdoption(String petId) async {
+  /// Regular user can see all their own adoption requests
+  Future<void> getUserAdoptionRequests({required String userId}) async {
     emit(AdoptionLoading());
-    (await _useCase.addPetForAdoption(petId)).when(
-      (success) => emit(PetAddedForAdoption()),
-      (error) => emit(
-        AdoptionError(CatchErrorMessage(error: error).getWriteMessage()),
-      ),
+    final result = await _useCase.getUserAdoptionRequests(userId: userId);
+    result.when(
+      (requests) => emit(UserAdoptionRequestsLoaded(requests)),
+      (error) => emit(AdoptionError(error.toString())),
     );
   }
 
-  /// Remove pet from adoption
-  Future<void> removePetFromAdoption(String petId) async {
+  /// Regular user can cancel their own adoption request
+  Future<void> cancelAdoptionRequest({
+    required String requestId,
+    required String userId,
+  }) async {
     emit(AdoptionLoading());
-    (await _useCase.removePetFromAdoption(petId)).when(
-      (success) => emit(PetRemovedFromAdoption()),
-      (error) => emit(
-        AdoptionError(CatchErrorMessage(error: error).getWriteMessage()),
-      ),
+    final result = await _useCase.cancelAdoptionRequest(
+      requestId: requestId,
+      userId: userId,
     );
-  }
-
-  /// Get adoption requests for owner's pets
-  Future<void> getAdoptionRequests(String ownerId) async {
-    emit(AdoptionLoading());
-    (await _useCase.getAdoptionRequests(ownerId)).when(
-      (success) => emit(AdoptionRequestsLoaded(success)),
-      (error) => emit(
-        AdoptionError(CatchErrorMessage(error: error).getWriteMessage()),
-      ),
-    );
-  }
-
-  /// Get adoption requests for a specific pet
-  Future<void> getAdoptionRequestsByPet(String petId) async {
-    emit(AdoptionLoading());
-    (await _useCase.getAdoptionRequestsByPet(petId)).when(
-      (success) => emit(AdoptionRequestsByPetLoaded(success)),
-      (error) => emit(
-        AdoptionError(CatchErrorMessage(error: error).getWriteMessage()),
-      ),
-    );
-  }
-
-  /// Accept an adoption request
-  Future<void> acceptAdoptionRequest(String requestId) async {
-    emit(AdoptionLoading());
-    (await _useCase.acceptAdoptionRequest(requestId)).when(
-      (success) => emit(AdoptionRequestAccepted()),
-      (error) => emit(
-        AdoptionError(CatchErrorMessage(error: error).getWriteMessage()),
-      ),
-    );
-  }
-
-  /// Reject an adoption request
-  Future<void> rejectAdoptionRequest(String requestId) async {
-    emit(AdoptionLoading());
-    (await _useCase.rejectAdoptionRequest(requestId)).when(
-      (success) => emit(AdoptionRequestRejected()),
-      (error) => emit(
-        AdoptionError(CatchErrorMessage(error: error).getWriteMessage()),
-      ),
-    );
-  }
-
-  /// Cancel adoption
-  Future<void> cancelAdoption(String petId) async {
-    emit(AdoptionLoading());
-    (await _useCase.cancelAdoption(petId)).when(
-      (success) => emit(AdoptionCancelled()),
-      (error) => emit(
-        AdoptionError(CatchErrorMessage(error: error).getWriteMessage()),
-      ),
-    );
-  }
-
-  /// Get list of adopted pets
-  Future<void> getAdoptedPets(String ownerId) async {
-    emit(AdoptionLoading());
-    (await _useCase.getAdoptedPets(ownerId)).when(
-      (success) => emit(AdoptedPetsLoaded(success)),
-      (error) => emit(
-        AdoptionError(CatchErrorMessage(error: error).getWriteMessage()),
-      ),
-    );
-  }
-
-  /// Get cancelled adoptions
-  Future<void> getCancelledAdoptions(String ownerId) async {
-    emit(AdoptionLoading());
-    (await _useCase.getCancelledAdoptions(ownerId)).when(
-      (success) => emit(CancelledAdoptionsLoaded(success)),
-      (error) => emit(
-        AdoptionError(CatchErrorMessage(error: error).getWriteMessage()),
-      ),
+    result.when(
+      (request) => emit(AdoptionRequestCancelled(request)),
+      (error) => emit(AdoptionError(error.toString())),
     );
   }
 }
