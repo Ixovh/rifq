@@ -16,7 +16,7 @@ import 'package:rifq/features/owner_flow/hotel/data/model/hotel_model.dart';
 import 'package:rifq/features/owner_flow/hotel/presentation/cubit/hotel_cubit.dart';
 import 'package:rifq/features/owner_flow/hotel/presentation/pages/hotel_details_screen.dart';
 
-import 'package:rifq/features/owner_flow/health/health_screen.dart';
+import 'package:rifq/features/owner_flow/health/presentation/pages/health_screen.dart';
 
 import 'package:rifq/features/owner_flow/hotel/presentation/pages/hotel_home_screen.dart';
 import 'package:rifq/features/owner_flow/nav/presentation/cubit/nav_cubit.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rifq/features/owner_flow/health/health_screen.dart';
+import 'package:rifq/features/owner_flow/health/presentation/pages/health_screen.dart';
 import 'package:rifq/features/owner_flow/home/presentation/pages/home_screen.dart';
 import 'package:rifq/features/owner_flow/hotel/presentation/pages/hotel_home_screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/profile_screen.dart';

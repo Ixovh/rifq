@@ -1,37 +1,3 @@
-// import 'package:flutter/material.dart';
-
-// class PetCircleWidget extends StatelessWidget {
-//   final String name;
-//   final String imageUrl;
-//   final VoidCallback onTap;
-
-//   const PetCircleWidget({
-//     super.key,
-//     required this.name,
-//     required this.imageUrl,
-//     required this.onTap,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return GestureDetector(
-//       onTap: onTap,
-//       child: Column(
-//         children: [
-//           CircleAvatar(
-//             radius: 30,
-//             backgroundImage: NetworkImage(imageUrl),
-//           ),
-//           SizedBox(height: 6),
-//           Text(
-//             name,
-//             style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
 
 import 'package:flutter/material.dart';
 import 'package:rifq/core/theme/app_theme.dart';
