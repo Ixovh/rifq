@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/cubit/auth_cubit.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/auth_screen.dart';
@@ -16,6 +17,8 @@ import '../../features/owner_flow/hotel/presentation/cubit/hotel_cubit.dart';
 import '../../features/owner_flow/hotel/presentation/pages/hotel_details_screen.dart';
 import '../../features/owner_flow/hotel/presentation/pages/hotel_home_screen.dart';
 import '../../features/owner_flow/hotel/sup_feauter/booking_hotel/presentation/pages/booking_hotel.dart';
+import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/domain/usecase/edit_pet_profile_usecase.dart';
+import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/presentaion/cubit/edit_pet_profile_cubit.dart';
 import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/presentaion/pages/edit_pet_profile.dart';
 import '../../features/owner_flow/pet_profile/sup_features/pet_info_card/domain/entity/pet_entity.dart';
 
@@ -39,7 +42,7 @@ abstract class Routes {
 
 
   static final routers = GoRouter(
-    initialLocation: hotel,
+    initialLocation: profile,
     routes: [
       GoRoute(
         path: onbording,
@@ -128,17 +131,36 @@ abstract class Routes {
       //------//
       //------//
       //------//
+
+
       GoRoute(
         path: editpetprofile,
         builder: (context, state) {
           final pet = state.extra;
-          print(pet.toString());
           if (pet is! PetProfileEntity) {
-            return Center(child: Text("data"));
+            return Center(child: Text("No pet data"));
           }
-          return EditPetProfileScreen(pet: pet);
+          return BlocProvider(
+            create: (context) => EditPetProfileCubit(
+              GetIt.I.get<EditPetProfileUsecase>(),
+              pet: pet,
+            ),
+            child: EditPetProfileScreen(pet: pet),
+          );
         },
       ),
+
+      // GoRoute(
+      //   path: editpetprofile,
+      //   builder: (context, state) {
+      //     final pet = state.extra;
+      //     print(pet.toString());
+      //     if (pet is! PetProfileEntity) {
+      //       return Center(child: Text("data"));
+      //     }
+      //     return EditPetProfileScreen(pet: pet);
+      //   },
+      // ),
       //------//
       //------//
       //------//

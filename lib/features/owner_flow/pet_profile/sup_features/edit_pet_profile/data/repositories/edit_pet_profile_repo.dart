@@ -9,8 +9,8 @@ class EditPetProfileRepo implements EditPetProfileRepoDomain {
 
   EditPetProfileRepo(this.dataSource);
 
-  @override
-  Future<Result<Null, Object>> updatePetProfile(String id, String name, String imageUrl,) async {
+  Future<Result<Map<String, dynamic>, Object>> updatePetProfile(
+      String id, String name, String imageUrl) async {
     return await dataSource.updatePetProfile(id, name, imageUrl);
   }
 }

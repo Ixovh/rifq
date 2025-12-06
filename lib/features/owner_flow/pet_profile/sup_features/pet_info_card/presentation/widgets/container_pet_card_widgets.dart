@@ -78,7 +78,7 @@ class ContainerPetCardWidgets extends StatelessWidget {
                 CircleAvatar(
                   radius: 22.r,
                   backgroundColor: Colors.white,
-                  child: Image.asset(pet.photoUrl),
+                  child: Image.network(pet.photoUrl),
                 ),
 
                 SizedBox(width: 12.w),
@@ -92,7 +92,9 @@ class ContainerPetCardWidgets extends StatelessWidget {
                     ),
                   ),
                 ),
-                IconButton(onPressed: (){}, 
+                IconButton(onPressed: (){
+
+                },
                     icon: Icon(Icons.arrow_forward_ios,size: 20.r,))
               ],
             ),

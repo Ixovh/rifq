@@ -3,7 +3,7 @@ import 'package:multiple_result/multiple_result.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class BaseEditPetProfile {
-  Future<Result<Null,Object>>updatePetProfile(String id,String name,String imageUrl );
+  Future<Result<Map<String, dynamic>, Object>>updatePetProfile(String id,String name,String imageUrl );
 }
 
 @LazySingleton(as: BaseEditPetProfile)
@@ -12,16 +12,22 @@ class EditPetProfileDatasources implements BaseEditPetProfile {
   EditPetProfileDatasources(this.supabase);
 
   @override
-  Future<Result<Null,Object>> updatePetProfile(String id, String name, String imageUrl) async {
+  Future<Result<Map<String, dynamic>, Object>> updatePetProfile(String id, String name, String imageUrl) async {
     try {
-      await supabase.from('pets')
+      print("Updating pet: $id, name=$name, photo=$imageUrl");
+      final response = await supabase.from('pets')
           .update({'name': name, 'photo': imageUrl})
-          .eq('id', id);
-      return Success(null);
+          .eq('id', id)
+          .select()
+          .single();
+      print("Update response: $response");
+      return Success(response);
     } catch (e) {
       return Error(e);
     }
   }
+
+
 
 //   Future<Result<Null, Object>> updatePetProfile(String name, String imageUrl) async {
 //       try {

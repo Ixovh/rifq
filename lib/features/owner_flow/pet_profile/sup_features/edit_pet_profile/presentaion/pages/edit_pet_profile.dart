@@ -143,12 +143,12 @@ class EditPetProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return BlocProvider(
-      create: (context) =>
-          EditPetProfileCubit(GetIt.I.get<EditPetProfileUsecase>(),pet: pet
-            // supabase: Supabase.instance.client, pet: pet,
-          ),
-      child: Scaffold(
+    // return BlocProvider(
+    //   create: (context) =>
+    //       EditPetProfileCubit(GetIt.I.get<EditPetProfileUsecase>(),pet: pet
+    //         // supabase: Supabase.instance.client, pet: pet,
+    //       ),
+    return Scaffold(
         appBar: AppBar(
           surfaceTintColor: Colors.transparent,
           // leading: IconButton(onPressed: () {},
@@ -183,8 +183,13 @@ class EditPetProfileScreen extends StatelessWidget {
                           right: 0,
                           bottom: 2,
                           child: GestureDetector(
-                            onTap: () {
-                              // context.read<EditPetProfileCubit>().pickNewPhoto(currentPet);
+                            onTap: () async {
+                              final cubit = context.read<EditPetProfileCubit>();
+                              final newUrl = await cubit.pickAndUploadPhoto();
+
+                              if (newUrl != null) {
+                                cubit.updatePet(newPhotoUrl: newUrl);
+                              }
                             },
                             child: CircleAvatar(
                               radius: 18,
@@ -235,7 +240,7 @@ class EditPetProfileScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
+      );
+
   }
 }

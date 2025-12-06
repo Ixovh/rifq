@@ -18,7 +18,7 @@ class ProfileScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) =>
       ProfileCubit(getIt<UserProfileUsecase>())
-        ..getUserProfile("52fc04dc-adac-432d-a3a2-20d80e93463f"),
+        ..getUserProfile("e7c6dc83-bcf5-4c0a-9818-4fd1df190cf4"),
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(

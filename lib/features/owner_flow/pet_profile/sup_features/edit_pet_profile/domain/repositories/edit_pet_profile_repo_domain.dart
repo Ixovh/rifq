@@ -3,7 +3,6 @@ import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_info_card/
 
 
 abstract class EditPetProfileRepoDomain {
-  Future<Result<Null, Object>> updatePetProfile(
-      String id, String name, String imageUrl,
-      );
+  Future<Result<Map<String, dynamic>, Object>> updatePetProfile(
+      String id, String name, String imageUrl,);
 }
