@@ -93,6 +93,7 @@ class ContainerPetCardWidgets extends StatelessWidget {
                   ),
                 ),
                 IconButton(onPressed: (){
+                  context.push(Routes.healthRecourdpet);
 
                 },
                     icon: Icon(Icons.arrow_forward_ios,size: 20.r,))

@@ -66,6 +66,8 @@ import '../../features/owner_flow/pet_profile/sup_features/pet_info_card/domain/
     as _i479;
 import '../../features/owner_flow/pet_profile/sup_features/pet_profile_health_record/data/datasourse/pet_prifile_record_data.dart'
     as _i595;
+import '../../features/owner_flow/pet_profile/sup_features/pet_profile_health_record/data/repository/pet_profile_records_repo_data.dart'
+    as _i618;
 import '../../features/owner_flow/pet_profile/sup_features/pet_profile_health_record/domain/repositories/pet_profile_records_repo.dart'
     as _i809;
 import '../../features/owner_flow/pet_profile/sup_features/pet_profile_health_record/domain/usecase/health_record_usecase.dart'
@@ -114,9 +116,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i49.BaseHotelDataSourc>(
       () => _i49.HotelDataBase(gh<_i454.SupabaseClient>()),
     );
-    gh.lazySingleton<_i319.HealthRecordUsecase>(
-      () => _i319.HealthRecordUsecase(gh<_i809.PetProfileRecordsRepo>()),
-    );
     gh.lazySingleton<_i386.BaseAuthDataSource>(
       () => _i386.SubaBaseDataSource(
         supabase: gh<_i454.SupabaseClient>(),
@@ -154,11 +153,18 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i650.EditPetProfileRepoDomain>(
       () => _i737.EditPetProfileRepo(gh<_i131.BaseEditPetProfile>()),
     );
+    gh.lazySingleton<_i809.PetProfileRecordsRepo>(
+      () =>
+          _i618.PetProfileRecordsRepoData(gh<_i595.BaseDataSourcePetReacord>()),
+    );
     gh.factory<_i22.AddPetUseCase>(
       () => _i22.AddPetUseCase(gh<_i585.AddPetRepoDomain>()),
     );
     gh.lazySingleton<_i479.PetProfileUsecase>(
       () => _i479.PetProfileUsecase(gh<_i557.PetProfileRepoDomain>()),
+    );
+    gh.lazySingleton<_i319.HealthRecordUsecase>(
+      () => _i319.HealthRecordUsecase(gh<_i809.PetProfileRecordsRepo>()),
     );
     gh.lazySingleton<_i961.EditPetProfileUsecase>(
       () => _i961.EditPetProfileUsecase(gh<_i650.EditPetProfileRepoDomain>()),

@@ -21,6 +21,7 @@ import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/doma
 import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/presentaion/cubit/edit_pet_profile_cubit.dart';
 import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/presentaion/pages/edit_pet_profile.dart';
 import '../../features/owner_flow/pet_profile/sup_features/pet_info_card/domain/entity/pet_entity.dart';
+import '../../features/owner_flow/pet_profile/sup_features/pet_profile_health_record/presentaion/pages/PetProfile_HealthAppointment_Screen.dart';
 
 abstract class Routes {
   static String init = '/';
@@ -37,6 +38,8 @@ abstract class Routes {
   static String hotel = '/HotelHome';
   static String detailsHotel = '/DetailsHotel';
   static String bookingHotel = '/BookingHotel';
+  static String healthRecourdpet = '/HealthRecourdpet';
+
 
 
 
@@ -200,6 +203,17 @@ abstract class Routes {
           return BookingHotel();
         },
       ),
+      //------//
+      //------//
+      //------//
+      //------//
+      GoRoute(
+        path: healthRecourdpet,
+        builder: (context, state) {
+          return PetProfile_healthappointment_Screen();
+        },
+      ),
+
 
     ],
   );

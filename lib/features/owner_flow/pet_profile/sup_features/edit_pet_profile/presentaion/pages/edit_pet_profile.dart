@@ -121,11 +121,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_it/get_it.dart';
 import '../../../../../../../core/common/widgets/button/custome_button_widgets.dart';
 import '../../../../../../../core/theme/app_color.dart';
 import '../../../pet_info_card/domain/entity/pet_entity.dart';
-import '../../domain/usecase/edit_pet_profile_usecase.dart';
 import '../cubit/edit_pet_profile_cubit.dart';
 import '../widgets/custome_text_field_widgets.dart';
 
