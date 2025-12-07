@@ -9,6 +9,11 @@ part 'adoption_state.dart';
 class AdoptionCubit extends Cubit<AdoptionState> {
   final AdoptionUseCase _useCase;
 
+  // Cache lists for UI access
+  final List<AddPetEntity> myPets = [];
+  final List<AddPetEntity> offeredForAdoptionPets = [];
+  final List<AdoptionRequestEntity> adoptionRequests = [];
+
   AdoptionCubit(this._useCase) : super(AdoptionInitial());
 
   // ==============================
@@ -19,39 +24,13 @@ class AdoptionCubit extends Cubit<AdoptionState> {
   Future<void> getMyPets() async {
     emit(AdoptionLoading());
     final result = await _useCase.getMyPets();
-    result.when(
-      (pets) => emit(MyPetsLoaded(pets)),
-      (error) => emit(AdoptionError(error.toString())),
-    );
+    result.when((pets) {
+      myPets.clear();
+      myPets.addAll(pets);
+      emit(MyPetsLoaded(pets));
+    }, (error) => emit(AdoptionError(error.toString())));
   }
 
-  /// Pet owner can add his/her pet for adoption
-  Future<void> addPetForAdoption({required AddPetEntity pet}) async {
-    emit(AdoptionLoading());
-    final result = await _useCase.addPetForAdoption(pet: pet);
-    result.when(
-      (pet) => emit(PetAddedForAdoptionSuccess(pet)),
-      (error) => emit(AdoptionError(error.toString())),
-    );
-  }
-
-  /// Pet owner can see the number of requests on his/her offered pet
-  Future<void> getAdoptionRequestCountForPet({
-    required String petId,
-    required String ownerId,
-  }) async {
-    emit(AdoptionLoading());
-    final result = await _useCase.getAdoptionRequestCountForPet(
-      petId: petId,
-      ownerId: ownerId,
-    );
-    result.when(
-      (count) => emit(PetRequestCountLoaded(petId: petId, count: count)),
-      (error) => emit(AdoptionError(error.toString())),
-    );
-  }
-
-  /// Pet owner can see all adoption requests for a specific pet
   /// Load both my pets and offered pets together
   Future<void> getMyPetsAndOffered() async {
     emit(AdoptionLoading());
@@ -72,7 +51,69 @@ class AdoptionCubit extends Cubit<AdoptionState> {
     final allPets = myPetsResult.tryGetSuccess() ?? [];
     final offeredPets = offeredPetsResult.tryGetSuccess() ?? [];
 
+    // Update cached lists
+    myPets.clear();
+    myPets.addAll(allPets);
+
+    offeredForAdoptionPets.clear();
+    offeredForAdoptionPets.addAll(offeredPets);
+
     emit(MyPetsAndOfferedLoaded(allPets: allPets, offeredPets: offeredPets));
+  }
+
+  /// Pet owner can get all their pets that are currently offered for adoption
+  Future<void> getOfferedPetsForAdoption() async {
+    emit(AdoptionLoading());
+    final result = await _useCase.getOfferedPetsForAdoption();
+    result.when((pets) {
+      offeredForAdoptionPets.clear();
+      offeredForAdoptionPets.addAll(pets);
+      emit(OfferedPetsLoaded(pets));
+    }, (error) => emit(AdoptionError(error.toString())));
+  }
+
+  /// Pet owner can add his/her pet for adoption
+  Future<void> addPetForAdoption({required AddPetEntity pet}) async {
+    emit(AdoptionLoading());
+    final result = await _useCase.addPetForAdoption(pet: pet);
+    result.when((adoptionRequest) {
+      // Add to cached list
+      offeredForAdoptionPets.add(adoptionRequest);
+      emit(PetAddedForAdoptionSuccess(pet));
+    }, (error) => emit(AdoptionError(error.toString())));
+  }
+
+  /// Pet owner can see the number of requests on his/her offered pet
+  Future<void> getAdoptionRequestCountForPet({
+    required String petId,
+    required String ownerId,
+  }) async {
+    emit(AdoptionLoading());
+    final result = await _useCase.getAdoptionRequestCountForPet(
+      petId: petId,
+      ownerId: ownerId,
+    );
+    result.when(
+      (count) => emit(PetRequestCountLoaded(petId: petId, count: count)),
+      (error) => emit(AdoptionError(error.toString())),
+    );
+  }
+
+  /// Pet owner can see all adoption requests for a specific pet
+  Future<void> getAdoptionRequestsForPet({
+    required String petId,
+    required String ownerId,
+  }) async {
+    emit(AdoptionLoading());
+    final result = await _useCase.getAdoptionRequestsForPet(
+      petId: petId,
+      ownerId: ownerId,
+    );
+    result.when((requests) {
+      adoptionRequests.clear();
+      adoptionRequests.addAll(requests);
+      emit(PetRequestsLoaded(petId: petId, requests: requests));
+    }, (error) => emit(AdoptionError(error.toString())));
   }
 
   /// Pet owner can remove his/her own pet from being adopted
@@ -80,24 +121,34 @@ class AdoptionCubit extends Cubit<AdoptionState> {
     required String petId,
     required String ownerId,
   }) async {
-    emit(AdoptionLoading());
+    // Find and store the pet before removing (for potential rollback on error)
+    final petIndex = offeredForAdoptionPets.indexWhere(
+      (pet) => pet.id == petId,
+    );
+    if (petIndex == -1) {
+      // Pet not found, already removed or doesn't exist
+      return;
+    }
+    final removedPet = offeredForAdoptionPets[petIndex];
+
+    // Optimistically remove from list immediately for UI responsiveness
+    offeredForAdoptionPets.removeAt(petIndex);
+    emit(PetRemovedFromAdoptionSuccess(petId));
+
+    // Then make the async call to update backend
     final result = await _useCase.removePetFromAdoption(
       petId: petId,
       ownerId: ownerId,
     );
     result.when(
-      (_) => emit(PetRemovedFromAdoptionSuccess(petId)),
-      (error) => emit(AdoptionError(error.toString())),
-    );
-  }
-
-  /// Pet owner can get all their pets that are currently offered for adoption
-  Future<void> getOfferedPetsForAdoption() async {
-    emit(AdoptionLoading());
-    final result = await _useCase.getOfferedPetsForAdoption();
-    result.when(
-      (pets) => emit(OfferedPetsLoaded(pets)),
-      (error) => emit(AdoptionError(error.toString())),
+      (_) {
+        // Success - item already removed, no need to do anything
+      },
+      (error) {
+        // On error, re-add the pet back to the list at the same position
+        offeredForAdoptionPets.insert(petIndex, removedPet);
+        emit(AdoptionError(error.toString()));
+      },
     );
   }
 
@@ -105,7 +156,7 @@ class AdoptionCubit extends Cubit<AdoptionState> {
   Future<void> updateAdoptionRequestStatus({
     required String requestId,
     required String ownerId,
-    required String status, // 'adopted' | 'reserved'
+    required String status, // 'accepted' | 'rejected'
   }) async {
     emit(AdoptionLoading());
     final result = await _useCase.updateAdoptionRequestStatus(
@@ -113,10 +164,14 @@ class AdoptionCubit extends Cubit<AdoptionState> {
       ownerId: ownerId,
       status: status,
     );
-    result.when(
-      (request) => emit(AdoptionRequestStatusUpdated(request)),
-      (error) => emit(AdoptionError(error.toString())),
-    );
+    result.when((request) {
+      // Update in cached list
+      final index = adoptionRequests.indexWhere((r) => r.id == requestId);
+      if (index != -1) {
+        adoptionRequests[index] = request;
+      }
+      emit(AdoptionRequestStatusUpdated(request));
+    }, (error) => emit(AdoptionError(error.toString())));
   }
 
   // ==============================
@@ -127,10 +182,11 @@ class AdoptionCubit extends Cubit<AdoptionState> {
   Future<void> getAvailablePetsForAdoption() async {
     emit(AdoptionLoading());
     final result = await _useCase.getAvailablePetsForAdoption();
-    result.when(
-      (pets) => emit(AvailablePetsLoaded(pets)),
-      (error) => emit(AdoptionError(error.toString())),
-    );
+    result.when((pets) {
+      offeredForAdoptionPets.clear();
+      offeredForAdoptionPets.addAll(pets);
+      emit(AvailablePetsLoaded(pets));
+    }, (error) => emit(AdoptionError(error.toString())));
   }
 
   /// Regular user can send a request to pet owner to adopt their pet
@@ -147,10 +203,11 @@ class AdoptionCubit extends Cubit<AdoptionState> {
       title: title,
       description: description,
     );
-    result.when(
-      (request) => emit(AdoptionRequestSent(request)),
-      (error) => emit(AdoptionError(error.toString())),
-    );
+    result.when((request) {
+      // Add to cached list
+      adoptionRequests.add(request);
+      emit(AdoptionRequestSent(request));
+    }, (error) => emit(AdoptionError(error.toString())));
   }
 
   /// Regular user can see details of a pet available to be adopted
@@ -167,10 +224,11 @@ class AdoptionCubit extends Cubit<AdoptionState> {
   Future<void> getUserAdoptionRequests({required String userId}) async {
     emit(AdoptionLoading());
     final result = await _useCase.getUserAdoptionRequests(userId: userId);
-    result.when(
-      (requests) => emit(UserAdoptionRequestsLoaded(requests)),
-      (error) => emit(AdoptionError(error.toString())),
-    );
+    result.when((requests) {
+      adoptionRequests.clear();
+      adoptionRequests.addAll(requests);
+      emit(UserAdoptionRequestsLoaded(requests));
+    }, (error) => emit(AdoptionError(error.toString())));
   }
 
   /// Regular user can cancel their own adoption request
@@ -183,9 +241,13 @@ class AdoptionCubit extends Cubit<AdoptionState> {
       requestId: requestId,
       userId: userId,
     );
-    result.when(
-      (request) => emit(AdoptionRequestCancelled(request)),
-      (error) => emit(AdoptionError(error.toString())),
-    );
+    result.when((request) {
+      // Update in cached list
+      final index = adoptionRequests.indexWhere((r) => r.id == requestId);
+      if (index != -1) {
+        adoptionRequests[index] = request;
+      }
+      emit(AdoptionRequestCancelled(request));
+    }, (error) => emit(AdoptionError(error.toString())));
   }
 }

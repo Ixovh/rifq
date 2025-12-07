@@ -7,7 +7,7 @@ class PetCard extends StatelessWidget {
   final AddPetEntity pet;
   final VoidCallback onTap;
 
-  const PetCard({required this.pet, required this.onTap});
+  const PetCard({super.key, required this.pet, required this.onTap});
 
   @override
   Widget build(BuildContext context) {

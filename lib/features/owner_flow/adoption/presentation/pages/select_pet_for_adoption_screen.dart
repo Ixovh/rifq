@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rifq/core/theme/app_theme.dart';
 import 'package:rifq/features/owner_flow/adoption/presentation/cubit/adoption_cubit.dart';
@@ -11,7 +12,8 @@ class SelectPetForAdoptionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<AdoptionCubit>()..getMyPetsAndOffered();
+    final cubit = context.read<AdoptionCubit>();
+    cubit.getMyPetsAndOffered();
 
     return BlocConsumer<AdoptionCubit, AdoptionState>(
       listener: (context, state) {
@@ -36,45 +38,39 @@ class SelectPetForAdoptionScreen extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        if (state is AdoptionLoading) {
-          return Scaffold(
-            backgroundColor: context.background,
-            appBar: AppBar(
-              backgroundColor: context.background,
-              title: Text(
-                'Select Pet for Adoption',
-                style: context.body1.copyWith(color: context.primary300),
+        if (state is AdoptionLoading && cubit.myPets.isEmpty) {
+          return buildScaffold(
+            context,
+            cubit,
+            Center(
+              child: Column(
+                mainAxisAlignment: .center,
+                children: [
+                  SvgPicture.asset(
+                    'assets/icon/logo.svg',
+                    colorFilter: ColorFilter.mode(
+                      context.neutral300,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  Text(
+                    'just a moment we will load your pets',
+                    style: context.body2.copyWith(color: context.neutral300),
+                  ),
+                  SizedBox(height: 16.h),
+                  CircularProgressIndicator(color: context.neutral300),
+                ],
               ),
-              leading: IconButton(
-                icon: Icon(Icons.arrow_back, color: context.primary300),
-                onPressed: () {
-                  context.pop();
-                },
-              ),
-            ),
-            body: Center(
-              child: CircularProgressIndicator(color: context.neutral300),
             ),
           );
         }
 
         if (state is AdoptionError) {
-          return Scaffold(
-            backgroundColor: context.background,
-            appBar: AppBar(
-              backgroundColor: context.background,
-              title: Text(
-                'Select Pet for Adoption',
-                style: context.body1.copyWith(color: context.primary300),
-              ),
-              leading: IconButton(
-                icon: Icon(Icons.arrow_back, color: context.primary300),
-                onPressed: () {
-                  context.pop();
-                },
-              ),
-            ),
-            body: Center(
+          return buildScaffold(
+            context,
+            cubit,
+            Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -101,14 +97,16 @@ class SelectPetForAdoptionScreen extends StatelessWidget {
         }
 
         if (state is MyPetsAndOfferedLoaded) {
-          // Filter out pets already offered
-          final availablePets = state.allPets.where((pet) {
-            return !state.offeredPets.any((offered) => offered.id == pet.id);
+          // Filter using cached lists
+          final availablePets = cubit.myPets.where((pet) {
+            return !cubit.offeredForAdoptionPets.any(
+              (offered) => offered.id == pet.id,
+            );
           }).toList();
 
           Widget body;
 
-          if (state.allPets.isEmpty) {
+          if (cubit.myPets.isEmpty) {
             body = Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -128,7 +126,11 @@ class SelectPetForAdoptionScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.error_outline, size: 64.r, color: context.success),
+                  Icon(
+                    Icons.check_circle_outline,
+                    size: 64.r,
+                    color: context.neutral400,
+                  ),
                   SizedBox(height: 16.h),
                   Text(
                     'All your pets are already offered for adoption',
@@ -155,45 +157,36 @@ class SelectPetForAdoptionScreen extends StatelessWidget {
             );
           }
 
-          return Scaffold(
-            backgroundColor: context.background,
-            appBar: AppBar(
-              backgroundColor: context.background,
-              title: Text(
-                'Select Pet for Adoption',
-                style: context.body1.copyWith(color: context.primary300),
-              ),
-              leading: IconButton(
-                icon: Icon(Icons.arrow_back, color: context.primary300),
-                onPressed: () {
-                  context.pop();
-                },
-              ),
-            ),
-            body: body,
-          );
+          return buildScaffold(context, cubit, body);
         }
 
-        return Scaffold(
-          backgroundColor: context.background,
-          appBar: AppBar(
-            backgroundColor: context.background,
-            title: Text(
-              'Select Pet for Adoption',
-              style: context.body1.copyWith(color: context.primary300),
-            ),
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: context.primary300),
-              onPressed: () {
-                context.pop();
-              },
-            ),
-          ),
-          body: Center(
-            child: CircularProgressIndicator(color: context.neutral300),
-          ),
+        return buildScaffold(
+          context,
+          cubit,
+          Center(child: CircularProgressIndicator(color: context.neutral300)),
         );
       },
+    );
+  }
+
+  Widget buildScaffold(BuildContext context, AdoptionCubit cubit, Widget body) {
+    return Scaffold(
+      backgroundColor: context.background,
+      appBar: AppBar(
+        backgroundColor: context.background,
+        title: Text(
+          'Select Pet for Adoption',
+          style: context.body1.copyWith(color: context.primary300),
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: context.primary300),
+          onPressed: () {
+
+            context.pop();
+          },
+        ),
+      ),
+      body: body,
     );
   }
 }
