@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../domain/entity/reservation_entity.dart';
 
 class Appointment {
   final String service;
@@ -8,19 +11,23 @@ class Appointment {
   Appointment({required this.service, required this.date, required this.status});
 }
 
-// في ملف AppointmentTab.dart
-
-// ... (باقي الـ imports و Appointment Model)
 
 class AppointmentTab extends StatelessWidget {
-  final List<Appointment> appointments;
+  final List<ReservationEntity> appointments;
 
   const AppointmentTab({super.key, required this.appointments});
 
   @override
   Widget build(BuildContext context) {
     if (appointments.isEmpty) {
-      return const Center(child: Text("No appointments found"));
+      return Column(
+        crossAxisAlignment: .center,
+        children: [
+          Image.asset("assets/images/Frame .png"),
+          Text("No Appointments Found",style: TextStyle(fontSize: 16.sp,color: Color(0xFF939090)),),
+
+        ],
+      );
     }
     return ListView.builder(
       padding: const EdgeInsets.all(16),
@@ -31,8 +38,7 @@ class AppointmentTab extends StatelessWidget {
           margin: const EdgeInsets.only(bottom: 12),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           child: ListTile(
-            title: Text(appt.service, style: const TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text("Status: ${appt.status}"),
+            title: Text(appt.notes ?? 'No notes', style: const TextStyle(fontWeight: FontWeight.bold)),            subtitle: Text("Status: ${appt.status}"),
             trailing: Text(
               "${appt.date.year}/${appt.date.month}/${appt.date.day}",
               style: const TextStyle(fontSize: 12),

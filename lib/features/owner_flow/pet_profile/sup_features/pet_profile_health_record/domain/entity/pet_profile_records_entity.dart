@@ -6,7 +6,7 @@ import 'health_record_entity.dart';
 class PetEntity {
   final String petId;
   final String ownerId;
-  final String ownerName;
+  final String ?ownerName;
   final String petName;
   final String petSpecies;
   final String petBreed;
@@ -14,12 +14,12 @@ class PetEntity {
   final String petPhoto;
   final String petGender;
   final List<HealthRecordEntity> healthRecords;
-  final List<ReservationEntity> reservations;
+  final List<ReservationEntity>  reservations;
 
   PetEntity({
     required this.petId,
     required this.ownerId,
-    required this.ownerName,
+     this.ownerName,
     required this.petName,
     required this.petSpecies,
     required this.petBreed,

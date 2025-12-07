@@ -21,6 +21,7 @@ import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/doma
 import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/presentaion/cubit/edit_pet_profile_cubit.dart';
 import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/presentaion/pages/edit_pet_profile.dart';
 import '../../features/owner_flow/pet_profile/sup_features/pet_info_card/domain/entity/pet_entity.dart';
+import '../../features/owner_flow/pet_profile/sup_features/pet_profile_health_record/domain/entity/pet_profile_records_entity.dart';
 import '../../features/owner_flow/pet_profile/sup_features/pet_profile_health_record/presentaion/pages/PetProfile_HealthAppointment_Screen.dart';
 
 abstract class Routes {
@@ -207,12 +208,35 @@ abstract class Routes {
       //------//
       //------//
       //------//
+      // GoRoute(
+      //   path: healthRecourdpet,
+      //   builder: (context, state) {
+      //     final pet=state.extra as PetEntity;
+      //     return PetProfile_healthappointment_Screen(
+      //       pet: pet,
+      //     );
+      //   },
+      // ),
+
+      // GoRoute(
+      //   path: healthRecourdpet,
+      //   builder: (context, state) {
+      //     final petModel = state.extra as PetProfileRecordModel;
+      //     final petEntity = petModel.toEntity();
+      //     return PetProfile_healthappointment_Screen(pet: petEntity);
+      //   },
+      // ),
+
       GoRoute(
-        path: healthRecourdpet,
+        path: Routes.healthRecourdpet,
         builder: (context, state) {
-          return PetProfile_healthappointment_Screen();
+          final pet = state.extra as PetEntity;
+          return PetHealthAndAppointmentScreen(pet: pet);
         },
       ),
+
+
+
 
 
     ],

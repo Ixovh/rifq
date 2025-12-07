@@ -75,7 +75,7 @@ class ReservationModelMapper extends ClassMapperBase<ReservationModel> {
     'status',
     _$status,
   );
-  static String _$notes(ReservationModel v) => v.notes;
+  static String? _$notes(ReservationModel v) => v.notes;
   static const Field<ReservationModel, String> _f$notes = Field(
     'notes',
     _$notes,
@@ -221,7 +221,7 @@ class _ReservationModelCopyWithImpl<$R, $Out>
     DateTime? startDate,
     DateTime? endDate,
     String? status,
-    String? notes,
+    Object? notes = $none,
     DateTime? createdAt,
   }) => $apply(
     FieldCopyWithData({
@@ -235,7 +235,7 @@ class _ReservationModelCopyWithImpl<$R, $Out>
       if (startDate != null) #startDate: startDate,
       if (endDate != null) #endDate: endDate,
       if (status != null) #status: status,
-      if (notes != null) #notes: notes,
+      if (notes != $none) #notes: notes,
       if (createdAt != null) #createdAt: createdAt,
     }),
   );

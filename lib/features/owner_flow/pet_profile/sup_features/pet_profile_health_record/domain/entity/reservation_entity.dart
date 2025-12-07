@@ -9,7 +9,7 @@ class ReservationEntity {
   final DateTime startDate;
   final DateTime endDate;
   final String status;
-  final String notes;
+  final String? notes;
   final DateTime createdAt;
 
   ReservationEntity({
@@ -23,7 +23,7 @@ class ReservationEntity {
     required this.startDate,
     required this.endDate,
     required this.status,
-    required this.notes,
+     this.notes,
     required this.createdAt,
   });
 }

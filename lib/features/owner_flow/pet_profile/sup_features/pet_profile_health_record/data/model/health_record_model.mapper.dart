@@ -31,22 +31,22 @@ class HealthRecordModelMapper extends ClassMapperBase<HealthRecordModel> {
   );
   static String _$type(HealthRecordModel v) => v.type;
   static const Field<HealthRecordModel, String> _f$type = Field('type', _$type);
-  static String _$title(HealthRecordModel v) => v.title;
+  static String? _$title(HealthRecordModel v) => v.title;
   static const Field<HealthRecordModel, String> _f$title = Field(
     'title',
     _$title,
   );
-  static String _$description(HealthRecordModel v) => v.description;
+  static String? _$description(HealthRecordModel v) => v.description;
   static const Field<HealthRecordModel, String> _f$description = Field(
     'description',
     _$description,
   );
-  static DateTime _$date(HealthRecordModel v) => v.date;
+  static DateTime? _$date(HealthRecordModel v) => v.date;
   static const Field<HealthRecordModel, DateTime> _f$date = Field(
     'date',
     _$date,
   );
-  static String _$clinicName(HealthRecordModel v) => v.clinicName;
+  static String? _$clinicName(HealthRecordModel v) => v.clinicName;
   static const Field<HealthRecordModel, String> _f$clinicName = Field(
     'clinicName',
     _$clinicName,
@@ -174,19 +174,19 @@ class _HealthRecordModelCopyWithImpl<$R, $Out>
     String? id,
     String? petId,
     String? type,
-    String? title,
-    String? description,
-    DateTime? date,
-    String? clinicName,
+    Object? title = $none,
+    Object? description = $none,
+    Object? date = $none,
+    Object? clinicName = $none,
   }) => $apply(
     FieldCopyWithData({
       if (id != null) #id: id,
       if (petId != null) #petId: petId,
       if (type != null) #type: type,
-      if (title != null) #title: title,
-      if (description != null) #description: description,
-      if (date != null) #date: date,
-      if (clinicName != null) #clinicName: clinicName,
+      if (title != $none) #title: title,
+      if (description != $none) #description: description,
+      if (date != $none) #date: date,
+      if (clinicName != $none) #clinicName: clinicName,
     }),
   );
   @override

@@ -79,7 +79,7 @@ class ReservationModel extends ReservationEntity with ReservationModelMappable {
    startDate: DateTime.parse(map['start_date']),
    endDate: DateTime.parse(map['end_date']),
    status: map['status'],
-   notes: map['notes'],
+   notes: map['notes'] as String?,
    createdAt: DateTime.parse(map['created_at']),
   );
  }

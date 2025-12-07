@@ -6,6 +6,7 @@ import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_he
 import '../../domain/repositories/pet_profile_records_repo.dart';
 import '../datasourse/pet_prifile_record_data.dart';
 import '../model/health_record_model.dart';
+import '../model/reservation_model.dart';
 
 @LazySingleton(as:PetProfileRecordsRepo )
 class PetProfileRecordsRepoData implements PetProfileRecordsRepo {
@@ -28,13 +29,13 @@ class PetProfileRecordsRepoData implements PetProfileRecordsRepo {
 
 
   @override
-  Future<List<HealthRecordEntity>> getRecordsByPet(String petId) async {
+  Future<List<HealthRecordModel>> getRecordsByPet(String petId) async {
    final result= await datasours.getRecordsByPet(petId);
    return result;
   }
 
   @override
-  Future<List<ReservationEntity>> getReservationsByPet(String petId)async {
+  Future<List<ReservationModel>> getReservationsByPet(String petId)async {
     final result= await datasours.getReservationsByPet(petId);
     return result;
   }

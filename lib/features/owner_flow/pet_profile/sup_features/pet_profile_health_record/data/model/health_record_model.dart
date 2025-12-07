@@ -22,12 +22,18 @@ class HealthRecordModel extends HealthRecordEntity with HealthRecordModelMappabl
   factory HealthRecordModel.fromMap(Map<String, dynamic> map) {
     return HealthRecordModel(
       id: map['id'],
-      petId: map['pet_id'],
-      type: map['type'],
-      title: map['title'],
-      description: map['description'],
-      date: DateTime.parse(map['date']),
-      clinicName: map['clinic_name'],
+      petId: map['pet_id'] as String? ?? '',
+      // petId: map['pet_id'],
+      // type: map['type'],
+      type: map['type'] as String,
+
+      title: map['title']as String?,
+      description: map['description'] as String?,
+      // date: DateTime.parse(map['date']),
+      date: map['date'] != null
+          ? DateTime.parse(map['date'] as String)
+          : DateTime.now(),
+      clinicName: map['clinic_name'] as String?,
     );
   }
 
