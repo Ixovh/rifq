@@ -39,10 +39,10 @@ class SelectPetForAdoptionScreen extends StatelessWidget {
       },
       builder: (context, state) {
         if (state is AdoptionLoading && cubit.myPets.isEmpty) {
-          return buildScaffold(
-            context,
-            cubit,
-            Center(
+          return BuildScaffold(
+            context: context,
+            cubit: cubit,
+            body: Center(
               child: Column(
                 mainAxisAlignment: .center,
                 children: [
@@ -67,10 +67,10 @@ class SelectPetForAdoptionScreen extends StatelessWidget {
         }
 
         if (state is AdoptionError) {
-          return buildScaffold(
-            context,
-            cubit,
-            Center(
+          return BuildScaffold(
+            context: context,
+            cubit: cubit,
+            body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -157,19 +157,35 @@ class SelectPetForAdoptionScreen extends StatelessWidget {
             );
           }
 
-          return buildScaffold(context, cubit, body);
+          return BuildScaffold(context: context, cubit: cubit, body: body);
         }
 
-        return buildScaffold(
-          context,
-          cubit,
-          Center(child: CircularProgressIndicator(color: context.neutral300)),
+        return BuildScaffold(
+          context: context,
+          cubit: cubit,
+          body: Center(
+            child: CircularProgressIndicator(color: context.neutral300),
+          ),
         );
       },
     );
   }
+}
 
-  Widget buildScaffold(BuildContext context, AdoptionCubit cubit, Widget body) {
+class BuildScaffold extends StatelessWidget {
+  const BuildScaffold({
+    super.key,
+    required this.context,
+    required this.cubit,
+    required this.body,
+  });
+
+  final BuildContext context;
+  final AdoptionCubit cubit;
+  final Widget body;
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.background,
       appBar: AppBar(
@@ -181,7 +197,6 @@ class SelectPetForAdoptionScreen extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: context.primary300),
           onPressed: () {
-
             context.pop();
           },
         ),

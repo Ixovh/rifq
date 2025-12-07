@@ -6,7 +6,6 @@ import 'package:rifq/features/owner_flow/adoption/data/models/adoption_model.dar
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class AdoptionDataSource {
- 
   Future<Result<List<PetModel>, Object>> getMyPets();
 
   Future<Result<PetModel, Object>> addPetForAdoption({required PetModel pet});
@@ -26,7 +25,6 @@ abstract class AdoptionDataSource {
     required String ownerId,
   });
 
-
   Future<Result<List<PetModel>, Object>> getOfferedPetsForAdoption();
 
   Future<Result<AdoptionModel, Object>> updateAdoptionRequestStatus({
@@ -39,7 +37,7 @@ abstract class AdoptionDataSource {
 
   Future<Result<AdoptionModel, Object>> sendAdoptionRequest({
     required String petId,
-    required String userId, 
+    required String userId,
     required String title,
     required String description,
   });
@@ -135,7 +133,7 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
           .from('adoptions')
           .select('id')
           .eq('pet_id', pet.id)
-          .eq('owner_id', pet.ownerId) 
+          .eq('owner_id', pet.ownerId)
           .eq('status', 'active')
           .maybeSingle();
 
@@ -145,7 +143,7 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
 
       await supabase.from('adoptions').insert({
         'pet_id': pet.id,
-        'owner_id': pet.ownerId, 
+        'owner_id': pet.ownerId,
         'title': 'Available for Adoption',
         'description': 'This pet is available for adoption',
         'status': 'active',
@@ -163,7 +161,6 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
     required String ownerId,
   }) async {
     try {
-
       final pet = await supabase
           .from('pets')
           .select('owner_id')
@@ -179,7 +176,7 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
           .from('adoptions')
           .select('id')
           .eq('pet_id', petId)
-          .neq('owner_id', ownerId) 
+          .neq('owner_id', ownerId)
           .eq('status', 'active');
 
       final count = (response as List).length;
@@ -210,7 +207,7 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
           .from('adoptions')
           .select()
           .eq('pet_id', petId)
-          .neq('owner_id', ownerId) 
+          .neq('owner_id', ownerId)
           .eq('status', 'active')
           .order('created_at', ascending: false);
 
@@ -240,18 +237,18 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
       if (pet == null) {
         return Result.error('Pet not found or you are not the owner');
       }
-            await supabase
+      await supabase
           .from('adoptions')
           .delete()
           .eq('pet_id', petId)
-          .eq('owner_id', ownerId) 
+          .eq('owner_id', ownerId)
           .eq('status', 'active');
 
       await supabase
           .from('adoptions')
           .delete()
           .eq('pet_id', petId)
-          .neq('owner_id', ownerId) 
+          .neq('owner_id', ownerId)
           .eq('status', 'active');
 
       return Result.success(null);
@@ -279,11 +276,10 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
 
       final ownerId = userResponse['id'] as String;
 
-
       final adoptionsResponse = await supabase
           .from('adoptions')
           .select('pet_id, owner_id')
-          .eq('owner_id', ownerId) 
+          .eq('owner_id', ownerId)
           .eq('status', 'active');
 
       if (adoptionsResponse.isEmpty) {
@@ -327,7 +323,6 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
     required String status,
   }) async {
     try {
-    
       String dbStatus;
       bool isAccepted;
 
@@ -366,7 +361,6 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
         return Result.error('You are not the owner of this pet');
       }
 
-
       final response = await supabase
           .from('adoptions')
           .update({'status': dbStatus})
@@ -376,16 +370,13 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
 
       final updatedAdoption = AdoptionModelMapper.fromMap(response);
 
-
       if (isAccepted) {
-
         await supabase
             .from('adoptions')
             .delete()
             .eq('pet_id', petId)
             .eq('owner_id', ownerId)
             .eq('status', 'active');
-
 
         await supabase
             .from('adoptions')
@@ -405,32 +396,56 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
   @override
   Future<Result<List<PetModel>, Object>> getAvailablePetsForAdoption() async {
     try {
-      final response = await supabase
+      // First, get all active adoptions where owner_id matches pet owner
+      // This means the pet owner has listed their pet for adoption
+      final adoptionsResponse = await supabase
           .from('adoptions')
-          .select('''
-            pets!inner(*)
-          ''')
+          .select('pet_id, owner_id')
           .eq('status', 'active');
+
+      if (adoptionsResponse.isEmpty) {
+        return Result.success([]);
+      }
+
+      // Group adoptions by pet_id and filter to get only pets where
+      // the adoption owner_id matches the pet owner_id (owner listing their pet)
+      final Map<String, String> petOwnerMap = {};
+      final Set<String> availablePetIds = {};
+
+      for (var adoption in adoptionsResponse as List) {
+        final petId = adoption['pet_id'] as String;
+        final adoptionOwnerId = adoption['owner_id'] as String;
+        petOwnerMap[petId] = adoptionOwnerId;
+        availablePetIds.add(petId);
+      }
+
+      if (availablePetIds.isEmpty) {
+        return Result.success([]);
+      }
+
+      // Now fetch the pets
+      final petsResponse = await supabase
+          .from('pets')
+          .select()
+          .inFilter('id', availablePetIds.toList());
 
       final List<PetModel> pets = [];
       final Set<String> seenPetIds = {};
 
-      for (var item in response as List) {
-        final petData = item['pets'];
-        if (petData != null && petData['id'] != null) {
-          final petId = petData['id'] as String;
-          final adoptionOwnerId = item['owner_id'] as String?;
-          final petOwnerId = petData['owner_id'] as String?;
+      for (var petData in petsResponse as List) {
+        final petId = petData['id'] as String;
+        final petOwnerId = petData['owner_id'] as String;
+        final adoptionOwnerId = petOwnerMap[petId];
 
-          if (adoptionOwnerId == petOwnerId && !seenPetIds.contains(petId)) {
-            seenPetIds.add(petId);
-            final dataWithPhoto = Map<String, dynamic>.from(petData);
-            if (dataWithPhoto['photo'] == null ||
-                dataWithPhoto['photo'] == '') {
-              dataWithPhoto['photo'] = '';
-            }
-            pets.add(PetModelMapper.fromMap(dataWithPhoto));
+        // Only include pets where the adoption owner matches the pet owner
+        // (meaning the owner listed their own pet for adoption)
+        if (adoptionOwnerId == petOwnerId && !seenPetIds.contains(petId)) {
+          seenPetIds.add(petId);
+          final dataWithPhoto = Map<String, dynamic>.from(petData);
+          if (dataWithPhoto['photo'] == null || dataWithPhoto['photo'] == '') {
+            dataWithPhoto['photo'] = '';
           }
+          pets.add(PetModelMapper.fromMap(dataWithPhoto));
         }
       }
 
@@ -466,12 +481,11 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
         );
       }
 
-
       final availableCheck = await supabase
           .from('adoptions')
           .select('id')
           .eq('pet_id', petId)
-          .eq('owner_id', petOwnerId) 
+          .eq('owner_id', petOwnerId)
           .eq('status', 'active')
           .maybeSingle();
 
@@ -483,7 +497,7 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
           .from('adoptions')
           .select('id')
           .eq('pet_id', petId)
-          .eq('owner_id', userId) 
+          .eq('owner_id', userId)
           .eq('status', 'active')
           .maybeSingle();
 
@@ -497,7 +511,7 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
           .from('adoptions')
           .insert({
             'pet_id': petId,
-            'owner_id': userId, 
+            'owner_id': userId,
             'title': title,
             'description': description,
             'status': 'active',
@@ -547,7 +561,7 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
       final response = await supabase
           .from('adoptions')
           .select()
-          .eq('owner_id', userId) 
+          .eq('owner_id', userId)
           .order('created_at', ascending: false);
 
       final List<AdoptionModel> requests = (response as List)
@@ -566,7 +580,6 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
     required String userId,
   }) async {
     try {
-
       final adoption = await supabase
           .from('adoptions')
           .select('owner_id')
@@ -582,13 +595,11 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
         return Result.error('You can only cancel your own adoption requests');
       }
 
-
       final adoptionRecord = await supabase
           .from('adoptions')
           .select()
           .eq('id', requestId)
           .single();
-
 
       await supabase.from('adoptions').delete().eq('id', requestId);
 

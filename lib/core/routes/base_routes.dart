@@ -4,6 +4,7 @@ import 'package:rifq/core/common/choose_path/presentation/pages/choose_path_scre
 import 'package:rifq/core/common/splash/presentation/pages/splash_screen.dart';
 import 'package:rifq/features/owner_flow/adoption/presentation/cubit/adoption_cubit.dart';
 import 'package:rifq/features/owner_flow/adoption/presentation/pages/adoption_screen.dart';
+import 'package:rifq/features/owner_flow/adoption/presentation/pages/see_requeset_screen.dart';
 import 'package:rifq/features/owner_flow/adoption/presentation/pages/select_pet_for_adoption_screen.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/cubit/auth_cubit.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/auth_screen.dart';
@@ -34,6 +35,7 @@ abstract class Routes {
   static String resetPassword = '/resetPassword';
   static String adoption = '/adoption';
   static String selectPetForAdoption = '/selectPetForAdoption';
+  static String seeRequests = '/seeRequests';
 
   static final routers = GoRouter(
     initialLocation: splash,
@@ -131,6 +133,16 @@ abstract class Routes {
           return BlocProvider.value(
             value: state.extra as AdoptionCubit,
             child: SelectPetForAdoptionScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: seeRequests,
+        builder: (context, state) {
+          final data = state.extra as Map<String, dynamic>;
+          return BlocProvider.value(
+            value: data['cubit'] as AdoptionCubit,
+            child: SeeRequesetScreen(pet: data['pet']),
           );
         },
       ),

@@ -79,7 +79,9 @@ class AdoptionCubit extends Cubit<AdoptionState> {
     result.when((adoptionRequest) {
       // Add to cached list
       offeredForAdoptionPets.add(adoptionRequest);
+      // Emit both success state and the loaded state so UI can display the updated list
       emit(PetAddedForAdoptionSuccess(pet));
+      emit(OfferedPetsLoaded(List.from(offeredForAdoptionPets)));
     }, (error) => emit(AdoptionError(error.toString())));
   }
 

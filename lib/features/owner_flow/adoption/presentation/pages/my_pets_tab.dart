@@ -10,18 +10,52 @@ import 'package:flutter_svg/flutter_svg.dart';
 class MyPetsTab extends StatelessWidget {
   const MyPetsTab({super.key});
 
+  String _calculateAge(DateTime birthdate) {
+    final now = DateTime.now();
+    final difference = now.difference(birthdate);
+    final years = difference.inDays / 365.25;
+
+    // If less than 1 year, show age in months
+    if (years < 1.0) {
+      final months = (difference.inDays / 30.44)
+          .round(); // Average days per month
+      // If pet is less than 1 month old (in days or weeks), show as 1 month
+      if (months < 1) {
+        return '1 month';
+      }
+      return '$months month${months == 1 ? '' : 's'}';
+    }
+
+    // Format to one decimal place for years
+    final formattedYears = years.toStringAsFixed(1);
+    // Remove trailing zero if it's a whole number
+    final cleanYears = formattedYears.endsWith('.0')
+        ? formattedYears.substring(0, formattedYears.length - 2)
+        : formattedYears;
+
+    // Use singular "year" for all cases (matching the design)
+    return '$cleanYears year';
+  }
+
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<AdoptionCubit>();
     final currentState = cubit.state;
 
-    // Trigger initial load if we don’t have data yet and we’re not loading
-    if (cubit.offeredForAdoptionPets.isEmpty &&
+    // Load data if we don't have the correct state for "my pets" tab
+    // This prevents using cached data from "for adoption" tab which uses the same list
+    // But don't reload if we just added a pet (PetAddedForAdoptionSuccess) - it will emit OfferedPetsLoaded
+    if (currentState is! OfferedPetsLoaded &&
+        currentState is! PetAddedForAdoptionSuccess &&
         currentState is! AdoptionLoading &&
         currentState is! AdoptionError) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         final state = cubit.state;
-        if (cubit.offeredForAdoptionPets.isEmpty && state is! AdoptionLoading) {
+        if (state is! OfferedPetsLoaded &&
+            state is! PetAddedForAdoptionSuccess &&
+            state is! AdoptionLoading) {
+          // Clear cache to remove any data from "for adoption" tab
+          cubit.offeredForAdoptionPets.clear();
           cubit.getOfferedPetsForAdoption();
         }
       });
@@ -37,6 +71,14 @@ class MyPetsTab extends StatelessWidget {
             ),
           );
         }
+        if (state is PetAddedForAdoptionSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text('Pet added for adoption successfully'),
+              backgroundColor: context.success,
+            ),
+          );
+        }
         if (state is AdoptionError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -47,8 +89,13 @@ class MyPetsTab extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        // Use cached list from cubit
-        final offeredPets = cubit.offeredForAdoptionPets;
+        // Use cached list only for states related to "my pets" tab
+        // This prevents using data from "for adoption" tab (AvailablePetsLoaded)
+        // Allows showing pets after adding them (PetAddedForAdoptionSuccess)
+        final offeredPets =
+            (state is OfferedPetsLoaded || state is PetAddedForAdoptionSuccess)
+            ? cubit.offeredForAdoptionPets
+            : [];
 
         if (state is AdoptionLoading && offeredPets.isEmpty) {
           return Center(
@@ -162,8 +209,9 @@ class MyPetsTab extends StatelessWidget {
                           Center(
                             child: Image.network(
                               offeredPets[index].photoUrl,
-                              fit: BoxFit.cover,
+                              fit: BoxFit.fill,
                               width: double.infinity,
+                              height: 150.h,
                               errorBuilder: (context, error, stackTrace) {
                                 return SvgPicture.asset(
                                   'assets/icon/logo.svg',
@@ -205,7 +253,23 @@ class MyPetsTab extends StatelessWidget {
                             ],
                           ),
 
-                          Text(offeredPets[index].birthdate.toIso8601String()),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.calendar_today_outlined,
+                                size: 16.r,
+                                color: context.primary300,
+                              ),
+                              SizedBox(width: 4.w),
+                              Text(
+                                _calculateAge(offeredPets[index].birthdate),
+                                style: context.body2.copyWith(
+                                  color: context.neutral500,
+                                ),
+                              ),
+                            ],
+                          ),
                           Spacer(),
                           Container(
                             width: 295.w,
@@ -215,13 +279,23 @@ class MyPetsTab extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8.r),
                             ),
                             child: Row(
-                              // TODO here will navigate to see the requests for this pet
                               mainAxisAlignment: .center,
                               children: [
-                                Text(
-                                  'Offer for Adoption',
-                                  style: context.body2.copyWith(
-                                    color: context.primary500,
+                                TextButton(
+                                  onPressed: () {
+                                    context.push(
+                                      Routes.seeRequests,
+                                      extra: {
+                                        'cubit': cubit,
+                                        'pet': offeredPets[index],
+                                      },
+                                    );
+                                  },
+                                  child: Text(
+                                    'view requests',
+                                    style: context.body2.copyWith(
+                                      color: context.primary500,
+                                    ),
                                   ),
                                 ),
                                 Icon(
