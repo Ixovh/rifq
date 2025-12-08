@@ -17,9 +17,7 @@ class MyPetsTab extends StatelessWidget {
 
     // If less than 1 year, show age in months
     if (years < 1.0) {
-      final months = (difference.inDays / 30.44)
-          .round(); // Average days per month
-      // If pet is less than 1 month old (in days or weeks), show as 1 month
+      final months = (difference.inDays / 30.44).round();
       if (months < 1) {
         return '1 month';
       }
@@ -33,33 +31,17 @@ class MyPetsTab extends StatelessWidget {
         ? formattedYears.substring(0, formattedYears.length - 2)
         : formattedYears;
 
-    // Use singular "year" for all cases (matching the design)
     return '$cleanYears year';
   }
 
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<AdoptionCubit>();
-    final currentState = cubit.state;
 
-    // Load data if we don't have the correct state for "my pets" tab
-    // This prevents using cached data from "for adoption" tab which uses the same list
-    // But don't reload if we just added a pet (PetAddedForAdoptionSuccess) - it will emit OfferedPetsLoaded
-    if (currentState is! OfferedPetsLoaded &&
-        currentState is! PetAddedForAdoptionSuccess &&
-        currentState is! AdoptionLoading &&
-        currentState is! AdoptionError) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        final state = cubit.state;
-        if (state is! OfferedPetsLoaded &&
-            state is! PetAddedForAdoptionSuccess &&
-            state is! AdoptionLoading) {
-          // Clear cache to remove any data from "for adoption" tab
-          cubit.offeredForAdoptionPets.clear();
-          cubit.getOfferedPetsForAdoption();
-        }
-      });
-    }
+    // Trigger load once using addPostFrameCallback
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      cubit.getOfferedPetsForAdoption();
+    });
 
     return BlocConsumer<AdoptionCubit, AdoptionState>(
       listener: (context, state) {
@@ -89,18 +71,12 @@ class MyPetsTab extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        // Use cached list only for states related to "my pets" tab
-        // This prevents using data from "for adoption" tab (AvailablePetsLoaded)
-        // Allows showing pets after adding them (PetAddedForAdoptionSuccess)
-        final offeredPets =
-            (state is OfferedPetsLoaded || state is PetAddedForAdoptionSuccess)
-            ? cubit.offeredForAdoptionPets
-            : [];
+        final offeredPets = cubit.offeredForAdoptionPets;
 
         if (state is AdoptionLoading && offeredPets.isEmpty) {
           return Center(
             child: Column(
-              mainAxisAlignment: .center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SvgPicture.asset(
                   'assets/icon/logo.svg',
@@ -133,7 +109,8 @@ class MyPetsTab extends StatelessWidget {
                 ),
                 SizedBox(height: 16.h),
                 ElevatedButton(
-                  onPressed: () => cubit.getOfferedPetsForAdoption(),
+                  onPressed: () =>
+                      cubit.getOfferedPetsForAdoption(forceRefresh: true),
                   child: const Text('Retry'),
                 ),
               ],
@@ -142,7 +119,6 @@ class MyPetsTab extends StatelessWidget {
         }
 
         if (offeredPets.isEmpty) {
-          // Empty state if no pets are offered for adoption
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -172,6 +148,7 @@ class MyPetsTab extends StatelessWidget {
                 },
                 itemCount: offeredPets.length,
                 itemBuilder: (context, index) {
+                  final pet = offeredPets[index];
                   return Container(
                     padding: EdgeInsets.all(16.r),
                     width: double.infinity,
@@ -191,12 +168,12 @@ class MyPetsTab extends StatelessWidget {
                       ],
                     ),
                     child: Dismissible(
-                      direction: .endToStart,
-                      key: Key(offeredPets[index].id),
+                      direction: DismissDirection.endToStart,
+                      key: Key(pet.id),
                       onDismissed: (direction) {
                         cubit.removePetFromAdoption(
-                          petId: offeredPets[index].id,
-                          ownerId: offeredPets[index].ownerId,
+                          petId: pet.id,
+                          ownerId: pet.ownerId,
                         );
                       },
                       background: Container(
@@ -204,11 +181,11 @@ class MyPetsTab extends StatelessWidget {
                         child: Icon(Icons.delete, color: Colors.white),
                       ),
                       child: Column(
-                        crossAxisAlignment: .center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Center(
                             child: Image.network(
-                              offeredPets[index].photoUrl,
+                              pet.photoUrl,
                               fit: BoxFit.fill,
                               width: double.infinity,
                               height: 150.h,
@@ -223,21 +200,19 @@ class MyPetsTab extends StatelessWidget {
                               },
                             ),
                           ),
-
                           SizedBox(height: 18.h),
-
                           Row(
-                            mainAxisAlignment: .center,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                offeredPets[index].name,
+                                pet.name,
                                 style: context.h5.copyWith(
                                   color: context.neutral1000,
                                 ),
                               ),
                               SizedBox(width: 8.w),
                               Icon(
-                                (offeredPets[index].gender) == 'male'
+                                pet.gender == 'male'
                                     ? Icons.male
                                     : Icons.female,
                                 color: context.secondary100,
@@ -245,14 +220,13 @@ class MyPetsTab extends StatelessWidget {
                               ),
                               SizedBox(width: 8.w),
                               Text(
-                                offeredPets[index].breed,
+                                pet.breed,
                                 style: context.body2.copyWith(
                                   color: context.neutral500,
                                 ),
                               ),
                             ],
                           ),
-
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -263,7 +237,7 @@ class MyPetsTab extends StatelessWidget {
                               ),
                               SizedBox(width: 4.w),
                               Text(
-                                _calculateAge(offeredPets[index].birthdate),
+                                _calculateAge(pet.birthdate),
                                 style: context.body2.copyWith(
                                   color: context.neutral500,
                                 ),
@@ -279,16 +253,13 @@ class MyPetsTab extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8.r),
                             ),
                             child: Row(
-                              mainAxisAlignment: .center,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 TextButton(
                                   onPressed: () {
                                     context.push(
                                       Routes.seeRequests,
-                                      extra: {
-                                        'cubit': cubit,
-                                        'pet': offeredPets[index],
-                                      },
+                                      extra: {'cubit': cubit, 'pet': pet},
                                     );
                                   },
                                   child: Text(
@@ -350,10 +321,9 @@ class AddingNewPet extends StatelessWidget {
             ),
           ],
         ),
-
         child: Center(
           child: Row(
-            mainAxisAlignment: .center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 'Add Pet for Adoption',

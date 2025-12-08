@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rifq/core/routes/base_routes.dart';
 import 'package:rifq/core/theme/app_theme.dart';
 import 'package:rifq/features/owner_flow/adoption/presentation/cubit/adoption_cubit.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class AdoptionTab extends StatelessWidget {
   const AdoptionTab({super.key});
+
   String _calculateAge(DateTime birthdate) {
     final now = DateTime.now();
     final difference = now.difference(birthdate);
@@ -16,9 +17,7 @@ class AdoptionTab extends StatelessWidget {
 
     // If less than 1 year, show age in months
     if (years < 1.0) {
-      final months = (difference.inDays / 30.44)
-          .round(); // Average days per month
-      // If pet is less than 1 month old (in days or weeks), show as 1 month
+      final months = (difference.inDays / 30.44).round();
       if (months < 1) {
         return '1 month';
       }
@@ -32,50 +31,125 @@ class AdoptionTab extends StatelessWidget {
         ? formattedYears.substring(0, formattedYears.length - 2)
         : formattedYears;
 
-    // Use singular "year" for all cases (matching the design)
     return '$cleanYears year';
   }
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<AdoptionCubit>()..getAvailablePetsForAdoption();
+    final cubit = context.read<AdoptionCubit>();
+
+    // Trigger load once using addPostFrameCallback
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      cubit.getAvailablePetsForAdoption();
+    });
 
     return BlocConsumer<AdoptionCubit, AdoptionState>(
       listener: (context, state) {
         if (state is AdoptionError) {
-          Text(
-            state.message,
-            style: context.body2.copyWith(color: context.error),
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: context.error,
+            ),
           );
         }
       },
       builder: (context, state) {
-        if (state is AdoptionLoading) {
-          return Center(child: CircularProgressIndicator());
+        final availablePets = cubit.availablePets;
+
+        if (state is AdoptionLoading && availablePets.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  'assets/icon/logo.svg',
+                  colorFilter: ColorFilter.mode(
+                    context.neutral300,
+                    BlendMode.srcIn,
+                  ),
+                ),
+                SizedBox(height: 16.h),
+                Text(
+                  'just a moment we will load available pets',
+                  style: context.body2.copyWith(color: context.neutral300),
+                ),
+                SizedBox(height: 16.h),
+                CircularProgressIndicator(color: context.neutral300),
+              ],
+            ),
+          );
         }
-        if (state is AvailablePetsLoaded) {
-          if (state.pets.isEmpty) {
-            return Center(
-              child: Text(
-                'No pets found',
-                style: context.body2.copyWith(color: context.neutral300),
-              ),
-            );
-          }
-          return Column(
-            children: [
-              SizedBox(height: 16.h),
-              Expanded(
-                child: ListView.separated(
-                  separatorBuilder: (context, index) {
-                    return SizedBox(height: 16.h);
-                  },
-                  itemCount: state.pets.length,
-                  itemBuilder: (context, index) {
-                    return Container(
+
+        if (state is AdoptionError && availablePets.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  state.message,
+                  style: context.body2.copyWith(color: context.neutral500),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 16.h),
+                ElevatedButton(
+                  onPressed: () =>
+                      cubit.getAvailablePetsForAdoption(forceRefresh: true),
+                  child: const Text('Retry'),
+                ),
+              ],
+            ),
+          );
+        }
+
+        if (availablePets.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  'assets/icon/logo.svg',
+                  colorFilter: ColorFilter.mode(
+                    context.neutral300,
+                    BlendMode.srcIn,
+                  ),
+                ),
+                SizedBox(height: 16.h),
+                Text(
+                  'No pets available for adoption yet',
+                  style: context.body2.copyWith(color: context.neutral300),
+                ),
+              ],
+            ),
+          );
+        }
+
+        return Column(
+          children: [
+            SizedBox(height: 16.h),
+            Expanded(
+              child: ListView.separated(
+                separatorBuilder: (context, index) {
+                  return SizedBox(height: 16.h);
+                },
+                itemCount: availablePets.length,
+                itemBuilder: (context, index) {
+                  final pet = availablePets[index];
+                  return InkWell(
+                    // TODO: add pet details screen and send request to adopt pet
+                    // onTap: () {
+                    //   context.push(
+                    //     Routes.petDetails,
+                    //     extra: {
+                    //       'cubit': cubit,
+                    //       'pet': pet,
+                    //     },
+                    //   );
+                    // },
+                    child: Container(
                       padding: EdgeInsets.all(16.r),
                       width: double.infinity,
-                      height: 290.h,
+                      height: 340.h,
                       decoration: ShapeDecoration(
                         color: Colors.white,
                         shape: RoundedRectangleBorder(
@@ -91,40 +165,47 @@ class AdoptionTab extends StatelessWidget {
                         ],
                       ),
                       child: Column(
-                        crossAxisAlignment: .center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Center(
-                            child: Image.network(
-                              state.pets[index].photoUrl,
-                              fit: BoxFit.fill,
-                              width: double.infinity,
-                              height: 140.h,
-                              errorBuilder: (context, error, stackTrace) {
-                                return SvgPicture.asset(
-                                  'assets/icon/logo.svg',
-                                  colorFilter: ColorFilter.mode(
-                                    context.neutral400,
-                                    BlendMode.srcIn,
-                                  ),
-                                );
-                              },
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12.r),
+                              child: Image.network(
+                                pet.photoUrl,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: 185.h,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    height: 185.h,
+                                    color: context.neutral100,
+                                    child: Center(
+                                      child: SvgPicture.asset(
+                                        'assets/icon/logo.svg',
+                                        colorFilter: ColorFilter.mode(
+                                          context.neutral400,
+                                          BlendMode.srcIn,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
                           ),
-
                           SizedBox(height: 18.h),
-
                           Row(
-                            mainAxisAlignment: .center,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                state.pets[index].name,
+                                pet.name,
                                 style: context.h5.copyWith(
                                   color: context.neutral1000,
                                 ),
                               ),
                               SizedBox(width: 8.w),
                               Icon(
-                                (state.pets[index].gender) == 'male'
+                                pet.gender == 'male'
                                     ? Icons.male
                                     : Icons.female,
                                 color: context.secondary100,
@@ -132,14 +213,14 @@ class AdoptionTab extends StatelessWidget {
                               ),
                               SizedBox(width: 8.w),
                               Text(
-                                state.pets[index].breed,
+                                pet.breed,
                                 style: context.body2.copyWith(
                                   color: context.neutral500,
                                 ),
                               ),
                             ],
                           ),
-
+                          SizedBox(height: 8.h),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -150,7 +231,7 @@ class AdoptionTab extends StatelessWidget {
                               ),
                               SizedBox(width: 4.w),
                               Text(
-                                _calculateAge(state.pets[index].birthdate),
+                                _calculateAge(pet.birthdate),
                                 style: context.body2.copyWith(
                                   color: context.neutral500,
                                 ),
@@ -166,47 +247,32 @@ class AdoptionTab extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8.r),
                             ),
                             child: Row(
-                              mainAxisAlignment: .center,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                // TODO: it will sends a request and this button will navigate to the see requests status screen
-                                TextButton(
-                                  onPressed: () {
-                                    context.push(
-                                      Routes.seeRequests,
-                                      extra: {
-                                        'cubit': cubit,
-                                        'pet': state.pets[index],
-                                      },
-                                    );
-                                  },
-                                  child: Text(
-                                    'send a request',
-                                    style: context.body2.copyWith(
-                                      color: context.primary500,
-                                    ),
+                                Text(
+                                  'View Details',
+                                  style: context.body2.copyWith(
+                                    color: context.primary500,
                                   ),
                                 ),
+                                SizedBox(width: 4.w),
                                 Icon(
                                   Icons.arrow_forward_ios,
                                   color: context.primary500,
+                                  size: 16.r,
                                 ),
                               ],
                             ),
                           ),
                         ],
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
-            ],
-          );
-        }
-        return Center(
-          child: Text(
-            'No pets found',
-            style: context.body2.copyWith(color: context.neutral300),
-          ),
+            ),
+            SizedBox(height: 16.h),
+          ],
         );
       },
     );
