@@ -107,7 +107,10 @@ class AdoptionCubit extends Cubit<AdoptionState> {
     if (_offeredLoaded && !forceRefresh) return;
 
     _isLoadingOffered = true;
-    emit(AdoptionLoading());
+    // Only emit loading if we don't have data yet (prevents flickering during pull-to-refresh)
+    if (offeredForAdoptionPets.isEmpty) {
+      emit(AdoptionLoading());
+    }
 
     final result = await _useCase.getOfferedPetsForAdoption();
     result.when(
@@ -136,17 +139,13 @@ class AdoptionCubit extends Cubit<AdoptionState> {
     final result = await _useCase.addPetForAdoption(pet: pet);
     result.when(
       (_) {
-        // Add to cached list
+        // Add to cached list (for MyPetsTab)
         offeredForAdoptionPets.add(pet);
 
-        // Also add to available pets list if it's already loaded (for immediate UI update)
-        if (_availableLoaded) {
-          availablePets.add(pet);
-          emit(AvailablePetsLoaded(List<AddPetEntity>.from(availablePets)));
-        } else {
-          // If not loaded yet, invalidate cache so it will be loaded when needed
-          invalidateAvailableCache();
-        }
+        // Don't add to availablePets - the user's own pets should never appear
+        // in the adoption tab. The data source filters them out.
+        // Just invalidate the cache so other users will see the new pet when they refresh
+        invalidateAvailableCache();
 
         // Emit both success state and the loaded state so UI can display the updated list
         emit(PetAddedForAdoptionSuccess(pet));
@@ -222,7 +221,8 @@ class AdoptionCubit extends Cubit<AdoptionState> {
     result.when(
       (_) {
         // Success - item already removed from offeredForAdoptionPets
-        // Also remove from available pets list if it's already loaded (for immediate UI update)
+        // Remove from available pets list if it exists (shouldn't be there for current user,
+        // but might be for other users viewing the list)
         if (_availableLoaded) {
           availablePets.removeWhere((p) => p.id == petId);
           emit(AvailablePetsLoaded(List<AddPetEntity>.from(availablePets)));
@@ -275,7 +275,10 @@ class AdoptionCubit extends Cubit<AdoptionState> {
     if (_availableLoaded && !forceRefresh) return;
 
     _isLoadingAvailable = true;
-    emit(AdoptionLoading());
+    // Only emit loading if we don't have data yet (prevents flickering during pull-to-refresh)
+    if (availablePets.isEmpty) {
+      emit(AdoptionLoading());
+    }
 
     final result = await _useCase.getAvailablePetsForAdoption();
     result.when(

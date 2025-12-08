@@ -1,0 +1,40 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "rifq",
+            "cwd": "rifq",
+            "request": "launch",
+            "type": "dart"
+
+        },
+        {
+            "name": "Flutter: iPhone 17 Pro",
+            "request": "launch",
+            "type": "dart",
+            // change this line only
+            "program": "lib/main.dart",
+            "deviceId": "1D35B7F7-64D0-46ED-B1F7-D7AEA804D793"
+        },
+        {
+            "name": "Flutter: iPhone 17 Pro Max",
+            "request": "launch",
+            "type": "dart",
+            // change this line only
+            "program": "lib/main.dart",
+            "deviceId": "A5D70639-D89F-4CD3-8454-5840A8563B87"
+        },
+        
+    ], "compounds": [
+        {
+            "name": "Two Iphones",
+            "configurations": ["Flutter: iPhone 17 Pro Max","Flutter: iPhone 17 Pro"]
+        }
+    ]
+
+
+    
+}

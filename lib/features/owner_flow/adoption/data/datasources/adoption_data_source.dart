@@ -394,10 +394,31 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
   }
 
   @override
+  /// Get all pets available for adoption, excluding the current user's own pets.
+  /// This ensures users only see pets from other users in the adoption tab.
+  /// When a user adds/removes their pet for adoption, it won't appear/disappear
+  /// in their own adoption tab view, but will be visible to other users.
   Future<Result<List<PetModel>, Object>> getAvailablePetsForAdoption() async {
     try {
-      // First, get all active adoptions where owner_id matches pet owner
-      // This means the pet owner has listed their pet for adoption
+      // Get current user's ID to filter out their own pets
+      final authUser = supabase.auth.currentUser;
+      if (authUser == null) {
+        return Result.error('User not logged in');
+      }
+
+      final userResponse = await supabase
+          .from('users')
+          .select('id')
+          .eq('auth_id', authUser.id)
+          .maybeSingle();
+
+      if (userResponse == null) {
+        return Result.error('User profile not found');
+      }
+
+      final currentUserId = userResponse['id'] as String;
+
+      // Get all active adoptions
       final adoptionsResponse = await supabase
           .from('adoptions')
           .select('pet_id, owner_id')
@@ -408,7 +429,7 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
       }
 
       // Group adoptions by pet_id and filter to get only pets where
-      // the adoption owner_id matches the pet owner_id (owner listing their pet)
+      // the adoption owner_id matches the pet owner_id (owner listed their pet)
       final Map<String, String> petOwnerMap = {};
       final Set<String> availablePetIds = {};
 
@@ -437,9 +458,13 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
         final petOwnerId = petData['owner_id'] as String;
         final adoptionOwnerId = petOwnerMap[petId];
 
-        // Only include pets where the adoption owner matches the pet owner
-        // (meaning the owner listed their own pet for adoption)
-        if (adoptionOwnerId == petOwnerId && !seenPetIds.contains(petId)) {
+        // Only include pets where:
+        // 1. The adoption owner matches the pet owner (owner listed their own pet)
+        // 2. The pet owner is NOT the current user (exclude user's own pets)
+        //    This ensures users never see their own pets in the adoption tab
+        if (adoptionOwnerId == petOwnerId &&
+            petOwnerId != currentUserId &&
+            !seenPetIds.contains(petId)) {
           seenPetIds.add(petId);
           final dataWithPhoto = Map<String, dynamic>.from(petData);
           if (dataWithPhoto['photo'] == null || dataWithPhoto['photo'] == '') {

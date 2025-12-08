@@ -51,9 +51,7 @@ class AdoptionScreen extends StatelessWidget {
                       // For Adoption Tab
                       AdoptionTab(),
                       // My Pets Tab
-                      MyPetsTab(
-                        
-                      ),
+                      MyPetsTab(),
                     ],
                   ),
                 ),
