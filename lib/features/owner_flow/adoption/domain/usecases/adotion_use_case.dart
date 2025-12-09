@@ -77,14 +77,13 @@ class AdoptionUseCase {
       await repoDomain.getAvailablePetsForAdoption();
 
   /// Regular user can send a request to pet owner to adopt their pet
+  /// User ID is handled internally in the data source (from auth)
   Future<Result<AdoptionRequestEntity, Object>> sendAdoptionRequest({
     required String petId,
-    required String userId, // adopter's user id
     required String title,
     required String description,
   }) async => await repoDomain.sendAdoptionRequest(
     petId: petId,
-    userId: userId,
     title: title,
     description: description,
   );

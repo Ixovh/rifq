@@ -52,6 +52,7 @@ class AdoptionModelMapper extends ClassMapperBase<AdoptionModel> {
     'createdAt',
     _$createdAt,
     key: r'created_at',
+    opt: true,
   );
 
   @override
@@ -167,7 +168,7 @@ class _AdoptionModelCopyWithImpl<$R, $Out>
     String? title,
     String? description,
     String? status,
-    DateTime? createdAt,
+    Object? createdAt = $none,
   }) => $apply(
     FieldCopyWithData({
       if (id != null) #id: id,
@@ -176,7 +177,7 @@ class _AdoptionModelCopyWithImpl<$R, $Out>
       if (title != null) #title: title,
       if (description != null) #description: description,
       if (status != null) #status: status,
-      if (createdAt != null) #createdAt: createdAt,
+      if (createdAt != $none) #createdAt: createdAt,
     }),
   );
   @override

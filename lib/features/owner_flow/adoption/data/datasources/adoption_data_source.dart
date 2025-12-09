@@ -37,7 +37,7 @@ abstract class AdoptionDataSource {
 
   Future<Result<AdoptionModel, Object>> sendAdoptionRequest({
     required String petId,
-    required String userId,
+
     required String title,
     required String description,
   });
@@ -211,9 +211,15 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
           .eq('status', 'active')
           .order('created_at', ascending: false);
 
-      final List<AdoptionModel> requests = (response as List)
-          .map((item) => AdoptionModelMapper.fromMap(item))
-          .toList();
+      final List<AdoptionModel> requests = (response as List).map((item) {
+        // Ensure created_at is present
+        final itemWithCreatedAt = Map<String, dynamic>.from(item);
+        if (!itemWithCreatedAt.containsKey('created_at') ||
+            itemWithCreatedAt['created_at'] == null) {
+          itemWithCreatedAt['created_at'] = DateTime.now().toIso8601String();
+        }
+        return AdoptionModelMapper.fromMap(itemWithCreatedAt);
+      }).toList();
 
       return Result.success(requests);
     } catch (e) {
@@ -368,7 +374,17 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
           .select()
           .single();
 
-      final updatedAdoption = AdoptionModelMapper.fromMap(response);
+      // Ensure created_at is present
+      final responseWithCreatedAt = Map<String, dynamic>.from(response);
+      if (!responseWithCreatedAt.containsKey('created_at') ||
+          responseWithCreatedAt['created_at'] == null) {
+        responseWithCreatedAt['created_at'] = DateTime.now().toIso8601String();
+      }
+
+      // Ensure created_at is present (already handled above)
+      final updatedAdoption = AdoptionModelMapper.fromMap(
+        responseWithCreatedAt,
+      );
 
       if (isAccepted) {
         await supabase
@@ -483,11 +499,30 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
   @override
   Future<Result<AdoptionModel, Object>> sendAdoptionRequest({
     required String petId,
-    required String userId,
     required String title,
     required String description,
   }) async {
     try {
+      // Get current user's ID from auth (prevents anonymous users)
+      final authUser = supabase.auth.currentUser;
+      if (authUser == null) {
+        return Result.error(
+          'User not logged in. Please login to send adoption request.',
+        );
+      }
+
+      final userResponse = await supabase
+          .from('users')
+          .select('id')
+          .eq('auth_id', authUser.id)
+          .maybeSingle();
+
+      if (userResponse == null) {
+        return Result.error('User profile not found');
+      }
+
+      final userId = userResponse['id'] as String;
+
       final pet = await supabase
           .from('pets')
           .select('owner_id')
@@ -540,11 +575,19 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
             'title': title,
             'description': description,
             'status': 'active',
+            'created_at': DateTime.now().toIso8601String(),
           })
           .select()
           .single();
 
-      final adoption = AdoptionModelMapper.fromMap(response);
+      // Ensure created_at is present, provide default if missing
+      final responseWithCreatedAt = Map<String, dynamic>.from(response);
+      if (!responseWithCreatedAt.containsKey('created_at') ||
+          responseWithCreatedAt['created_at'] == null) {
+        responseWithCreatedAt['created_at'] = DateTime.now().toIso8601String();
+      }
+
+      final adoption = AdoptionModelMapper.fromMap(responseWithCreatedAt);
       return Result.success(adoption);
     } catch (e) {
       return Result.error(CatchErrorMessage(error: e).getWriteMessage());
@@ -589,9 +632,15 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
           .eq('owner_id', userId)
           .order('created_at', ascending: false);
 
-      final List<AdoptionModel> requests = (response as List)
-          .map((item) => AdoptionModelMapper.fromMap(item))
-          .toList();
+      final List<AdoptionModel> requests = (response as List).map((item) {
+        // Ensure created_at is present
+        final itemWithCreatedAt = Map<String, dynamic>.from(item);
+        if (!itemWithCreatedAt.containsKey('created_at') ||
+            itemWithCreatedAt['created_at'] == null) {
+          itemWithCreatedAt['created_at'] = DateTime.now().toIso8601String();
+        }
+        return AdoptionModelMapper.fromMap(itemWithCreatedAt);
+      }).toList();
 
       return Result.success(requests);
     } catch (e) {
@@ -628,7 +677,19 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
 
       await supabase.from('adoptions').delete().eq('id', requestId);
 
-      final cancelledAdoption = AdoptionModelMapper.fromMap(adoptionRecord);
+      // Ensure created_at is present
+      final adoptionRecordWithCreatedAt = Map<String, dynamic>.from(
+        adoptionRecord,
+      );
+      if (!adoptionRecordWithCreatedAt.containsKey('created_at') ||
+          adoptionRecordWithCreatedAt['created_at'] == null) {
+        adoptionRecordWithCreatedAt['created_at'] = DateTime.now()
+            .toIso8601String();
+      }
+
+      final cancelledAdoption = AdoptionModelMapper.fromMap(
+        adoptionRecordWithCreatedAt,
+      );
       return Result.success(cancelledAdoption);
     } catch (e) {
       return Result.error(CatchErrorMessage(error: e).getWriteMessage());

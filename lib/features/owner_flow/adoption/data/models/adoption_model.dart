@@ -5,14 +5,13 @@ part 'adoption_model.mapper.dart';
 
 @MappableClass()
 class AdoptionModel extends AdoptionRequestEntity with AdoptionModelMappable {
-  const AdoptionModel({
+  AdoptionModel({
     required super.id,
     @MappableField(key: 'pet_id') required super.petId,
     @MappableField(key: 'owner_id') required super.ownerId,
     required super.title,
     required super.description,
     required super.status,
-    @MappableField(key: 'created_at') required super.createdAt,
-  });
+    @MappableField(key: 'created_at') DateTime? createdAt,
+  }) : super(createdAt: createdAt ?? DateTime.now());
 }
-

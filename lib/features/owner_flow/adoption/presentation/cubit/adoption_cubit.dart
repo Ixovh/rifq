@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:rifq/features/owner_flow/add_pet/domain/entities/add_pet_entity.dart';
 import 'package:rifq/features/owner_flow/adoption/domain/entities/adoption_request_entity.dart';
 import 'package:rifq/features/owner_flow/adoption/domain/usecases/adotion_use_case.dart';
@@ -8,6 +10,11 @@ part 'adoption_state.dart';
 
 class AdoptionCubit extends Cubit<AdoptionState> {
   final AdoptionUseCase _useCase;
+
+  // Form controllers for adoption request
+  final adoptionRequestFormKey = GlobalKey<FormBuilderState>();
+  final adoptionRequestTitleController = TextEditingController();
+  final adoptionRequestDescriptionController = TextEditingController();
 
   // Cache lists for UI access
   /// 1) All pets owned by the current user (used in "select pet" etc.)
@@ -299,16 +306,15 @@ class AdoptionCubit extends Cubit<AdoptionState> {
   }
 
   /// Regular user can send a request to pet owner to adopt their pet
+  /// User ID is now handled internally in the data source
   Future<void> sendAdoptionRequest({
     required String petId,
-    required String userId,
     required String title,
     required String description,
   }) async {
     emit(AdoptionLoading());
     final result = await _useCase.sendAdoptionRequest(
       petId: petId,
-      userId: userId,
       title: title,
       description: description,
     );
@@ -316,6 +322,9 @@ class AdoptionCubit extends Cubit<AdoptionState> {
       // Add to cached list
       adoptionRequests.add(request);
       emit(AdoptionRequestSent(request));
+      // Clear form after successful submission
+      adoptionRequestTitleController.clear();
+      adoptionRequestDescriptionController.clear();
     }, (error) => emit(AdoptionError(error.toString())));
   }
 

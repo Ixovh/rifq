@@ -84,12 +84,10 @@ class AdoptionRepoData implements AdoptionRepoDomain {
   @override
   Future<Result<AdoptionModel, Object>> sendAdoptionRequest({
     required String petId,
-    required String userId,
     required String title,
     required String description,
   }) async => await dataSource.sendAdoptionRequest(
     petId: petId,
-    userId: userId,
     title: title,
     description: description,
   );

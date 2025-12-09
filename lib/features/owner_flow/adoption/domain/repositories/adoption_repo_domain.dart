@@ -55,9 +55,9 @@ abstract class AdoptionRepoDomain {
   Future<Result<List<AddPetEntity>, Object>> getAvailablePetsForAdoption();
 
   /// Regular user can send a request to pet owner to adopt their pet
+  /// User ID is handled internally in the data source (from auth)
   Future<Result<AdoptionRequestEntity, Object>> sendAdoptionRequest({
     required String petId,
-    required String userId, // adopter's user id
     required String title,
     required String description,
   });
