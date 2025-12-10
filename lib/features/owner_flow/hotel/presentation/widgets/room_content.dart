@@ -42,20 +42,30 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../../../../core/common/widgets/button/custome_button_widgets.dart';
-import '../../../../../core/theme/app_color.dart';
-import '../../data/model/hotel_model.dart';
+import '../../../../../core/routes/base_routes.dart';
+import '../../../../../core/shared/shared_in_owner_flow/shared/entities/provider_items_view_entity.dart';
 import '../cubit/hotel_cubit.dart';
 
 class RoomsTabContent extends StatelessWidget {
-  final HotelModel hotel;
+  final ProviderItemsViewEntity hotel;
 
-  const RoomsTabContent({super.key, required this.hotel});
+  const RoomsTabContent({super.key, required this.hotel, });
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +83,7 @@ class RoomsTabContent extends StatelessWidget {
                 builder: (context, state) {
                   final isSelected = cubit.selectedRoomId == room.itemId;
                   return GestureDetector(
-                    onTap: () => cubit.selectRoom(room.itemId),
+                    onTap: () => cubit.selectRoom(room.itemId,room),
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
                       padding: EdgeInsets.all(12),
@@ -101,17 +111,21 @@ class RoomsTabContent extends StatelessWidget {
                 titel: 'Book Now',
                 onPressed: cubit.selectedRoomId != null
                     ? () {
-                  context.push('/booking', extra: {
+                  context.push(Routes.bookingHotel,
+                    extra: {
                     'hotel': hotel,
                     'roomId': cubit.selectedRoomId,
-                  });
-                }
-                    : () {}, //  هنا زر معطل
+                  },);
+                  // context.push(Routes.bookingHotel, extra: {
+                  //   'hotel': hotel,
+                  //   'roomId': cubit.selectedRoomId,
+                  // });
+                } : () {}, //  هنا زر معطل
                 buttonWidth: 366.w,
                 buttonhight: 58.h,
               );
-            },
-          )
+    },
+    )  ,
         ],
       ),
     );

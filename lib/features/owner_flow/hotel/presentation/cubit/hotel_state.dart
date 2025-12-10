@@ -8,12 +8,12 @@ final class HotelInitial extends HotelState {}
 class HotelLoading extends HotelState {}
 
 class HotelLoaded extends HotelState {
-  final List<ProviderServiceViewEntity> hotels;
+  final List<ProviderEntity> hotels;
   HotelLoaded(this.hotels);
 }
 
 class HotelDetailLoaded extends HotelState {
-  final ProviderServiceViewEntity hotel;
+  final ProviderItemsViewEntity hotel;
   HotelDetailLoaded(this.hotel);
 }
 
@@ -24,7 +24,20 @@ class HotelError extends HotelState {
 
 class HotelLocationOpened extends HotelState {}
 
-class RoomSelectionChanged extends HotelState {
+// class RoomSelectionChanged extends HotelState {
+//   final String roomId;
+//   RoomSelectionChanged(this.roomId);
+// }
+
+class RoomSelectionChanged extends HotelDetailLoaded {
   final String roomId;
-  RoomSelectionChanged(this.roomId);
+  RoomSelectionChanged(this.roomId, ProviderItemsViewEntity hotel) : super(hotel);
 }
+
+
+
+//
+// class RoomSelectionChanged extends HotelDetailLoaded {
+//   final String roomId;
+//   RoomSelectionChanged(this.roomId, ProviderItemsViewEntity hotel) : super(hotel);
+// }

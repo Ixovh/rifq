@@ -1,3 +1,7 @@
+import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_health_record/domain/entity/health_record_entity.dart';
+import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_health_record/domain/entity/pet_profile_records_entity.dart';
+import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_health_record/domain/entity/reservation_entity.dart';
+
 class PetProfileEntity {
   final String id;
   final String name;
@@ -21,5 +25,30 @@ class PetProfileEntity {
   });
 
 
+ // اسوي فنكشن تحول من انتيتي ل انتيتي الثانيه
 
+
+}
+
+
+extension PetProfileToPetEntity on PetProfileEntity {
+  PetEntity toPetEntity({
+    String? ownerName,
+    List<HealthRecordEntity> healthRecords = const [],
+    List<ReservationEntity> reservations = const [],
+  }) {
+    return PetEntity(
+      petId: id,
+      ownerId: ownerId,
+      ownerName: ownerName ?? 'Unknown',
+      petName: name,
+      petSpecies: species,
+      petBreed: breed,
+      petBirthdate: birthdate,
+      petPhoto: photoUrl,
+      petGender: gender,
+      healthRecords: healthRecords,
+      reservations: reservations,
+    );
+  }
 }

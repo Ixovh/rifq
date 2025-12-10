@@ -8,15 +8,15 @@ part 'provider_items_view_model.mapper.dart';
 class ProviderItemsViewModel extends ProviderItemsViewEntity
     with ProviderItemsViewModelMappable {
   const ProviderItemsViewModel({
-    required super.itemId,
-    required super.itemName,
-    super.itemDescription,
+    @MappableField(key: 'item_id') required super.itemId,
+    @MappableField(key: 'item_name') required super.itemName,
+    @MappableField(key: 'item_description') super.itemDescription,
     super.price,
-    required super.providerId,
-    required super.providerName,
-    super.providerImage,
+    @MappableField(key: 'provider_id') required super.providerId,
+    @MappableField(key: 'provider_name') required super.providerName,
+    @MappableField(key: 'provider_image') super.providerImage,
     super.phone,
     super.location,
-    super.locationUrl,
+    @MappableField(key: 'location_url') super.locationUrl,
   });
 }

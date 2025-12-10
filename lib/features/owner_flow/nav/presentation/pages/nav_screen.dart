@@ -19,14 +19,15 @@ class NavScreen extends StatelessWidget {
           builder: (context, state) {
             return Scaffold(
 
-              resizeToAvoidBottomInset: false, //عشان يثبت زر الai
+              resizeToAvoidBottomInset: true, //عشان يثبت زر الai
               backgroundColor: context.background,
              floatingActionButton:
 
               FloatingActionButton(
               shape:  CircleBorder(),
                 onPressed: () {
-                  context.push(Routes.aiScreen);
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("data 12"),behavior: .floating,));
+                  // context.push(Routes.aiScreen);
                   cubit.changeIndex(index: 2);
                 },
                 backgroundColor: context.primary50,
@@ -37,6 +38,7 @@ class NavScreen extends StatelessWidget {
               ),
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerDocked,
+                  floatingActionButtonAnimator: .noAnimation,
               bottomNavigationBar: BottomNavigationBar(
                 backgroundColor: context.background,
                 type: BottomNavigationBarType.fixed,

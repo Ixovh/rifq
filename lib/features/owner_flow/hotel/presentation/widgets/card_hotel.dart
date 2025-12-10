@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -6,24 +5,22 @@ class CardHotel extends StatelessWidget {
   final String imageHotel;
   final String nameHotle;
   final String location;
-  final String price;
-  final String services;
+  // final String price;
+  // final String services;
   final VoidCallback? onTap;
 
   const CardHotel({
     super.key,
     this.onTap,
      required this.imageHotel,
-
     required this.nameHotle,
     required this.location,
-    required this.price,
-    required this.services,
+    // required this.price,
+    // required this.services,
   });
 
   @override
   Widget build(BuildContext context) {
-
     return InkWell(
       onTap: onTap,
       child: Card(
@@ -69,18 +66,18 @@ class CardHotel extends StatelessWidget {
                           ],
                         ),
                         SizedBox(height: 4.h),
-                        Row(
-                          children: [
-                            Icon(Icons.attach_money, size: 14),
-                            SizedBox(width: 4.w),
-                            Text(price, style: TextStyle(fontSize: 12.sp)),
-                          ],
-                        ),
+                        // Row(
+                        //   children: [
+                        //     Icon(Icons.attach_money, size: 14),
+                        //     SizedBox(width: 4.w),
+                        //     Text(price, style: TextStyle(fontSize: 12.sp)),
+                        //   ],
+                        // ),
                         SizedBox(height: 4.h),
-                        Text(
-                          'Services : $services',
-                          style: TextStyle(fontSize: 13.sp, color: Colors.black87),
-                        ),
+                        // Text(
+                        //   'Services : $services',
+                        //   style: TextStyle(fontSize: 13.sp, color: Colors.black87),
+                        // ),
                       ],
                     ),
                   ),
@@ -97,6 +94,5 @@ class CardHotel extends StatelessWidget {
       ),
     );
   }
-
 }
 

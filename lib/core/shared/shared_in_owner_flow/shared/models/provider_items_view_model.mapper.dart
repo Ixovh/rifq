@@ -26,17 +26,20 @@ class ProviderItemsViewModelMapper
   static const Field<ProviderItemsViewModel, String> _f$itemId = Field(
     'itemId',
     _$itemId,
+    key: r'item_id',
   );
   static String _$itemName(ProviderItemsViewModel v) => v.itemName;
   static const Field<ProviderItemsViewModel, String> _f$itemName = Field(
     'itemName',
     _$itemName,
+    key: r'item_name',
   );
   static String? _$itemDescription(ProviderItemsViewModel v) =>
       v.itemDescription;
   static const Field<ProviderItemsViewModel, String> _f$itemDescription = Field(
     'itemDescription',
     _$itemDescription,
+    key: r'item_description',
     opt: true,
   );
   static num? _$price(ProviderItemsViewModel v) => v.price;
@@ -49,16 +52,19 @@ class ProviderItemsViewModelMapper
   static const Field<ProviderItemsViewModel, String> _f$providerId = Field(
     'providerId',
     _$providerId,
+    key: r'provider_id',
   );
   static String _$providerName(ProviderItemsViewModel v) => v.providerName;
   static const Field<ProviderItemsViewModel, String> _f$providerName = Field(
     'providerName',
     _$providerName,
+    key: r'provider_name',
   );
   static String? _$providerImage(ProviderItemsViewModel v) => v.providerImage;
   static const Field<ProviderItemsViewModel, String> _f$providerImage = Field(
     'providerImage',
     _$providerImage,
+    key: r'provider_image',
     opt: true,
   );
   static String? _$phone(ProviderItemsViewModel v) => v.phone;
@@ -77,6 +83,7 @@ class ProviderItemsViewModelMapper
   static const Field<ProviderItemsViewModel, String> _f$locationUrl = Field(
     'locationUrl',
     _$locationUrl,
+    key: r'location_url',
     opt: true,
   );
 

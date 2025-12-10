@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rifq/core/theme/app_color.dart';
 import 'package:rifq/core/theme/app_theme.dart';
-import '../../../../../../../core/routes/base_routes.dart';
-import '../../../../../hotel/sup_feauter/booking_hotel/domain/entity/pet_entity.dart';
-import '../../domain/entity/pet_entity.dart';
+import 'package:rifq/features/owner_flow/add_pet/data/models/pet_model.dart';
 
+import '../../../../../../../core/routes/base_routes.dart';
+import '../../../pet_profile_health_record/domain/entity/pet_profile_records_entity.dart';
+import '../../domain/entity/pet_entity.dart';
 class ContainerPetCardWidgets extends StatelessWidget {
   final PetProfileEntity pet;
 
@@ -40,24 +41,21 @@ class ContainerPetCardWidgets extends StatelessWidget {
             color: Colors.black12,
             blurRadius: 12,
             offset: Offset(0, 4),
-          ),
+          )
         ],
       ),
 
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-
                 "Pet Profile", style: context.body3.copyWith(color: context.neutral500)
               ),
               IconButton(
                 onPressed: () {
-                  print(pet);
                     context.push(Routes.editpetprofile, extra: pet);
                     }, icon: Icon(Icons.edit_outlined),
               )
@@ -66,7 +64,6 @@ class ContainerPetCardWidgets extends StatelessWidget {
               //   context.push(Routes.editpetprofile);
               //   },
               //     icon: Icon(Icons.edit_outlined, color: AppColors.neutral900))
-
             ],
           ),
 
@@ -82,20 +79,9 @@ class ContainerPetCardWidgets extends StatelessWidget {
                 CircleAvatar(
                   radius: 22.r,
                   backgroundColor: Colors.white,
-                  child: ClipOval(
-                    child: Image.network(
-                      pet.photoUrl,
-                      width: 44.r,
-                      height: 44.r,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, _) =>
-                          Icon(Icons.pets, size: 28, color: Colors.grey),
-                    ),
-                  ),
+                  child: Image.network(pet.photoUrl),
                 ),
-
                 SizedBox(width: 12.w),
-
                 Expanded(
                   child: Text(
                     pet.name,
@@ -105,26 +91,28 @@ class ContainerPetCardWidgets extends StatelessWidget {
                     ),
                   ),
                 ),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.arrow_forward_ios, size: 20.r),
-                ),
+                IconButton(onPressed: (){
+                  print("name:${pet.name}");
+                  print("breed:${pet.breed}");
+                  print("species:${pet.species}");
+                  print("photo:${pet.photoUrl}");
+                  print("gender:${pet.gender}");
+                  print("birthdate:${pet.birthdate}");
+                  final petEntity=pet.toPetEntity(
+                    healthRecords: [],
+                    reservations: [],
+                  );
+                  context.push(Routes.healthRecourdpet,extra: petEntity);
+
+                },
+                    icon: Icon(Icons.arrow_forward_ios,size: 20.r,))
               ],
             ),
           ),
           SizedBox(height: 18.h),
-          Text(
-            "Gender: ${pet.gender}",
-            style: TextStyle(color: AppColors.neutral500),
-          ),
-          Text(
-            "Age:  ${pet.birthdate}",
-            style: TextStyle(color: AppColors.neutral500),
-          ),
-          Text(
-            "Breed:  ${pet.breed}",
-            style: TextStyle(color: AppColors.neutral500),
-          ),
+          Text("Gender: ${pet.gender}",style: TextStyle(color: AppColors.neutral500),),
+          Text("Age:  ${pet.birthdate}",style: TextStyle(color: AppColors.neutral500),),
+          Text("Breed:  ${pet.breed}",style: TextStyle(color: AppColors.neutral500),),
         ],
       ),
     );

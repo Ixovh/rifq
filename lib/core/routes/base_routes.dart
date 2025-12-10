@@ -3,7 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rifq/core/common/choose_path/presentation/pages/choose_path_screen.dart';
 import 'package:rifq/core/common/splash/presentation/pages/splash_screen.dart';
+import 'package:rifq/core/shared/shared_in_owner_flow/shared/entities/provider_entity.dart';
+import 'package:rifq/core/shared/shared_in_owner_flow/shared/entities/provider_items_view_entity.dart';
 import 'package:rifq/features/owner_flow/add_pet/presentation/pages/add_pet_screen.dart';
+import 'package:rifq/features/owner_flow/adoption/presentation/cubit/adoption_cubit.dart';
+import 'package:rifq/features/owner_flow/adoption/presentation/pages/adoption_screen.dart';
+import 'package:rifq/features/owner_flow/adoption/presentation/pages/pet_details_screen.dart';
+import 'package:rifq/features/owner_flow/adoption/presentation/pages/see_requeset_screen.dart';
+import 'package:rifq/features/owner_flow/adoption/presentation/pages/select_pet_for_adoption_screen.dart';
 import 'package:rifq/features/owner_flow/ai/presentation/pages/ai_screen.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/cubit/auth_cubit.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/auth_screen.dart';
@@ -16,14 +23,17 @@ import 'package:rifq/features/owner_flow/hotel/data/model/hotel_model.dart';
 import 'package:rifq/features/owner_flow/hotel/presentation/cubit/hotel_cubit.dart';
 import 'package:rifq/features/owner_flow/hotel/presentation/pages/hotel_details_screen.dart';
 
-import 'package:rifq/features/owner_flow/health/presentation/pages/health_screen.dart';
+import 'package:rifq/features/owner_flow/clinic/presentation/pages/clinic_screen.dart';
 
 import 'package:rifq/features/owner_flow/hotel/presentation/pages/hotel_home_screen.dart';
+import 'package:rifq/features/owner_flow/hotel/sup_feauter/booking_hotel/presentation/pages/booking_hotel.dart';
 import 'package:rifq/features/owner_flow/nav/presentation/cubit/nav_cubit.dart';
 import 'package:rifq/features/owner_flow/nav/presentation/pages/nav_screen.dart';
 import 'package:rifq/features/owner_flow/onbording/presentation/pages/onbording_screen.dart';
 import 'package:rifq/features/owner_flow/pet_profile/sup_features/edit_pet_profile/presentaion/pages/edit_pet_profile.dart';
 import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_info_card/domain/entity/pet_entity.dart';
+import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_health_record/domain/entity/pet_profile_records_entity.dart';
+import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_health_record/presentaion/pages/PetProfile_HealthAppointment_Screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/cubit/profile_cubit.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/edit_profile_screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/profile_screen.dart';
@@ -46,15 +56,25 @@ abstract class Routes {
   static String navbar = '/navbar';
   static String addpet = '/addpet';
 
-    static String hotel = '/HotelHome';
-  static String detailsHotel = '/DetailsHotel';
+
 
 
   static String aiScreen = '/aiScreen';
   static String healthScreen = '/healthScreen';
 
   static String hotelScreen = '/hotelScreen';
-  static String adoptionScreen = '/adoptionScreen';
+  // static String adoptionScreen = '/adoptionScreen';
+
+  static String adoption = '/adoption';
+  static String selectPetForAdoption = '/selectPetForAdoption';
+  static String seeRequests = '/seeRequests';
+  static String petDetails = '/petDetails';
+
+
+  static String hotel = '/HotelHome';
+  static String detailsHotel = '/DetailsHotel';
+  static String bookingHotel = '/BookingHotel';
+  static String healthRecourdpet = '/HealthRecourdpet';
 
   static final routers = GoRouter(
     initialLocation: splash,
@@ -137,14 +157,14 @@ abstract class Routes {
       //   },
       // ),
       // GoRoute(path: profile, builder: (context, state) => ProfileScreen()),
-      GoRoute(
-        path: profile,
-        name: Routes.profile,
-        builder: (context, state) {
-          final userId = state.extra as String;
-          return ProfileScreen(userId: userId);
-        },
-      ),
+      // GoRoute(
+      //   path: profile,
+      //   name: Routes.profile,
+      //   builder: (context, state) {
+      //     final userId = state.extra as String;
+      //     return ProfileScreen(userId: userId);
+      //   },
+      // ),
 
       GoRoute(
         path: editprofile,
@@ -182,24 +202,26 @@ abstract class Routes {
         },
       ),
 
-            GoRoute(
-        path: detailsHotel,
-        builder: (context, state) {
-          // map لاني ارسل اكثر من قيمه
-          final extra = state.extra as Map<String, dynamic>;
-          final hotel = extra['hotel'] as HotelModel;
-          final cubit = extra['cubit'] as HotelCubit;
-          return BlocProvider.value(
-            value: cubit,
-            child: HotelDetailsScreen(hotel: hotel),
-          );
-        },
-      ),
+
+
+      //       GoRoute(
+      //   path: detailsHotel,
+      //   builder: (context, state) {
+      //     // map لاني ارسل اكثر من قيمه
+      //     final extra = state.extra as Map<String, dynamic>;
+      //     final hotel = extra['hotel'] as HotelModel;
+      //     final cubit = extra['cubit'] as HotelCubit;
+      //     return BlocProvider.value(
+      //       value: cubit,
+      //       child: HotelDetailsScreen(hotel: hotel),
+      //     );
+      //   },
+      // ),
 
       GoRoute(path: addpet, builder: (context, state) => AddPetScreen()),
 
       GoRoute(path: aiScreen, builder: (context, state) => AiScreen()),
-      GoRoute(path: healthScreen, builder: (context, state) => HealthScreen()),
+      GoRoute(path: healthScreen, builder: (context, state) => ClinicScreen()),
 
       GoRoute(
         path: hotelScreen,
@@ -207,6 +229,130 @@ abstract class Routes {
       ),
       // GoRoute(path: adoptionScreen, builder: (context, state) => Ad()),
 
+
+GoRoute(
+        path: adoption,
+        builder: (context, state) {
+          return AdoptionScreen();
+        },
+      ),
+      GoRoute(
+        path: selectPetForAdoption,
+        builder: (context, state) {
+          return BlocProvider.value(
+            value: state.extra as AdoptionCubit,
+            child: SelectPetForAdoptionScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: seeRequests,
+        builder: (context, state) {
+          final data = state.extra as Map<String, dynamic>;
+          return BlocProvider.value(
+            value: data['cubit'] as AdoptionCubit,
+            child: SeeRequesetScreen(pet: data['pet']),
+          );
+        },
+      ),
+      GoRoute(
+        path: petDetails,
+        builder: (context, state) {
+          final data = state.extra as Map<String, dynamic>;
+          return BlocProvider.value(
+            value: data['cubit'] as AdoptionCubit,
+            child: PetDetailsScreen(pet: data['pet']),
+          );
+        },
+      ),
+      GoRoute(
+        path: profile,
+        builder: (context, state) => ProfileScreen(),
+      ),
+      //------//
+      //------//
+      //------//
+      //------//
+      GoRoute(
+        path: editprofile,
+        builder: (context, state) {
+          final cubit = state.extra as ProfileCubit;
+          return BlocProvider.value(
+            value: cubit,
+            child: EditProfileScreen(),
+          );
+        },
+      ),
+
+      //------//
+      //------//
+      //------//
+      //------//
+      GoRoute(
+        path: hotel,
+        builder: (context, state) {
+          return HotelHomeScreen();
+        },
+      ),
+
+      //------//
+      //------//
+      //------//
+
+      GoRoute(
+        path: detailsHotel,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final hotel = extra['hotel'] as ProviderEntity;
+          final cubit = extra['cubit'] as HotelCubit;
+          return BlocProvider.value(
+            value: cubit,
+            child: HotelDetailsScreen(hotel: hotel),
+          );
+
+        },
+
+      ),
+
+      //------//
+      //------//
+      //------//
+
+      GoRoute(
+        path: bookingHotel,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>; // نجيب البيانات اللي مررناها
+          final hotel = extra['hotel'] as ProviderItemsViewEntity;
+          final roomId = extra['roomId'] as String;
+          return BookingHotel(
+            hotel: hotel,
+            roomId: roomId,
+          );
+        },
+      ),
+
+      // GoRoute(
+      //   path: bookingHotel,
+      //   builder: (context, state) {
+      //     // final pet = state.extra as PetProfileEntity;
+      //     return BookingHotel();
+      //   },
+      // ),
+      //------//
+      //------//
+      //------//
+      //------//
+
+
+      GoRoute(
+        path: Routes.healthRecourdpet,
+        builder: (context, state) {
+          final pet = state.extra as PetEntity;
+          return PetHealthAndAppointmentScreen(pet: pet);
+        },
+      ),
+
     ],
   );
+
 }

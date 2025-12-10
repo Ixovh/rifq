@@ -41,6 +41,7 @@ class ProviderModelMapper extends ClassMapperBase<ProviderModel> {
   static const Field<ProviderModel, String> _f$locationUrl = Field(
     'locationUrl',
     _$locationUrl,
+    key: r'location_url',
     opt: true,
   );
   static String? _$phone(ProviderModel v) => v.phone;

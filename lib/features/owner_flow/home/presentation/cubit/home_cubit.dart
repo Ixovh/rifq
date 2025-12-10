@@ -1,52 +1,35 @@
-import 'dart:convert';
-
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:injectable/injectable.dart';
 import 'package:rifq/features/owner_flow/add_pet/data/models/pet_model.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:rifq/features/owner_flow/home/domain/use_cases/home_use_case.dart';
 
 part 'home_state.dart';
 
+@injectable
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit() : super(HomeInitial());
+  final GetHomeDataUseCase useCase;
 
-  final supabase = Supabase.instance.client;
+  HomeCubit(this.useCase) : super(HomeInitial());
 
   Future<void> loadHomeData() async {
     emit(HomeLoading());
 
-
-    final user = supabase.auth.currentUser;
-
-    //-----user isnt logged in
-    if (user == null) {
-      emit(HomeGuestState());
-      return;
-    }
-
-    try {
-      //----user is logged in
-      final profile = await supabase
-          .from('users')
-          .select('id, name')
-          .eq('auth_id', user.id)
-          .maybeSingle();
-
-      final username = profile?['name'] ?? "User";
-      final ownerId = profile?['id'];
-
-      final petsData = await supabase
-          .from('pets')
-          .select()
-          .eq('owner_id', ownerId);
-
-      final pets = (petsData as List<dynamic>)
-          .map((e) => PetModelMapper.fromJson(jsonEncode(e)))
-          .toList();
-
-      emit(HomeLoaded(username: username, pets: pets));
-    } catch (e) {
-      emit(HomeError(e.toString()));
-    }
+    final result = await useCase.getHomeData();
+      result.when(
+      (data) {
+        if (data.pets.isEmpty && data.username != "Guest") {
+          emit(HomeEmptyState(data.username));
+        } else if (data.username == "Guest") {
+          emit(HomeGuestState());
+        } else {
+          emit(HomeLoadedState(
+            username: data.username,
+            pets: data.pets,
+          ));
+        }
+      },
+      (error) => emit(HomeError(error)),
+    );
   }
 }

@@ -1,3 +1,5 @@
+import '../../../../../../../core/shared/enum/status_booking_enum.dart';
+
 class BookingHotelEntity {
   final String id;
   final String userId;
@@ -5,11 +7,11 @@ class BookingHotelEntity {
   final String serviceTypeId;//نوع الخدمة
   final String serviceItemId;
   final String petId;
-  final String startDate;
-  final String endDate;
-  final String status;
+  final DateTime startDate;
+  final DateTime endDate;
+  final StatusBookingEnum status;
   final String notes;
-  final String createdAt;
+  final DateTime createdAt;
 
   BookingHotelEntity({
     required this.id,

@@ -10,7 +10,7 @@ class ProviderModel extends ProviderEntity with ProviderModelMappable {
     required super.name,
     super.image,
     super.location,
-    super.locationUrl,
+    @MappableField(key: 'location_url') super.locationUrl,
     super.phone,
   });
 }

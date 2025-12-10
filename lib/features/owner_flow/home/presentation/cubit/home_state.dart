@@ -1,8 +1,6 @@
-// lib/features/owner_flow/home/presentation/cubit/home_state.dart
-
 part of 'home_cubit.dart';
 
-sealed class HomeState extends Equatable {
+abstract class HomeState extends Equatable {
   const HomeState();
 
   @override
@@ -13,15 +11,25 @@ class HomeInitial extends HomeState {}
 
 class HomeLoading extends HomeState {}
 
-class HomeGuestState extends HomeState {
-  const HomeGuestState();
+///!!----------------USER IS GUEST------------------
+class HomeGuestState extends HomeState {}
+
+///!!----------------NO PETS-------------------
+class HomeEmptyState extends HomeState {
+  final String username;
+
+  const HomeEmptyState(this.username);
+
+  @override
+  List<Object?> get props => [username];
 }
 
-class HomeLoaded extends HomeState {
+///!!----------------HAS PETS-------------------
+class HomeLoadedState extends HomeState {
   final String username;
   final List<PetModel> pets;
 
-  const HomeLoaded({
+  const HomeLoadedState({
     required this.username,
     required this.pets,
   });

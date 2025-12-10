@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:rifq/core/common/widgets/appbar/custom_app_bar.dart';
@@ -22,20 +23,20 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => HomeCubit()..loadHomeData(),
-      child: BlocBuilder<HomeCubit, HomeState>(
-        builder: (context, state) {
+  create: (_) => GetIt.I<HomeCubit>()..loadHomeData(),
+  child: BlocBuilder<HomeCubit, HomeState>(
+    builder: (context, state) {
           if (state is HomeLoading || state is HomeInitial) {
-            return Center(child: CircularProgressIndicator());
+            // return Center(child: CircularProgressIndicator());
           }
 
-          //==========guest=============
+          //!!==========guest=============
           if (state is HomeGuestState) {
             return HomeContent(username: "Guest", isGuest: true, pets: []);
           }
 
-          //===========signed==============
-          if (state is HomeLoaded) {
+          //!!===========signed==============
+          if (state is HomeLoadedState) {
             return HomeContent(
               username: state.username,
               isGuest: false,
@@ -92,10 +93,10 @@ class HomeContent extends StatelessWidget {
               ),
               SizedBox(height: 4),
 
-              //=========== is guest? show the guest card ==============
+              //!!=========== is guest? show the guest card ==============
               if (isGuest) ...[GuestCard(), SizedBox(height: 20)],
 
-              //===========is signed show pets and add button =============
+              //!!===========is signed show pets and add button =============
               if (!isGuest) ...[
                 Text("Your Pets", style: context.body2),
                 SizedBox(height: 12),
@@ -120,7 +121,7 @@ class HomeContent extends StatelessWidget {
                         final result = await context.push(Routes.addpet);
 
                         if (result == true) {
-                          //====   load pets ===
+                          //!!---load pets---
                           context.read<HomeCubit>().loadHomeData();
                         }
                       },
@@ -129,7 +130,7 @@ class HomeContent extends StatelessWidget {
                   ],
                 ),
               ],
-              //==============quick services===================
+              //!!--------quick services----------
               SizedBox(height: 20),
               Text("Quick Service", style: context.body1),
               SizedBox(height: 12),
@@ -161,7 +162,7 @@ class HomeContent extends StatelessWidget {
                 ],
               ),
 
-              //==============recommendations ===================
+              //!!--------recommendations----------
               SizedBox(height: 24),
               Text("Recommendations", style: context.body1),
               SizedBox(height: 12),
