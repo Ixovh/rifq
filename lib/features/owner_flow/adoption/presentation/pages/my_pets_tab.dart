@@ -142,152 +142,145 @@ class MyPetsTab extends StatelessWidget {
           children: [
             SizedBox(height: 16.h),
             Expanded(
-              child: RefreshIndicator(
-                color: context.primary,
-                backgroundColor: context.background,
-                onRefresh: () async {
-                  await cubit.getOfferedPetsForAdoption(forceRefresh: true);
+              child: ListView.separated(
+                separatorBuilder: (context, index) {
+                  return SizedBox(height: 16.h);
                 },
-                child: ListView.separated(
-                  separatorBuilder: (context, index) {
-                    return SizedBox(height: 16.h);
-                  },
-                  itemCount: offeredPets.length,
-                  itemBuilder: (context, index) {
-                    final pet = offeredPets[index];
-                    return Container(
-                      padding: EdgeInsets.all(16.r),
-                      width: double.infinity,
-                      height: 340.h,
-                      decoration: ShapeDecoration(
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.r),
+                itemCount: offeredPets.length,
+                itemBuilder: (context, index) {
+                  final pet = offeredPets[index];
+                  return Container(
+                    padding: EdgeInsets.all(16.r),
+                    width: double.infinity,
+                    height: 340.h,
+                    decoration: ShapeDecoration(
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.r),
+                      ),
+                      shadows: [
+                        BoxShadow(
+                          color: Color(0x3F656565),
+                          blurRadius: 4,
+                          offset: Offset(0, 1),
+                          spreadRadius: 0,
                         ),
-                        shadows: [
-                          BoxShadow(
-                            color: Color(0x3F656565),
-                            blurRadius: 4,
-                            offset: Offset(0, 1),
-                            spreadRadius: 0,
+                      ],
+                    ),
+                    child: Dismissible(
+                      direction: DismissDirection.endToStart,
+                      key: Key(pet.id),
+                      onDismissed: (direction) {
+                        cubit.removePetFromAdoption(
+                          petId: pet.id,
+                          ownerId: pet.ownerId,
+                        );
+                      },
+                      background: Container(
+                        color: context.error,
+                        child: Icon(Icons.delete, color: Colors.white),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Center(
+                            child: Image.network(
+                              pet.photoUrl,
+                              fit: BoxFit.fill,
+                              width: double.infinity,
+                              height: 150.h,
+                              errorBuilder: (context, error, stackTrace) {
+                                return SvgPicture.asset(
+                                  'assets/icon/logo.svg',
+                                  colorFilter: ColorFilter.mode(
+                                    context.neutral400,
+                                    BlendMode.srcIn,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          SizedBox(height: 18.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                pet.name,
+                                style: context.h5.copyWith(
+                                  color: context.neutral1000,
+                                ),
+                              ),
+                              SizedBox(width: 8.w),
+                              Icon(
+                                pet.gender == 'male'
+                                    ? Icons.male
+                                    : Icons.female,
+                                color: context.secondary100,
+                                size: 25.r,
+                              ),
+                              SizedBox(width: 8.w),
+                              Text(
+                                pet.breed,
+                                style: context.body2.copyWith(
+                                  color: context.neutral500,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.calendar_today_outlined,
+                                size: 16.r,
+                                color: context.primary300,
+                              ),
+                              SizedBox(width: 4.w),
+                              Text(
+                                _calculateAge(pet.birthdate),
+                                style: context.body2.copyWith(
+                                  color: context.neutral500,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Spacer(),
+                          Container(
+                            width: 295.w,
+                            height: 37.h,
+                            decoration: BoxDecoration(
+                              color: context.primary100,
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                TextButton(
+                                  onPressed: () {
+                                    context.push(
+                                      Routes.seeRequests,
+                                      extra: {'cubit': cubit, 'pet': pet},
+                                    );
+                                  },
+                                  child: Text(
+                                    'view requests',
+                                    style: context.body2.copyWith(
+                                      color: context.primary500,
+                                    ),
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: context.primary500,
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
-                      child: Dismissible(
-                        direction: DismissDirection.endToStart,
-                        key: Key(pet.id),
-                        onDismissed: (direction) {
-                          cubit.removePetFromAdoption(
-                            petId: pet.id,
-                            ownerId: pet.ownerId,
-                          );
-                        },
-                        background: Container(
-                          color: context.error,
-                          child: Icon(Icons.delete, color: Colors.white),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Center(
-                              child: Image.network(
-                                pet.photoUrl,
-                                fit: BoxFit.fill,
-                                width: double.infinity,
-                                height: 150.h,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return SvgPicture.asset(
-                                    'assets/icon/logo.svg',
-                                    colorFilter: ColorFilter.mode(
-                                      context.neutral400,
-                                      BlendMode.srcIn,
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                            SizedBox(height: 18.h),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  pet.name,
-                                  style: context.h5.copyWith(
-                                    color: context.neutral1000,
-                                  ),
-                                ),
-                                SizedBox(width: 8.w),
-                                Icon(
-                                  pet.gender == 'male'
-                                      ? Icons.male
-                                      : Icons.female,
-                                  color: context.secondary100,
-                                  size: 25.r,
-                                ),
-                                SizedBox(width: 8.w),
-                                Text(
-                                  pet.breed,
-                                  style: context.body2.copyWith(
-                                    color: context.neutral500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.calendar_today_outlined,
-                                  size: 16.r,
-                                  color: context.primary300,
-                                ),
-                                SizedBox(width: 4.w),
-                                Text(
-                                  _calculateAge(pet.birthdate),
-                                  style: context.body2.copyWith(
-                                    color: context.neutral500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Spacer(),
-                            Container(
-                              width: 295.w,
-                              height: 37.h,
-                              decoration: BoxDecoration(
-                                color: context.primary100,
-                                borderRadius: BorderRadius.circular(8.r),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  TextButton(
-                                    onPressed: () {
-                                      context.push(
-                                        Routes.seeRequests,
-                                        extra: {'cubit': cubit, 'pet': pet},
-                                      );
-                                    },
-                                    child: Text(
-                                      'view requests',
-                                      style: context.body2.copyWith(
-                                        color: context.primary500,
-                                      ),
-                                    ),
-                                  ),
-                                  Icon(
-                                    Icons.arrow_forward_ios,
-                                    color: context.primary500,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
             ),
             Padding(

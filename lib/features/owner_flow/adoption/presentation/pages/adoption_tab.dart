@@ -57,7 +57,7 @@ class AdoptionTab extends StatelessWidget {
       builder: (context, state) {
         final availablePets = cubit.availablePets;
 
-        if (state is AdoptionLoading && availablePets.isEmpty) {
+        if (state is AdoptionLoading) {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -93,9 +93,18 @@ class AdoptionTab extends StatelessWidget {
                 ),
                 SizedBox(height: 16.h),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: context.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                  ),
                   onPressed: () =>
                       cubit.getAvailablePetsForAdoption(forceRefresh: true),
-                  child: const Text('Retry'),
+                  child: Text(
+                    'Refresh',
+                    style: context.body2.copyWith(color: Colors.white),
+                  ),
                 ),
               ],
             ),
@@ -118,6 +127,21 @@ class AdoptionTab extends StatelessWidget {
                 Text(
                   'No pets available for adoption yet',
                   style: context.body2.copyWith(color: context.neutral300),
+                ),
+                SizedBox(height: 16.h),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: context.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                  ),
+                  onPressed: () =>
+                      cubit.getAvailablePetsForAdoption(forceRefresh: true),
+                  child: Text(
+                    'Refresh',
+                    style: context.body2.copyWith(color: Colors.white),
+                  ),
                 ),
               ],
             ),

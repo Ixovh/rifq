@@ -37,15 +37,6 @@ class AdoptionRepoData implements AdoptionRepoDomain {
   }
 
   @override
-  Future<Result<int, Object>> getAdoptionRequestCountForPet({
-    required String petId,
-    required String ownerId,
-  }) async => await dataSource.getAdoptionRequestCountForPet(
-    petId: petId,
-    ownerId: ownerId,
-  );
-
-  @override
   Future<Result<List<AdoptionModel>, Object>> getAdoptionRequestsForPet({
     required String petId,
     required String ownerId,
@@ -98,16 +89,6 @@ class AdoptionRepoData implements AdoptionRepoDomain {
   }) async => await dataSource.getPetDetails(petId: petId);
 
   @override
-  Future<Result<List<AdoptionModel>, Object>> getUserAdoptionRequests({
-    required String userId,
-  }) async => await dataSource.getUserAdoptionRequests(userId: userId);
-
-  @override
-  Future<Result<AdoptionModel, Object>> cancelAdoptionRequest({
-    required String requestId,
-    required String userId,
-  }) async => await dataSource.cancelAdoptionRequest(
-    requestId: requestId,
-    userId: userId,
-  );
+  Future<Result<String, Object>> getUserName({required String userId}) async =>
+      await dataSource.getUserName(userId: userId);
 }

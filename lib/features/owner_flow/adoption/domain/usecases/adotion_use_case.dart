@@ -24,15 +24,6 @@ class AdoptionUseCase {
     required AddPetEntity pet,
   }) async => await repoDomain.addPetForAdoption(pet: pet);
 
-  /// Pet owner can see the number of requests on his/her offered pet
-  Future<Result<int, Object>> getAdoptionRequestCountForPet({
-    required String petId,
-    required String ownerId,
-  }) async => await repoDomain.getAdoptionRequestCountForPet(
-    petId: petId,
-    ownerId: ownerId,
-  );
-
   /// Pet owner can see all adoption requests for a specific pet
   Future<Result<List<AdoptionRequestEntity>, Object>>
   getAdoptionRequestsForPet({
@@ -93,17 +84,7 @@ class AdoptionUseCase {
     required String petId,
   }) async => await repoDomain.getPetDetails(petId: petId);
 
-  /// Regular user can see all their own adoption requests
-  Future<Result<List<AdoptionRequestEntity>, Object>> getUserAdoptionRequests({
-    required String userId,
-  }) async => await repoDomain.getUserAdoptionRequests(userId: userId);
-
-  /// Regular user can cancel their own adoption request
-  Future<Result<AdoptionRequestEntity, Object>> cancelAdoptionRequest({
-    required String requestId,
-    required String userId,
-  }) async => await repoDomain.cancelAdoptionRequest(
-    requestId: requestId,
-    userId: userId,
-  );
+  /// Get user name by user ID
+  Future<Result<String, Object>> getUserName({required String userId}) async =>
+      await repoDomain.getUserName(userId: userId);
 }

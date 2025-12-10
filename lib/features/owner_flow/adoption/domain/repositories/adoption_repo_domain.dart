@@ -16,12 +16,6 @@ abstract class AdoptionRepoDomain {
     required AddPetEntity pet,
   });
 
-  /// Pet owner can see the number of requests on his/her offered pet
-  Future<Result<int, Object>> getAdoptionRequestCountForPet({
-    required String petId,
-    required String ownerId,
-  });
-
   /// Pet owner can see all adoption requests for a specific pet
   Future<Result<List<AdoptionRequestEntity>, Object>>
   getAdoptionRequestsForPet({
@@ -65,14 +59,6 @@ abstract class AdoptionRepoDomain {
   /// Regular user can see details of a pet available to be adopted
   Future<Result<AddPetEntity, Object>> getPetDetails({required String petId});
 
-  /// Regular user can see all their own adoption requests
-  Future<Result<List<AdoptionRequestEntity>, Object>> getUserAdoptionRequests({
-    required String userId,
-  });
-
-  /// Regular user can cancel their own adoption request
-  Future<Result<AdoptionRequestEntity, Object>> cancelAdoptionRequest({
-    required String requestId,
-    required String userId,
-  });
+  /// Get user name by user ID
+  Future<Result<String, Object>> getUserName({required String userId});
 }

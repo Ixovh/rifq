@@ -6,6 +6,7 @@ import 'package:rifq/features/owner_flow/adoption/presentation/cubit/adoption_cu
 import 'package:rifq/core/theme/app_theme.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rifq/features/owner_flow/add_pet/domain/entities/add_pet_entity.dart';
+import 'package:rifq/features/owner_flow/adoption/presentation/widgets/adoption_request_card.dart';
 
 class SeeRequesetScreen extends StatelessWidget {
   final AddPetEntity pet;
@@ -21,9 +22,12 @@ class SeeRequesetScreen extends StatelessWidget {
     // Load adoption requests for the selected pet
     if (currentState is! AdoptionLoading &&
         currentState is! AdoptionError &&
-        currentState is! PetRequestsLoaded) {
+        !(currentState is PetRequestsLoaded && currentState.petId == pet.id)) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        cubit.getAdoptionRequestsForPet(petId: pet.id, ownerId: pet.ownerId);
+        cubit.getAdoptionRequestsForSpecificPet(
+          petId: pet.id,
+          ownerId: pet.ownerId,
+        );
       });
     }
     return Scaffold(
@@ -41,12 +45,62 @@ class SeeRequesetScreen extends StatelessWidget {
           },
         ),
       ),
-      body: BlocBuilder<AdoptionCubit, AdoptionState>(
+      body: BlocConsumer<AdoptionCubit, AdoptionState>(
+        listener: (context, state) {
+          if (state is AdoptionRequestStatusUpdated) {
+            // Check if the request was accepted (pet ownership transferred)
+            final isAccepted = state.request.status == 'adopted';
+
+            if (isAccepted) {
+              // Pet has been transferred, show success message and navigate back
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: const Text(
+                    'Pet adoption request accepted! The pet has been transferred.',
+                  ),
+                  backgroundColor: context.success,
+                  duration: const Duration(seconds: 3),
+                ),
+              );
+              // Navigate back since the pet is no longer owned by this user
+              Future.delayed(const Duration(milliseconds: 500), () {
+                if (context.mounted) {
+                  context.pop();
+                }
+              });
+            } else {
+              // Request was rejected, just reload requests
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: const Text('Request status updated successfully'),
+                  backgroundColor: context.success,
+                ),
+              );
+              // Reload requests for this specific pet after status update
+              // Only reload if the updated request belongs to this pet
+              if (state.petId == null || state.petId == pet.id) {
+                cubit.getAdoptionRequestsForSpecificPet(
+                  petId: pet.id,
+                  ownerId: pet.ownerId,
+                  forceRefresh: true,
+                );
+              }
+            }
+          }
+          if (state is AdoptionError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: context.error,
+              ),
+            );
+          }
+        },
         builder: (context, state) {
           if (state is AdoptionLoading) {
             return Center(
               child: Column(
-                mainAxisAlignment: .center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SvgPicture.asset(
                     'assets/icon/logo.svg',
@@ -71,19 +125,53 @@ class SeeRequesetScreen extends StatelessWidget {
           }
 
           if (state is PetRequestsLoaded) {
-            if (state.requests.isEmpty) {
+            // Only show requests if they belong to the current pet
+            if (state.petId != pet.id) {
               return Center(
-                child: Text(
-                  'No adoption requests found for this pet',
-                  style: context.body2.copyWith(color: context.neutral300),
-                ),
+                child: CircularProgressIndicator(color: context.primary300),
               );
             }
-            return ListView.builder(
-              itemCount: state.requests.length,
-              itemBuilder: (context, index) {
-                return Text(state.requests[index].id);
+            return RefreshIndicator(
+              color: context.primary,
+              backgroundColor: context.background,
+              onRefresh: () async {
+                await cubit.getAdoptionRequestsForSpecificPet(
+                  petId: pet.id,
+                  ownerId: pet.ownerId,
+                  forceRefresh: true,
+                );
               },
+              child: state.requests.isEmpty
+                  ? SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.7,
+                        child: Center(
+                          child: Text(
+                            'No adoption requests found for this pet',
+                            style: context.body2.copyWith(
+                              color: context.neutral300,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  : ListView.separated(
+                      padding: EdgeInsets.all(16.r),
+                      separatorBuilder: (context, index) {
+                        return SizedBox(height: 16.h);
+                      },
+                      itemCount: state.requests.length,
+                      itemBuilder: (context, index) {
+                        final request = state.requests[index];
+                        return AdoptionRequestCard(
+                          request: request,
+                          petOwnerId: pet.ownerId,
+                          petId: pet.id, // Pass petId to the card
+                          cubit: cubit,
+                        );
+                      },
+                    ),
             );
           }
           return Text('No requests found');

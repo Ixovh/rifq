@@ -194,13 +194,13 @@ class PetDetailsScreen extends StatelessWidget {
                     children: [
                       // Title Field
                       CustomFormBuilderTextField(
-                        name: 'title',
-                        label: 'Title',
-                        iconData: CupertinoIcons.textformat,
-                        controller: cubit.adoptionRequestTitleController,
+                        name: 'phone number',
+                        label: 'Phone Number',
+                        iconData: CupertinoIcons.phone_solid,
+                        controller: cubit.adoptionRequestPhoneNumberController,
                         validators: [
                           FormBuilderValidators.required(
-                            errorText: 'Please enter a title',
+                            errorText: 'Please enter a phone number',
                           ),
                         ],
                       ),
@@ -262,8 +262,8 @@ class PetDetailsScreen extends StatelessWidget {
                                       false) {
                                     cubit.sendAdoptionRequest(
                                       petId: pet.id,
-                                      title: cubit
-                                          .adoptionRequestTitleController
+                                      phone: cubit
+                                          .adoptionRequestPhoneNumberController
                                           .text
                                           .trim(),
                                       description: cubit

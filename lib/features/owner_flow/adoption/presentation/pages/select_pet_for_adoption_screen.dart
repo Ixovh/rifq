@@ -163,9 +163,27 @@ class SelectPetForAdoptionScreen extends StatelessWidget {
         return BuildScaffold(
           context: context,
           cubit: cubit,
-          body: Center(
-            child: CircularProgressIndicator(color: context.neutral300),
-          ),
+            body: Center(
+              child: Column(
+                mainAxisAlignment: .center,
+                children: [
+                  SvgPicture.asset(
+                    'assets/icon/logo.svg',
+                    colorFilter: ColorFilter.mode(
+                      context.neutral300,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  Text(
+                    'just a moment we will load your pets',
+                    style: context.body2.copyWith(color: context.neutral300),
+                  ),
+                  SizedBox(height: 16.h),
+                  CircularProgressIndicator(color: context.neutral300),
+                ],
+              ),
+            ),
         );
       },
     );

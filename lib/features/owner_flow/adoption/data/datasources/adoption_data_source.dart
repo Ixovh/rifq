@@ -10,11 +10,6 @@ abstract class AdoptionDataSource {
 
   Future<Result<PetModel, Object>> addPetForAdoption({required PetModel pet});
 
-  Future<Result<int, Object>> getAdoptionRequestCountForPet({
-    required String petId,
-    required String ownerId,
-  });
-
   Future<Result<List<AdoptionModel>, Object>> getAdoptionRequestsForPet({
     required String petId,
     required String ownerId,
@@ -44,14 +39,7 @@ abstract class AdoptionDataSource {
 
   Future<Result<PetModel, Object>> getPetDetails({required String petId});
 
-  Future<Result<List<AdoptionModel>, Object>> getUserAdoptionRequests({
-    required String userId,
-  });
-
-  Future<Result<AdoptionModel, Object>> cancelAdoptionRequest({
-    required String requestId,
-    required String userId,
-  });
+  Future<Result<String, Object>> getUserName({required String userId});
 }
 
 @LazySingleton(as: AdoptionDataSource)
@@ -150,37 +138,6 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
       });
 
       return Result.success(pet);
-    } catch (e) {
-      return Result.error(CatchErrorMessage(error: e).getWriteMessage());
-    }
-  }
-
-  @override
-  Future<Result<int, Object>> getAdoptionRequestCountForPet({
-    required String petId,
-    required String ownerId,
-  }) async {
-    try {
-      final pet = await supabase
-          .from('pets')
-          .select('owner_id')
-          .eq('id', petId)
-          .eq('owner_id', ownerId)
-          .maybeSingle();
-
-      if (pet == null) {
-        return Result.error('Pet not found or you are not the owner');
-      }
-
-      final response = await supabase
-          .from('adoptions')
-          .select('id')
-          .eq('pet_id', petId)
-          .neq('owner_id', ownerId)
-          .eq('status', 'active');
-
-      final count = (response as List).length;
-      return Result.success(count);
     } catch (e) {
       return Result.error(CatchErrorMessage(error: e).getWriteMessage());
     }
@@ -344,9 +301,10 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
         );
       }
 
+      // Get the adoption request to find pet_id and requester_id (owner_id in adoptions table is the requester)
       final adoption = await supabase
           .from('adoptions')
-          .select('pet_id')
+          .select('pet_id, owner_id')
           .eq('id', requestId)
           .maybeSingle();
 
@@ -355,7 +313,11 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
       }
 
       final petId = adoption['pet_id'] as String;
+      final requesterId =
+          adoption['owner_id']
+              as String; // This is the person who wants to adopt
 
+      // Verify the current user is the pet owner
       final pet = await supabase
           .from('pets')
           .select('owner_id')
@@ -367,6 +329,7 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
         return Result.error('You are not the owner of this pet');
       }
 
+      // Update the adoption request status
       final response = await supabase
           .from('adoptions')
           .update({'status': dbStatus})
@@ -381,12 +344,22 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
         responseWithCreatedAt['created_at'] = DateTime.now().toIso8601String();
       }
 
-      // Ensure created_at is present (already handled above)
       final updatedAdoption = AdoptionModelMapper.fromMap(
         responseWithCreatedAt,
       );
 
       if (isAccepted) {
+        // Transfer pet ownership to the requester
+        await supabase
+            .from('pets')
+            .update({'owner_id': requesterId})
+            .eq('id', petId);
+
+        // Delete all adoption requests for this pet (since it's now adopted)
+        await supabase.from('adoptions').delete().eq('pet_id', petId);
+      } else {
+        // If rejected, just delete other active requests for this pet from the same requester
+        // and keep the rejected request
         await supabase
             .from('adoptions')
             .delete()
@@ -622,75 +595,20 @@ class AdoptionDataBaseSoruce implements AdoptionDataSource {
   }
 
   @override
-  Future<Result<List<AdoptionModel>, Object>> getUserAdoptionRequests({
-    required String userId,
-  }) async {
+  Future<Result<String, Object>> getUserName({required String userId}) async {
     try {
       final response = await supabase
-          .from('adoptions')
-          .select()
-          .eq('owner_id', userId)
-          .order('created_at', ascending: false);
-
-      final List<AdoptionModel> requests = (response as List).map((item) {
-        // Ensure created_at is present
-        final itemWithCreatedAt = Map<String, dynamic>.from(item);
-        if (!itemWithCreatedAt.containsKey('created_at') ||
-            itemWithCreatedAt['created_at'] == null) {
-          itemWithCreatedAt['created_at'] = DateTime.now().toIso8601String();
-        }
-        return AdoptionModelMapper.fromMap(itemWithCreatedAt);
-      }).toList();
-
-      return Result.success(requests);
-    } catch (e) {
-      return Result.error(CatchErrorMessage(error: e).getWriteMessage());
-    }
-  }
-
-  @override
-  Future<Result<AdoptionModel, Object>> cancelAdoptionRequest({
-    required String requestId,
-    required String userId,
-  }) async {
-    try {
-      final adoption = await supabase
-          .from('adoptions')
-          .select('owner_id')
-          .eq('id', requestId)
+          .from('users')
+          .select('name')
+          .eq('id', userId)
           .maybeSingle();
 
-      if (adoption == null) {
-        return Result.error('Adoption request not found');
+      if (response == null) {
+        return Result.error('User not found');
       }
 
-      final requestOwnerId = adoption['owner_id'] as String;
-      if (requestOwnerId != userId) {
-        return Result.error('You can only cancel your own adoption requests');
-      }
-
-      final adoptionRecord = await supabase
-          .from('adoptions')
-          .select()
-          .eq('id', requestId)
-          .single();
-
-      await supabase.from('adoptions').delete().eq('id', requestId);
-
-      // Ensure created_at is present
-      final adoptionRecordWithCreatedAt = Map<String, dynamic>.from(
-        adoptionRecord,
-      );
-      if (!adoptionRecordWithCreatedAt.containsKey('created_at') ||
-          adoptionRecordWithCreatedAt['created_at'] == null) {
-        adoptionRecordWithCreatedAt['created_at'] = DateTime.now()
-            .toIso8601String();
-      }
-
-      final cancelledAdoption = AdoptionModelMapper.fromMap(
-        adoptionRecordWithCreatedAt,
-      );
-      return Result.success(cancelledAdoption);
+      final name = response['name'] as String? ?? 'Unknown User';
+      return Result.success(name);
     } catch (e) {
       return Result.error(CatchErrorMessage(error: e).getWriteMessage());
     }

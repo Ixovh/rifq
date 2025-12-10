@@ -93,17 +93,6 @@ class OfferedPetsLoaded extends AdoptionState {
   List<Object?> get props => [pets];
 }
 
-/// Number of requests for a single pet
-class PetRequestCountLoaded extends AdoptionState {
-  final String petId;
-  final int count;
-
-  const PetRequestCountLoaded({required this.petId, required this.count});
-
-  @override
-  List<Object?> get props => [petId, count];
-}
-
 /// All requests for a specific pet
 class PetRequestsLoaded extends AdoptionState {
   final String petId;
@@ -118,11 +107,13 @@ class PetRequestsLoaded extends AdoptionState {
 /// Request status changed (accepted / rejected by owner)
 class AdoptionRequestStatusUpdated extends AdoptionState {
   final AdoptionRequestEntity request;
+  final String?
+  petId; // Optional: petId to identify which pet's requests were updated
 
-  const AdoptionRequestStatusUpdated(this.request);
+  const AdoptionRequestStatusUpdated({required this.request, this.petId});
 
   @override
-  List<Object?> get props => [request];
+  List<Object?> get props => [request, petId];
 }
 
 /// User sent a new adoption request
@@ -130,26 +121,6 @@ class AdoptionRequestSent extends AdoptionState {
   final AdoptionRequestEntity request;
 
   const AdoptionRequestSent(this.request);
-
-  @override
-  List<Object?> get props => [request];
-}
-
-/// User sees all their own requests
-class UserAdoptionRequestsLoaded extends AdoptionState {
-  final List<AdoptionRequestEntity> requests;
-
-  const UserAdoptionRequestsLoaded(this.requests);
-
-  @override
-  List<Object?> get props => [requests];
-}
-
-/// User cancelled one of their requests
-class AdoptionRequestCancelled extends AdoptionState {
-  final AdoptionRequestEntity request;
-
-  const AdoptionRequestCancelled(this.request);
 
   @override
   List<Object?> get props => [request];

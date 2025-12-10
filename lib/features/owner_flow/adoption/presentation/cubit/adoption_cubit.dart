@@ -13,7 +13,7 @@ class AdoptionCubit extends Cubit<AdoptionState> {
 
   // Form controllers for adoption request
   final adoptionRequestFormKey = GlobalKey<FormBuilderState>();
-  final adoptionRequestTitleController = TextEditingController();
+  final adoptionRequestPhoneNumberController = TextEditingController();
   final adoptionRequestDescriptionController = TextEditingController();
 
   // Cache lists for UI access
@@ -28,8 +28,11 @@ class AdoptionCubit extends Cubit<AdoptionState> {
   ///    -> Used by **AdoptionTab**
   final List<AddPetEntity> availablePets = [];
 
-  /// 4) Requests (for request screens)
+  /// 4) Requests (for request screens) - DEPRECATED: Use pet-specific cache
   final List<AdoptionRequestEntity> adoptionRequests = [];
+
+  /// 5) Pet-specific requests cache (petId -> requests)
+  final Map<String, List<AdoptionRequestEntity>> _petRequestsCache = {};
 
   // Simple caching flags to avoid double loads
   bool _myPetsLoaded = false;
@@ -166,22 +169,6 @@ class AdoptionCubit extends Cubit<AdoptionState> {
     );
   }
 
-  /// Pet owner can see the number of requests on his/her offered pet
-  Future<void> getAdoptionRequestCountForPet({
-    required String petId,
-    required String ownerId,
-  }) async {
-    emit(AdoptionLoading());
-    final result = await _useCase.getAdoptionRequestCountForPet(
-      petId: petId,
-      ownerId: ownerId,
-    );
-    result.when(
-      (count) => emit(PetRequestCountLoaded(petId: petId, count: count)),
-      (error) => emit(AdoptionError(error.toString())),
-    );
-  }
-
   /// Pet owner can see all adoption requests for a specific pet
   Future<void> getAdoptionRequestsForPet({
     required String petId,
@@ -193,6 +180,39 @@ class AdoptionCubit extends Cubit<AdoptionState> {
       ownerId: ownerId,
     );
     result.when((requests) {
+      // Store requests in pet-specific cache
+      _petRequestsCache[petId] = List<AdoptionRequestEntity>.from(requests);
+      // Also update the legacy list for backward compatibility
+      adoptionRequests
+        ..clear()
+        ..addAll(requests);
+      emit(PetRequestsLoaded(petId: petId, requests: requests));
+    }, (error) => emit(AdoptionError(error.toString())));
+  }
+
+  /// Pet owner can see all adoption requests for a specific pet (with caching)
+  /// This method ensures requests are scoped to a specific pet
+  Future<void> getAdoptionRequestsForSpecificPet({
+    required String petId,
+    required String ownerId,
+    bool forceRefresh = false,
+  }) async {
+    // Return cached data if available and not forcing refresh
+    if (!forceRefresh && _petRequestsCache.containsKey(petId)) {
+      final cachedRequests = _petRequestsCache[petId]!;
+      emit(PetRequestsLoaded(petId: petId, requests: cachedRequests));
+      return;
+    }
+
+    emit(AdoptionLoading());
+    final result = await _useCase.getAdoptionRequestsForPet(
+      petId: petId,
+      ownerId: ownerId,
+    );
+    result.when((requests) {
+      // Store requests in pet-specific cache
+      _petRequestsCache[petId] = List<AdoptionRequestEntity>.from(requests);
+      // Also update the legacy list for backward compatibility
       adoptionRequests
         ..clear()
         ..addAll(requests);
@@ -254,20 +274,53 @@ class AdoptionCubit extends Cubit<AdoptionState> {
     required String requestId,
     required String ownerId,
     required String status, // 'accepted' | 'rejected'
+    String?
+    petId, // Optional: if provided, will reload requests for this specific pet
   }) async {
-    emit(AdoptionLoading());
+    // Don't emit loading to prevent UI flickering
     final result = await _useCase.updateAdoptionRequestStatus(
       requestId: requestId,
       ownerId: ownerId,
       status: status,
     );
     result.when((request) {
-      // Update in cached list
-      final index = adoptionRequests.indexWhere((r) => r.id == requestId);
-      if (index != -1) {
-        adoptionRequests[index] = request;
+      final isAccepted = status == 'adopted' || status == 'accepted';
+
+      // If request was accepted, the pet has been transferred to the requester
+      if (isAccepted && petId != null) {
+        // Remove pet from offered pets list (since it's no longer owned by current user)
+        offeredForAdoptionPets.removeWhere((pet) => pet.id == petId);
+        // Remove from my pets list as well
+        myPets.removeWhere((pet) => pet.id == petId);
+        // Remove from available pets (it's no longer available for adoption)
+        availablePets.removeWhere((pet) => pet.id == petId);
+        // Clear the pet's requests cache since it's no longer owned by this user
+        _petRequestsCache.remove(petId);
+        // Invalidate all caches to ensure fresh data
+        invalidateOfferedCache();
+        invalidateAvailableCache();
+        invalidateMyPetsCache();
+      } else {
+        // Update in pet-specific cache if petId is provided
+        if (petId != null && _petRequestsCache.containsKey(petId)) {
+          final petRequests = _petRequestsCache[petId]!;
+          final index = petRequests.indexWhere((r) => r.id == requestId);
+          if (index != -1) {
+            petRequests[index] = request;
+            _petRequestsCache[petId] = List<AdoptionRequestEntity>.from(
+              petRequests,
+            );
+          }
+        }
+
+        // Update in legacy cached list
+        final index = adoptionRequests.indexWhere((r) => r.id == requestId);
+        if (index != -1) {
+          adoptionRequests[index] = request;
+        }
       }
-      emit(AdoptionRequestStatusUpdated(request));
+
+      emit(AdoptionRequestStatusUpdated(request: request, petId: petId));
     }, (error) => emit(AdoptionError(error.toString())));
   }
 
@@ -309,13 +362,13 @@ class AdoptionCubit extends Cubit<AdoptionState> {
   /// User ID is now handled internally in the data source
   Future<void> sendAdoptionRequest({
     required String petId,
-    required String title,
+    required String phone,
     required String description,
   }) async {
     emit(AdoptionLoading());
     final result = await _useCase.sendAdoptionRequest(
       petId: petId,
-      title: title,
+      title: phone,
       description: description,
     );
     result.when((request) {
@@ -323,7 +376,7 @@ class AdoptionCubit extends Cubit<AdoptionState> {
       adoptionRequests.add(request);
       emit(AdoptionRequestSent(request));
       // Clear form after successful submission
-      adoptionRequestTitleController.clear();
+      adoptionRequestPhoneNumberController.clear();
       adoptionRequestDescriptionController.clear();
     }, (error) => emit(AdoptionError(error.toString())));
   }
@@ -338,36 +391,10 @@ class AdoptionCubit extends Cubit<AdoptionState> {
     );
   }
 
-  /// Regular user can see all their own adoption requests
-  Future<void> getUserAdoptionRequests({required String userId}) async {
-    emit(AdoptionLoading());
-    final result = await _useCase.getUserAdoptionRequests(userId: userId);
-    result.when((requests) {
-      adoptionRequests
-        ..clear()
-        ..addAll(requests);
-      emit(UserAdoptionRequestsLoaded(requests));
-    }, (error) => emit(AdoptionError(error.toString())));
-  }
-
-  /// Regular user can cancel their own adoption request
-  Future<void> cancelAdoptionRequest({
-    required String requestId,
-    required String userId,
-  }) async {
-    emit(AdoptionLoading());
-    final result = await _useCase.cancelAdoptionRequest(
-      requestId: requestId,
-      userId: userId,
-    );
-    result.when((request) {
-      // Update in cached list
-      final index = adoptionRequests.indexWhere((r) => r.id == requestId);
-      if (index != -1) {
-        adoptionRequests[index] = request;
-      }
-      emit(AdoptionRequestCancelled(request));
-    }, (error) => emit(AdoptionError(error.toString())));
+  /// Get user name by user ID
+  Future<String> getUserName({required String userId}) async {
+    final result = await _useCase.getUserName(userId: userId);
+    return result.when((name) => name, (error) => 'Unknown User');
   }
 
   // ==============================
