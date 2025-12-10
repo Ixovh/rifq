@@ -1,0 +1,96 @@
+import 'package:injectable/injectable.dart';
+import 'package:rifq/core/shared/shared_in_owner_flow/shared/models/provider_items_view_model.dart';
+import 'package:rifq/core/shared/shared_in_owner_flow/shared/models/provider_model.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:multiple_result/multiple_result.dart';
+
+abstract class BaseClinicDataSource {
+  Future<Result<List<ProviderModel>, String>> getClinics();
+
+  Future<Result<List<ProviderModel>, String>> searchClinics(String query);
+
+  Future<Result<List<ProviderItemsViewModel>, String>> getClinicDetails(
+    String providerId,
+  );
+
+  Future<List<Map<String, dynamic>>> fetchUserPets(String ownerId);
+}
+
+@LazySingleton(as: BaseClinicDataSource)
+class ClinicDataSource implements BaseClinicDataSource {
+  final SupabaseClient supabase;
+
+  ClinicDataSource(this.supabase);
+
+  //!!---------------------GET CLINICS-----------------------------
+  @override
+  Future<Result<List<ProviderModel>, String>> getClinics() async {
+    try {
+      final response = await supabase
+          .from('providers')
+          .select('*, provider_services!inner(service_type_id)')
+          .eq(
+            'provider_services.service_type_id',
+            1,
+          ); //!!this query filters clinics only!!!
+
+      final data = (response as List)
+          .map((e) => ProviderModelMapper.fromMap(e))
+          .toList();
+
+      return Result.success(data);
+    } catch (e) {
+      return Result.error(e.toString());
+    }
+  }
+
+  //!!---------------------SEARCH CLINICS-----------------------------
+  @override
+  Future<Result<List<ProviderModel>, String>> searchClinics(
+    String query,
+  ) async {
+    try {
+      final response = await supabase
+          .from('providers')
+          .select('*, provider_services!inner(service_type_id)')
+          .eq('provider_services.service_type_id', 1)
+          .ilike('name', "%$query%");
+
+      final data = (response as List)
+          .map((e) => ProviderModelMapper.fromMap(e))
+          .toList();
+
+      return Result.success(data);
+    } catch (e) {
+      return Result.error(e.toString());
+    }
+  }
+
+  //!!---------------------GET CLINIC DETAILS-----------------------------
+
+  @override
+  Future<Result<List<ProviderItemsViewModel>, String>> getClinicDetails(
+    String providerId,
+  ) async {
+    try {
+      final response = await supabase
+          .from('provider_service_view')
+          .select()
+          .eq('provider_id', providerId);
+
+      final data = (response as List)
+          .map((e) => ProviderItemsViewModelMapper.fromMap(e))
+          .toList();
+
+      return Result.success(data);
+    } catch (e) {
+      return Result.error(e.toString());
+    }
+  }
+
+  //!!----------------FETCH PETS--------------------
+  @override
+  Future<List<Map<String, dynamic>>> fetchUserPets(String ownerId) async {
+    return await supabase.from('pets').select().eq('owner_id', ownerId);
+  }
+}

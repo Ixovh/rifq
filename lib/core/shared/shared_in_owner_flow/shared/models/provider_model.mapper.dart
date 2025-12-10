@@ -31,10 +31,11 @@ class ProviderModelMapper extends ClassMapperBase<ProviderModel> {
     _$image,
     opt: true,
   );
-  static String _$location(ProviderModel v) => v.location;
+  static String? _$location(ProviderModel v) => v.location;
   static const Field<ProviderModel, String> _f$location = Field(
     'location',
     _$location,
+    opt: true,
   );
   static String? _$locationUrl(ProviderModel v) => v.locationUrl;
   static const Field<ProviderModel, String> _f$locationUrl = Field(
@@ -157,7 +158,7 @@ class _ProviderModelCopyWithImpl<$R, $Out>
     String? id,
     String? name,
     Object? image = $none,
-    String? location,
+    Object? location = $none,
     Object? locationUrl = $none,
     Object? phone = $none,
   }) => $apply(
@@ -165,7 +166,7 @@ class _ProviderModelCopyWithImpl<$R, $Out>
       if (id != null) #id: id,
       if (name != null) #name: name,
       if (image != $none) #image: image,
-      if (location != null) #location: location,
+      if (location != $none) #location: location,
       if (locationUrl != $none) #locationUrl: locationUrl,
       if (phone != $none) #phone: phone,
     }),

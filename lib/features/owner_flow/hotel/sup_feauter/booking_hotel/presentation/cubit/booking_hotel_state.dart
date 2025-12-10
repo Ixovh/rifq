@@ -8,12 +8,12 @@ final class BookingHotelInitial extends BookingHotelState {}
 final class BookingHotelLoading extends BookingHotelState {}
 
 
-// getPets:
-final class PetsLoaded extends BookingHotelState {
-  final List<PetProfileEntity>pets;
-  PetsLoaded(this.pets);
-
-}
+// // getPets:
+// final class PetsLoaded extends BookingHotelState {
+//   final List<PetProfileEntity>pets;
+//   PetsLoaded(this.pets);
+//
+// }
 final class BookingSuccess extends BookingHotelState {
   final BookingHotelEntity booking;
   BookingSuccess(this.booking);

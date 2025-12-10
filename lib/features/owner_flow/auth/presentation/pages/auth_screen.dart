@@ -26,7 +26,7 @@ class AuthScreen extends StatelessWidget {
             listener: (context, state) {
               switch (state) {
                 case AuthSuccessState _:
-                  context.go(Routes.home,);
+                  context.push(Routes.navbar);
                   break;
                 case AuthSignUPSuccessState _:
                   context.push(Routes.otpScreen, extra: {"cubit":cubit, "isPassword": false});

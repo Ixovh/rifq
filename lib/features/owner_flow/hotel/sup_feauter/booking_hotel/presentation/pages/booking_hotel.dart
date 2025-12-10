@@ -22,6 +22,7 @@ class BookingHotel extends StatelessWidget {
   final ValueNotifier<DateTime?> checkOut = ValueNotifier<DateTime?>(null);
   final ProviderItemsViewEntity hotel;
   final String roomId;
+  final ValueNotifier<List<String>> selectedPets = ValueNotifier([]);
 
   BookingHotel({super.key, required this.hotel, required this.roomId,});
 
@@ -42,9 +43,9 @@ class BookingHotel extends StatelessWidget {
       ],
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Booking Details",
-            style: context.body1.copyWith(color: context.primary300),
-          ), centerTitle: true,
+          title: Text("Booking Details", style: context.body1.copyWith(color: context.primary300),
+          ),
+          centerTitle: true,
         ),
         body: Padding(
           padding: EdgeInsets.all(16.w),
@@ -90,17 +91,34 @@ class BookingHotel extends StatelessWidget {
                         child: ListView(
                           scrollDirection: Axis.horizontal,
                           padding: EdgeInsets.symmetric(horizontal: 12.h),
-                          children: state.pets
-                              .map((pet) => Padding(
+                          children: state.pets.map((pet) {
+                            return Padding(
                               padding: EdgeInsets.only(right: 12),
-                              child: PetNameCardinfoWidgets(pet: pet)))
-                              .toList(),
+                              child: ValueListenableBuilder<List<String>>(
+                                valueListenable: selectedPets,
+                                builder: (context, selected, _) {
+                                  return PetNameCardinfoWidgets(
+                                    pet: pet,
+                                    isSelected: selected.contains(pet.id),
+                                    onTap: () {
+                                      if (selected.contains(pet.id)) {
+                                        selectedPets.value = List.from(selected)..remove(pet.id);
+                                      } else {
+                                        selectedPets.value = List.from(selected)..add(pet.id);
+                                      }
+                                    },
+                                  );
+                                },
+                              ),
+                            );
+                          }).toList(),
                         ),
                       );
                     }
                     return Container();
                   },
                 ),
+
                 SizedBox(height: 16.h),
                 Text("Service : ", style: TextStyle(
                     fontSize: 16.sp, fontWeight: FontWeight.bold)),
@@ -111,13 +129,11 @@ class BookingHotel extends StatelessWidget {
                     Text("${hotel.price} SAR"),
                   ],),
                 SizedBox(height: 20.h),
-                Text(
-                  "Check-in Date",
+                Text("Check-in Date",
                   style: TextStyle(
                       fontSize: 16.sp, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 8.h),
-
                 ValueListenableBuilder<DateTime?>(
                   valueListenable: checkIn,
                   builder: (context, value, _) {
@@ -135,17 +151,13 @@ class BookingHotel extends StatelessWidget {
                         }
                       },
                     );
-                  },
-                ),
-
+                  },),
                 SizedBox(height: 20.h),
                 Text(
                   "Check-out Date",
                   style: TextStyle(
-                      fontSize: 16.sp, fontWeight: FontWeight.bold),
-                ),
+                      fontSize: 16.sp, fontWeight: FontWeight.bold),),
                 SizedBox(height: 11.h),
-
                 ValueListenableBuilder<DateTime?>(
                   valueListenable: checkOut,
                   builder: (context, value, _) {
@@ -154,9 +166,7 @@ class BookingHotel extends StatelessWidget {
                       selectedDate: value,
                       onTap: () async {
                         final checkInDate = checkIn.value;
-
                         final date = await pickDate(context);
-
                         if (date != null) {
                           if (checkInDate != null &&
                               date.isBefore(checkInDate)) {

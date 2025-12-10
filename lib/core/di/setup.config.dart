@@ -24,6 +24,14 @@ import '../../features/owner_flow/add_pet/domain/usecases/add_pet_use_case.dart'
     as _i22;
 import '../../features/owner_flow/add_pet/presentation/cubit/add_pet_cubit.dart'
     as _i763;
+import '../../features/owner_flow/adoption/data/datasources/adoption_data_source.dart'
+    as _i1014;
+import '../../features/owner_flow/adoption/data/repositories/adoption_repo_data.dart'
+    as _i320;
+import '../../features/owner_flow/adoption/domain/repositories/adoption_repo_domain.dart'
+    as _i979;
+import '../../features/owner_flow/adoption/domain/usecases/adotion_use_case.dart'
+    as _i796;
 import '../../features/owner_flow/auth/data/datasources/auth_data_source.dart'
     as _i386;
 import '../../features/owner_flow/auth/data/repositories/auth_repo_data.dart'
@@ -32,6 +40,26 @@ import '../../features/owner_flow/auth/domain/repositories/auth_repo_domain.dart
     as _i693;
 import '../../features/owner_flow/auth/domain/usecases/auth_use_case.dart'
     as _i1001;
+import '../../features/owner_flow/clinic/data/datasources/clinic_data_source.dart'
+    as _i814;
+import '../../features/owner_flow/clinic/data/repositories/clinic_repo_data.dart'
+    as _i359;
+import '../../features/owner_flow/clinic/domain/repositories/clinic_repo_domain.dart'
+    as _i324;
+import '../../features/owner_flow/clinic/domain/usecases/clinic_use_case.dart'
+    as _i143;
+import '../../features/owner_flow/clinic/presentation/cubit/clinic_cubit.dart'
+    as _i250;
+import '../../features/owner_flow/home/data/datasources/home_data_source.dart'
+    as _i695;
+import '../../features/owner_flow/home/data/repositories/home_repo_data.dart'
+    as _i663;
+import '../../features/owner_flow/home/domain/repositories/home_repo_domain.dart'
+    as _i981;
+import '../../features/owner_flow/home/domain/use_cases/home_use_case.dart'
+    as _i322;
+import '../../features/owner_flow/home/presentation/cubit/home_cubit.dart'
+    as _i743;
 import '../../features/owner_flow/hotel/data/datasource/hotel_datasource.dart'
     as _i49;
 import '../../features/owner_flow/hotel/data/repository/hotel_repo_data.dart'
@@ -116,12 +144,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i49.BaseHotelDataSourc>(
       () => _i49.HotelDataBase(gh<_i454.SupabaseClient>()),
     );
-    gh.lazySingleton<_i386.BaseAuthDataSource>(
-      () => _i386.SubaBaseDataSource(
-        supabase: gh<_i454.SupabaseClient>(),
-        box: gh<_i792.GetStorage>(),
-        email: gh<String>(),
-      ),
+    gh.lazySingleton<_i1014.AdoptionDataSource>(
+      () => _i1014.AdoptionDataBaseSoruce(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i695.BaseHomeDataSource>(
+      () => _i695.HomeDataSource(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i814.BaseClinicDataSource>(
+      () => _i814.ClinicDataSource(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i324.ClinicRepoDomain>(
+      () => _i359.ClinicRepoData(gh<_i814.BaseClinicDataSource>()),
     );
     gh.lazySingleton<_i189.BookingHotelUsecase>(
       () => _i189.BookingHotelUsecase(gh<_i104.BookingHotelRepoDomain>()),
@@ -129,8 +162,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i754.RepoDomain>(
       () => _i332.RepoData(gh<_i972.BaseUserProfileDataSourc>()),
     );
-    gh.lazySingleton<_i693.AuthRepoDomain>(
-      () => _i64.AuthRepoData(authDataSource: gh<_i386.BaseAuthDataSource>()),
+    gh.lazySingleton<_i979.AdoptionRepoDomain>(
+      () => _i320.AdoptionRepoData(gh<_i1014.AdoptionDataSource>()),
+    );
+    gh.lazySingleton<_i386.BaseAuthDataSource>(
+      () => _i386.SubaBaseDataSource(
+        supabase: gh<_i454.SupabaseClient>(),
+        box: gh<_i792.GetStorage>(),
+      ),
+    );
+    gh.lazySingleton<_i796.AdoptionUseCase>(
+      () => _i796.AdoptionUseCase(gh<_i979.AdoptionRepoDomain>()),
     );
     gh.lazySingleton<_i557.PetProfileRepoDomain>(
       () => _i384.RepoDataPet(gh<_i918.PatCard>()),
@@ -147,11 +189,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i4.HotelUsecase>(
       () => _i4.HotelUsecase(gh<_i390.HotelRepoDomain>()),
     );
-    gh.factory<_i1001.AuthUseCase>(
-      () => _i1001.AuthUseCase(authRepoData: gh<_i693.AuthRepoDomain>()),
-    );
     gh.lazySingleton<_i650.EditPetProfileRepoDomain>(
       () => _i737.EditPetProfileRepo(gh<_i131.BaseEditPetProfile>()),
+    );
+    gh.lazySingleton<_i981.HomeRepoDomain>(
+      () => _i663.HomeRepoImpl(gh<_i695.BaseHomeDataSource>()),
     );
     gh.lazySingleton<_i809.PetProfileRecordsRepo>(
       () =>
@@ -159,6 +201,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i22.AddPetUseCase>(
       () => _i22.AddPetUseCase(gh<_i585.AddPetRepoDomain>()),
+    );
+    gh.factory<_i143.ClinicUseCase>(
+      () => _i143.ClinicUseCase(gh<_i324.ClinicRepoDomain>()),
     );
     gh.lazySingleton<_i479.PetProfileUsecase>(
       () => _i479.PetProfileUsecase(gh<_i557.PetProfileRepoDomain>()),
@@ -169,8 +214,23 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i961.EditPetProfileUsecase>(
       () => _i961.EditPetProfileUsecase(gh<_i650.EditPetProfileRepoDomain>()),
     );
+    gh.factory<_i322.GetHomeDataUseCase>(
+      () => _i322.GetHomeDataUseCase(gh<_i981.HomeRepoDomain>()),
+    );
+    gh.lazySingleton<_i693.AuthRepoDomain>(
+      () => _i64.AuthRepoData(authDataSource: gh<_i386.BaseAuthDataSource>()),
+    );
+    gh.factory<_i250.ClinicCubit>(
+      () => _i250.ClinicCubit(gh<_i143.ClinicUseCase>()),
+    );
+    gh.lazySingleton<_i1001.AuthUseCase>(
+      () => _i1001.AuthUseCase(authRepoData: gh<_i693.AuthRepoDomain>()),
+    );
     gh.factory<_i763.AddPetCubit>(
       () => _i763.AddPetCubit(gh<_i22.AddPetUseCase>()),
+    );
+    gh.factory<_i743.HomeCubit>(
+      () => _i743.HomeCubit(gh<_i322.GetHomeDataUseCase>()),
     );
     return this;
   }

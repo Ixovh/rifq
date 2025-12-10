@@ -12,13 +12,13 @@ class BookingHotelCubit extends Cubit<BookingHotelState> {
   BookingHotelCubit(this.bookingusecase) : super(BookingHotelInitial());
 
   //  الحيوانات الخاصة بالمستخدم
-  Future<void> fetchPets(String userId) async {
-    emit(BookingHotelLoading());
-    final result = await bookingusecase.getPetForUser(userId);
-    result.when(
-          (success) => emit(PetsLoaded(success)),
-          (error) => emit(BookingError(message: error.toString())),
-    );}
+  // Future<void> fetchPets(String userId) async {
+  //   emit(BookingHotelLoading());
+  //   final result = await bookingusecase.getPetForUser(userId);
+  //   result.when(
+  //         (success) => emit(PetsLoaded(success)),
+  //         (error) => emit(BookingError(message: error.toString())),
+  //   );}
   // إنشاء حجز
   Future<void> createBooking(BookingHotelEntity booking) async {
   emit(BookingHotelLoading());

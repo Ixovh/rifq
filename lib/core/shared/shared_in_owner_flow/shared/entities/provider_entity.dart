@@ -2,7 +2,7 @@ class ProviderEntity {
   final String id;
   final String name;
   final String? image;
-  final String location;
+  final String? location;
   final String? locationUrl;
   final String? phone;
 
@@ -10,7 +10,7 @@ class ProviderEntity {
     required this.id,
     required this.name,
     this.image,
-    required this.location,
+    this.location,
     this.locationUrl,
     this.phone,
   });

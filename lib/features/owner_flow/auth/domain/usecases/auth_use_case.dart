@@ -3,7 +3,7 @@ import 'package:multiple_result/multiple_result.dart';
 import '../../../../../core/shared/shared_in_owner_flow/shared_auth/entities/auth_entity.dart';
 import '../repositories/auth_repo_domain.dart';
 
-@injectable
+@lazySingleton
 class AuthUseCase {
   final AuthRepoDomain authRepoData;
 
