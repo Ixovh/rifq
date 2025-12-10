@@ -1,5 +1,3 @@
-
-
 import 'package:dart_mappable/dart_mappable.dart';
 import '../../domain/entity/pet_entity.dart';
 

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../pet_profile/sup_features/pet_info_card/domain/entity/pet_entity.dart';
+
 class PetNameCardinfoWidgets extends StatelessWidget {
   final Widget? icon;
+  final PetProfileEntity pet;
 
   const PetNameCardinfoWidgets({
     super.key,
-    this.icon,});
+    this.icon, required this.pet,});
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +25,10 @@ class PetNameCardinfoWidgets extends StatelessWidget {
       child: ListTile(
         leading: CircleAvatar(
           radius: 22.r,
-          backgroundColor: Colors.purpleAccent,
-          // backgroundImage: AssetImage(pet.photoUrl),
+          backgroundImage: NetworkImage(pet.photoUrl),
         ),
         title: Text(
-          "mkdf",
+          pet.name,
           // pet.name,
           style: TextStyle(
             fontSize: 16.sp,

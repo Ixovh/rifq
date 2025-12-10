@@ -81,9 +81,7 @@ class ContainerPetCardWidgets extends StatelessWidget {
                   backgroundColor: Colors.white,
                   child: Image.network(pet.photoUrl),
                 ),
-
                 SizedBox(width: 12.w),
-
                 Expanded(
                   child: Text(
                     pet.name,

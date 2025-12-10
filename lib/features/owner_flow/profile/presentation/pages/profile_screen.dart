@@ -33,7 +33,7 @@ class ProfileScreen extends StatelessWidget {
         body: BlocListener<ProfileCubit, ProfileState>(
           listener: (context, state) {
            if(state is ProfileUpdated){
-             context.read<ProfileCubit>().getUserProfile("52fc04dc-adac-432d-a3a2-20d80e93463f");
+             context.read<ProfileCubit>().getUserProfile("e7c6dc83-bcf5-4c0a-9818-4fd1df190cf4");
            }
           },
           child: BlocBuilder<ProfileCubit, ProfileState>(
