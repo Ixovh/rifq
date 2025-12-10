@@ -111,7 +111,11 @@ class RoomsTabContent extends StatelessWidget {
                 titel: 'Book Now',
                 onPressed: cubit.selectedRoomId != null
                     ? () {
-                  context.push(Routes.bookingHotel,);
+                  context.push(Routes.bookingHotel,
+                    extra: {
+                    'hotel': hotel,
+                    'roomId': cubit.selectedRoomId,
+                  },);
                   // context.push(Routes.bookingHotel, extra: {
                   //   'hotel': hotel,
                   //   'roomId': cubit.selectedRoomId,

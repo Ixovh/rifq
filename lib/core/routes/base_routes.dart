@@ -23,6 +23,7 @@ import '../../features/owner_flow/pet_profile/sup_features/pet_info_card/domain/
 import '../../features/owner_flow/pet_profile/sup_features/pet_profile_health_record/domain/entity/pet_profile_records_entity.dart';
 import '../../features/owner_flow/pet_profile/sup_features/pet_profile_health_record/presentaion/pages/PetProfile_HealthAppointment_Screen.dart';
 import '../shared/shared_in_owner_flow/shared/entities/provider_entity.dart';
+import '../shared/shared_in_owner_flow/shared/entities/provider_items_view_entity.dart';
 
 
 abstract class Routes {
@@ -189,13 +190,27 @@ abstract class Routes {
       //------//
       //------//
       //------//
+
       GoRoute(
         path: bookingHotel,
         builder: (context, state) {
-          // final pet = state.extra as PetProfileEntity;
-          return BookingHotel();
+          final extra = state.extra as Map<String, dynamic>; // نجيب البيانات اللي مررناها
+          final hotel = extra['hotel'] as ProviderItemsViewEntity;
+          final roomId = extra['roomId'] as String;
+          return BookingHotel(
+            hotel: hotel,
+            roomId: roomId,
+          );
         },
       ),
+
+      // GoRoute(
+      //   path: bookingHotel,
+      //   builder: (context, state) {
+      //     // final pet = state.extra as PetProfileEntity;
+      //     return BookingHotel();
+      //   },
+      // ),
       //------//
       //------//
       //------//

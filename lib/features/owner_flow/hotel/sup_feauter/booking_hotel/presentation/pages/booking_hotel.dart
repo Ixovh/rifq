@@ -16,10 +16,10 @@ class BookingHotel extends StatelessWidget {
     // تأدي غرض نفس ستيتفل
   final ValueNotifier<DateTime?> checkIn = ValueNotifier<DateTime?>(null);
   final ValueNotifier<DateTime?> checkOut = ValueNotifier<DateTime?>(null);
-  // final ProviderItemsViewEntity hotel;
-  // final ProviderItemsViewEntity room;
+  final ProviderItemsViewEntity hotel;
+  final String roomId;
 
-  BookingHotel({super.key,});
+  BookingHotel({super.key, required this.hotel, required this.roomId,});
 
   @override
   Widget build(BuildContext context) {
@@ -69,9 +69,9 @@ class BookingHotel extends StatelessWidget {
                     fontSize: 16.sp, fontWeight: FontWeight.bold)),
                 Row(
                   children: [
-                    Text("serviceName"),
+                    Text(hotel.itemName),
                     SizedBox(width: 20.w),
-                    Text("servicePrice"),
+                    Text("${hotel.price} SAR"),
                   ],),
                 SizedBox(height: 20.h),
                 // Text("Date",style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold)),
