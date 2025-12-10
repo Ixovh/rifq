@@ -12,7 +12,6 @@ import 'package:rifq/features/owner_flow/profile/presentation/cubit/profile_cubi
 import 'package:rifq/features/owner_flow/profile/presentation/pages/edit_profile_screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/home_screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/profile_screen.dart';
-import '../../features/owner_flow/hotel/data/model/hotel_model.dart';
 import '../../features/owner_flow/hotel/presentation/cubit/hotel_cubit.dart';
 import '../../features/owner_flow/hotel/presentation/pages/hotel_details_screen.dart';
 import '../../features/owner_flow/hotel/presentation/pages/hotel_home_screen.dart';
@@ -23,6 +22,8 @@ import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/pres
 import '../../features/owner_flow/pet_profile/sup_features/pet_info_card/domain/entity/pet_entity.dart';
 import '../../features/owner_flow/pet_profile/sup_features/pet_profile_health_record/domain/entity/pet_profile_records_entity.dart';
 import '../../features/owner_flow/pet_profile/sup_features/pet_profile_health_record/presentaion/pages/PetProfile_HealthAppointment_Screen.dart';
+import '../shared/shared_in_owner_flow/shared/entities/provider_entity.dart';
+
 
 abstract class Routes {
   static String init = '/';
@@ -46,7 +47,7 @@ abstract class Routes {
 
 
   static final routers = GoRouter(
-    initialLocation: profile,
+    initialLocation: hotel,
     routes: [
       GoRoute(
         path: onbording,
@@ -154,17 +155,7 @@ abstract class Routes {
         },
       ),
 
-      // GoRoute(
-      //   path: editpetprofile,
-      //   builder: (context, state) {
-      //     final pet = state.extra;
-      //     print(pet.toString());
-      //     if (pet is! PetProfileEntity) {
-      //       return Center(child: Text("data"));
-      //     }
-      //     return EditPetProfileScreen(pet: pet);
-      //   },
-      // ),
+
       //------//
       //------//
       //------//
@@ -180,20 +171,21 @@ abstract class Routes {
       //------//
       //------//
 
-
       GoRoute(
         path: detailsHotel,
         builder: (context, state) {
-          // map لاني ارسل اكثر من قيمه
           final extra = state.extra as Map<String, dynamic>;
-          final hotel = extra['hotel'] as HotelModel;
+          final hotel = extra['hotel'] as ProviderEntity;
           final cubit = extra['cubit'] as HotelCubit;
           return BlocProvider.value(
             value: cubit,
             child: HotelDetailsScreen(hotel: hotel),
           );
+
         },
+
       ),
+
       //------//
       //------//
       //------//
@@ -208,24 +200,7 @@ abstract class Routes {
       //------//
       //------//
       //------//
-      // GoRoute(
-      //   path: healthRecourdpet,
-      //   builder: (context, state) {
-      //     final pet=state.extra as PetEntity;
-      //     return PetProfile_healthappointment_Screen(
-      //       pet: pet,
-      //     );
-      //   },
-      // ),
 
-      // GoRoute(
-      //   path: healthRecourdpet,
-      //   builder: (context, state) {
-      //     final petModel = state.extra as PetProfileRecordModel;
-      //     final petEntity = petModel.toEntity();
-      //     return PetProfile_healthappointment_Screen(pet: petEntity);
-      //   },
-      // ),
 
       GoRoute(
         path: Routes.healthRecourdpet,
@@ -234,11 +209,6 @@ abstract class Routes {
           return PetHealthAndAppointmentScreen(pet: pet);
         },
       ),
-
-
-
-
-
     ],
   );
 }

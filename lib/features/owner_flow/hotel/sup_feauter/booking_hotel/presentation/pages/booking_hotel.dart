@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rifq/core/di/setup.dart';
 import 'package:rifq/core/theme/app_theme.dart';
 import '../../../../../../../core/common/widgets/button/custome_button_widgets.dart';
+import '../../../../../../../core/shared/shared_in_owner_flow/shared/entities/provider_items_view_entity.dart';
 import '../../domain/usecase/booking_hotel_usecase.dart';
 import '../cubit/booking_hotel_cubit.dart';
 import '../widgets/date_time.dart';
@@ -15,6 +16,8 @@ class BookingHotel extends StatelessWidget {
     // تأدي غرض نفس ستيتفل
   final ValueNotifier<DateTime?> checkIn = ValueNotifier<DateTime?>(null);
   final ValueNotifier<DateTime?> checkOut = ValueNotifier<DateTime?>(null);
+  // final ProviderItemsViewEntity hotel;
+  // final ProviderItemsViewEntity room;
 
   BookingHotel({super.key,});
 
@@ -127,13 +130,9 @@ class BookingHotel extends StatelessWidget {
                               date.isBefore(checkInDate)) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(
-                                    "Check-out must be after check-in"),
-                              ),
-                            );
+                                content: Text("Check-out must be after check-in"),),);
                             return;
                           }
-
                           checkOut.value = date;
                         }
                       },
@@ -147,9 +146,7 @@ class BookingHotel extends StatelessWidget {
                   onPressed: () {},
                   buttonWidth: 366.w,
                   buttonhight: 58.h,)
-
-              ],
-            ),
+              ],),
           ),
         ),
       ),

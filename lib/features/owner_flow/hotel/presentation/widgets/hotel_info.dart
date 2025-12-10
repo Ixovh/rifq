@@ -5,11 +5,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rifq/core/theme/app_color.dart';
 import 'package:rifq/core/theme/app_theme.dart';
 
+import '../../../../../core/shared/shared_in_owner_flow/shared/entities/provider_items_view_entity.dart';
+import '../../../../../core/shared/shared_in_owner_flow/shared/models/provider_items_view_model.dart';
 import '../../data/model/hotel_model.dart';
 import '../cubit/hotel_cubit.dart';
 
 class HotelInfoTabContent extends StatelessWidget {
-  final HotelModel hotel;
+  final ProviderItemsViewEntity hotel;
   const HotelInfoTabContent({super.key, required this.hotel});
 
   @override
@@ -20,7 +22,7 @@ class HotelInfoTabContent extends StatelessWidget {
         crossAxisAlignment: .start,
         children: [
           Text("About the Hotel :",style: context.body3.copyWith(color: context.neutral1000),),
-          Text(hotel.itemDescription,style: TextStyle(fontSize: 12,color: AppColors.neutral700),),
+          Text(hotel.itemDescription!,style: TextStyle(fontSize: 12,color: AppColors.neutral700),),
           SizedBox(height: 12.h),
           Text(" Rules & Requirements : ",style: context.body3.copyWith(color: context.neutral1000),),
           SizedBox(height: 20.h),

@@ -36,7 +36,6 @@ class HotelImagesCarousel extends StatelessWidget {
         ),
 
         const SizedBox(height: 12),
-
         ValueListenableBuilder(
           valueListenable: currentIndex,
           builder: (_, value, __) {

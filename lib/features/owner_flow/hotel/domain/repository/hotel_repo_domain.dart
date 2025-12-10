@@ -1,9 +1,10 @@
 import 'package:multiple_result/multiple_result.dart';
-import '../entity/provider_service_entity.dart';
+import '../../../../../core/shared/shared_in_owner_flow/shared/entities/provider_entity.dart';
+import '../../../../../core/shared/shared_in_owner_flow/shared/entities/provider_items_view_entity.dart';
 
 abstract class HotelRepoDomain {
 //كل الفنادق
-  Future<Result<List<ProviderServiceViewEntity>, String>> getAllHotel();
+  Future<Result<List<ProviderEntity>, String>> getAllHotel();
 // تفاصيل فندق معين
-  Future<Result<ProviderServiceViewEntity, String>> getHotelById(String id);
+  Future<Result<ProviderItemsViewEntity, String>> getHotelById(String id);
 }

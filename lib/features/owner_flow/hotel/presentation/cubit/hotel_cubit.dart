@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../domain/entity/provider_service_entity.dart';
+import '../../../../../core/shared/shared_in_owner_flow/shared/entities/provider_entity.dart';
+import '../../../../../core/shared/shared_in_owner_flow/shared/entities/provider_items_view_entity.dart';
 import '../../domain/usecase/hotel_usecase.dart';
 
 part 'hotel_state.dart';
@@ -10,8 +10,10 @@ part 'hotel_state.dart';
 class HotelCubit extends Cubit<HotelState> {
   final HotelUsecase usecase;
   String? selectedRoomId; // للغرف يختار
+  ProviderItemsViewEntity? _currentHotel;
 
-  ProviderServiceViewEntity? selectedRoomDetails;
+
+  ProviderItemsViewEntity? selectedRoomDetails;
   HotelCubit(this.usecase) : super(HotelInitial());
 
 
@@ -19,13 +21,15 @@ class HotelCubit extends Cubit<HotelState> {
     emit(HotelLoading());
     final result = await usecase.getAllHotel();
     result.when(
-          (hotels) => emit(HotelLoaded(hotels)),
+      (hotels) => emit(HotelLoaded(hotels)),
           (error) => emit(HotelError(error)),
     );
   }
 
   //
   //
+
+
 
   void fetchHotelById(String id) async {
     if (id.isEmpty) {
@@ -35,14 +39,15 @@ class HotelCubit extends Cubit<HotelState> {
     emit(HotelLoading());
     final result = await usecase.getHotelById(id);
     result.when(
-          (hotel) => emit(HotelDetailLoaded(hotel)),
+          (hotel) =>
+              emit(HotelDetailLoaded(hotel)),
           (error) => emit(HotelError(error)),
     );
   }
 
-  //
-  //
-  //
+
+
+
 
   Future<void> openLocation(String? url) async {
     if (url == null || url.isEmpty) {
@@ -70,15 +75,30 @@ class HotelCubit extends Cubit<HotelState> {
   // }
 
 
-  void selectRoom(String roomId, ProviderServiceViewEntity roomDetails) {
 
+  void selectRoom(String roomId, ProviderItemsViewEntity roomDetails) {
     selectedRoomId = roomId;
-
     selectedRoomDetails = roomDetails;
 
-    emit(RoomSelectionChanged(roomId));
-
+    if (state is HotelDetailLoaded) {
+      final hotel = (state as HotelDetailLoaded).hotel;
+      emit(RoomSelectionChanged(roomId, hotel));
+    }
   }
+
+
+
+  // void selectRoom(String roomId, ProviderItemsViewEntity roomDetails) {
+  //   selectedRoomId = roomId;
+  //   selectedRoomDetails = roomDetails;
+  //   if (state is HotelDetailLoaded) {
+  //     emit(RoomSelectionChanged(roomId));
+  //     // emit(RoomSelectionChanged(roomId, (state as HotelDetailLoaded).hotel));
+  //   }
+  //   // emit(RoomSelectionChanged(roomId));
+  //   // );
+  //
+  // }
 
 }
 

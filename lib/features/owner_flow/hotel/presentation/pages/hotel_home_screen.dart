@@ -166,17 +166,21 @@ class HotelHomeScreen extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final hotel = hotels[index]; // نوعه ProviderServiceViewEntity / HotelModel
                         return CardHotel(
-                          imageHotel: hotel.image,
-                          nameHotle: hotel.providerName,
+                          imageHotel: hotel.image!,
+                          nameHotle: hotel.name,
                           location: hotel.location,
-                          price: "start ${hotel.price}",       // السعر
-                          services: hotel.itemName, // الخدمات
+                          // price: "start ${hotel.price}",       // السعر
+                          // services: hotel.itemName, // الخدمات
                           // onTap: (){
                           //   context.push(Routes.detailsHotel,extra: hotel);
                           // },
                           onTap: () {
-                            final cubit = context.read<HotelCubit>();
-                            context.push(Routes.detailsHotel, extra: {'hotel': hotel, 'cubit': cubit});
+                            final cubit =context.read<HotelCubit>();
+                            cubit.fetchHotelById(hotel.id.toString());
+                            context.push(Routes.detailsHotel, extra: {
+                              'hotel': hotel,
+                              'cubit':cubit ,
+                            });
                           },
 
                         );

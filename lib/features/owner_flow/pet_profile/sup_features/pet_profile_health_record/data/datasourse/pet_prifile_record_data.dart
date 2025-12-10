@@ -21,7 +21,7 @@ class PetPrifileRecordDataSource implements BaseDataSourcePetReacord {
   Future<void> addHealthRecord(HealthRecordModel record) async {
     try {
       await supabase.from('health_records').insert({
-        'id': record.id,
+        // 'id': record.id,
         'pet_id': record.petId,
         'type': record.type,
         'title': record.title,

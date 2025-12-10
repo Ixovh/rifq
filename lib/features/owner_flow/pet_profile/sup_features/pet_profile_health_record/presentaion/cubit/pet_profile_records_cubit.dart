@@ -45,22 +45,48 @@ class PetProfileRecordsCubit extends Cubit<PetProfileRecordsState> {
 
 // اضافة سجل صحي للحيوان
   Future<void> addHealthRecord(HealthRecordEntity record) async {
+    final currentState = state;
+    if (currentState is! PetProfileLoaded) return;
+
     emit(AddingHealthRecord());
 
     final result = await usecase.addHealthRecord(record);
 
     result.when(
           (_) {
-        emit(HealthRecordAddedSuccess());
-        final currentState = state;
-        if (currentState is PetProfileLoaded) {
-          loadPetData(currentState.petent);
-        }
-        }, (err) {
+        final updatedRecords = List<HealthRecordEntity>.from(currentState.healthRecords)
+          ..add(record);
+
+        emit(PetProfileLoaded(
+          petent: currentState.petent,
+          healthRecords: updatedRecords,
+          reservations: currentState.reservations,
+        ));
+      },
+          (err) {
         emit(HealthRecordAddError(masseg: "Failed to add record: $err"));
+        emit(currentState);
       },
     );
   }
+
+//   Future<void> addHealthRecord(HealthRecordEntity record) async {
+//     emit(AddingHealthRecord());
+//
+//     final result = await usecase.addHealthRecord(record);
+//
+//     result.when(
+//           (_) {
+//         emit(HealthRecordAddedSuccess());
+//         final currentState = state;
+//         if (currentState is PetProfileLoaded) {
+//           loadPetData(currentState.petent);
+//         }
+//         }, (err) {
+//         emit(HealthRecordAddError(masseg: "Failed to add record: $err"));
+//       },
+//     );
+//   }
 
 
 }

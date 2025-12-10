@@ -7,6 +7,7 @@ import 'package:rifq/core/theme/app_theme.dart';
 import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_health_record/domain/entity/pet_profile_records_entity.dart';
 import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_health_record/domain/usecase/health_record_usecase.dart';
 import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_health_record/presentaion/cubit/pet_profile_records_cubit.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import '../../../../../../../core/routes/base_routes.dart';
 import '../widgets/appointment_content.dart';
 import '../widgets/cstoum_tab_bar.dart';
@@ -39,8 +40,8 @@ class PetHealthAndAppointmentScreen extends StatelessWidget {
           ),
           body: BlocBuilder<PetProfileRecordsCubit, PetProfileRecordsState>(
             builder: (context, state) {
-              if(state is PetProfileLoading){
-                return Center(child: CircularProgressIndicator());
+              if(state is PetProfileLoading || state is AddingHealthRecord){
+                return  Center(child: CircularProgressIndicator());
               }if(state is PetProfileError){
                 return Center(child: Text(state.massege));
               }if( state is PetProfileLoaded){

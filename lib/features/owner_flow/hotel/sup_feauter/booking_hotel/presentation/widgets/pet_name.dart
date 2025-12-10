@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../pet_profile/sup_features/pet_info_card/domain/entity/pet_entity.dart';
 class PetNameCardinfoWidgets extends StatelessWidget {
-
-  final Widget? icon; // اختياري أيقونة
+  final Widget? icon;
 
   const PetNameCardinfoWidgets({
     super.key,
-    this.icon,
-  });
+    this.icon,});
 
   @override
   Widget build(BuildContext context) {

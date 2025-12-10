@@ -57,9 +57,15 @@
 //
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:rifq/core/theme/app_color.dart';
 import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_health_record/domain/entity/health_record_entity.dart';
+
+import '../cubit/pet_profile_records_cubit.dart';
+import 'add_health_container_widgets.dart';
 
 class HealthRecordTab extends StatelessWidget {
   final List<HealthRecordEntity> records;
@@ -97,7 +103,7 @@ class HealthRecordTab extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8)),
               child: ListTile(
                 title: Text(
-                  record.title ?? 'No title',
+                  record.type,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 subtitle:
@@ -115,13 +121,77 @@ class HealthRecordTab extends StatelessWidget {
         Positioned(
           bottom: 16,
           right: 16,
-          child: FloatingActionButton.extended(
+          child:FloatingActionButton.extended(
             onPressed: () {
+              final typeController = TextEditingController();
+              final descriptionController = TextEditingController();
+              final clinicController = TextEditingController();
+              final dateController = TextEditingController();
+              final titleController=TextEditingController();
+
+              final cubit = context.read<PetProfileRecordsCubit>();
+
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
+                ),
+                builder: (context) => Padding(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom,
+                    left: 16.w,
+                    right: 16.w,
+                    top: 16.h,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      AddHealthContainerWidgets(
+                        typeController: typeController,
+                        descriptionController: descriptionController,
+                        clinicNameController: clinicController,
+                        dateController: dateController,
+                        titleController: titleController,
+                      ),
+                      SizedBox(height: 12.h),
+                      ElevatedButton(
+                        onPressed: () async {
+                          final recordDate = DateFormat('d/M/yyyy').parse(dateController.text);
+                          final record = HealthRecordEntity(
+                            petId: cubit.state is PetProfileLoaded
+                                ? (cubit.state as PetProfileLoaded).petent.petId
+                                : '',
+                            title: typeController.text,
+                            description: descriptionController.text,
+                            clinicName: clinicController.text,
+                            date: recordDate,
+                            id: '',
+                            type: typeController.text,
+                          );
+                         await cubit.addHealthRecord(record);
+                          context.pop();
+                        },
+                        child: const Text("Save Record"),
+                      ),
+                    ],
+                  ),
+                ),
+              );
             },
             backgroundColor: AppColors.primary300,
-            icon:  Icon(Icons.add,color: Colors.white,),
-            label: Text("Add Health Record",style: TextStyle(color: Colors.white),),
-          ),
+            icon: const Icon(Icons.add, color: Colors.white),
+            label: const Text("Add Health Record", style: TextStyle(color: Colors.white)),
+          )
+
+          // FloatingActionButton.extended(
+          //   onPressed: () {
+          //   },
+          //   backgroundColor: AppColors.primary300,
+          //   icon:  Icon(Icons.add,color: Colors.white,),
+          //   label: Text("Add Health Record",style: TextStyle(color: Colors.white),),
+          // ),
         ),
       ],
     );
