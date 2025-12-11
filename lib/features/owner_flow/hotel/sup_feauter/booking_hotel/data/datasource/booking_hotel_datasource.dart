@@ -21,8 +21,9 @@ class BookingHotelDatasource implements BaseBookingHotelDataSource {
   @override
   Future<Result<BookingHotelModel, String>> createBooking(BookingHotelModel booking) async {
     try {
-      final response = await supabase.from('reservations').insert({
-        'id': booking.id,
+      final response = await supabase
+          .from('reservations').insert({
+        // 'id': booking.id,
         'user_id': booking.userId,
         'provider_id': booking.providerId,
         'service_type_id': booking.serviceTypeId,

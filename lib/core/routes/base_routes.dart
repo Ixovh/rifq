@@ -18,13 +18,9 @@ import 'package:rifq/features/owner_flow/auth/presentation/pages/otp_screen.dart
 import 'package:rifq/features/owner_flow/auth/presentation/pages/reset_password_screen.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/sends_to_email_screen.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/welcome_screen.dart';
-
-import 'package:rifq/features/owner_flow/hotel/data/model/hotel_model.dart';
 import 'package:rifq/features/owner_flow/hotel/presentation/cubit/hotel_cubit.dart';
 import 'package:rifq/features/owner_flow/hotel/presentation/pages/hotel_details_screen.dart';
-
 import 'package:rifq/features/owner_flow/clinic/presentation/pages/clinic_screen.dart';
-
 import 'package:rifq/features/owner_flow/hotel/presentation/pages/hotel_home_screen.dart';
 import 'package:rifq/features/owner_flow/hotel/sup_feauter/booking_hotel/presentation/pages/booking_hotel.dart';
 import 'package:rifq/features/owner_flow/nav/presentation/cubit/nav_cubit.dart';
@@ -37,10 +33,11 @@ import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_he
 import 'package:rifq/features/owner_flow/profile/presentation/cubit/profile_cubit.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/edit_profile_screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/profile_screen.dart';
-
+import '../../features/owner_flow/hotel/sup_feauter/payment/presentation/pages/test.dart';
 import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/domain/usecase/edit_pet_profile_usecase.dart';
 import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/presentaion/cubit/edit_pet_profile_cubit.dart';
 import '../di/setup.dart';
+
 
 abstract class Routes {
   static String splash = '/';
@@ -59,6 +56,9 @@ abstract class Routes {
   static String resetPassword = '/resetPassword';
   static String navbar = '/navbar';
   static String addpet = '/addpet';
+
+  static String test = '/testpage';
+
 
 
 
@@ -239,7 +239,6 @@ abstract class Routes {
       // ),
 
       GoRoute(path: addpet, builder: (context, state) => AddPetScreen()),
-
       GoRoute(path: aiScreen, builder: (context, state) => AiScreen()),
       GoRoute(path: healthScreen, builder: (context, state) => ClinicScreen()),
 
@@ -363,6 +362,16 @@ GoRoute(
         builder: (context, state) {
           final pet = state.extra as PetEntity;
           return PetHealthAndAppointmentScreen(pet: pet);
+        },
+      ),
+
+
+
+
+      GoRoute(
+        path: test,
+        builder: (context, state) {
+          return Test();
         },
       ),
 

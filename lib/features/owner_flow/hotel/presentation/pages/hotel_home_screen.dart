@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rifq/core/di/setup.dart';
 import 'package:rifq/core/theme/app_theme.dart';
+import '../../../../../core/common/widgets/appbar/custom_app_bar.dart';
 import '../../../../../core/routes/base_routes.dart';
 import '../../domain/usecase/hotel_usecase.dart';
 import '../cubit/hotel_cubit.dart';
@@ -17,21 +18,7 @@ class HotelHomeScreen extends StatelessWidget {
       create: (context) => HotelCubit(getIt<HotelUsecase>())..fetchAllHotels(),
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          scrolledUnderElevation: 0,
-          leading: CircleAvatar(),
-          title: Text(
-            "Hotel", style: context.body1.copyWith(color: context.primary300),
-          ),
-          centerTitle: true,
-          actions: [
-            GestureDetector(
-              onTap: () {},
-              child: Image.asset("assets/images/notification-bing.png"),
-            ),
-          ],
-        ),
+        appBar:CustomAppBar(title: 'Hotel',),
         body: Column(
           children: [
             Padding(
@@ -87,7 +74,7 @@ class HotelHomeScreen extends StatelessWidget {
                   } else if (state is HotelError) {
                     return Center(child: Text(state.message));
                   }
-                  return SizedBox();
+                  return Center(child: CircularProgressIndicator());
                 },
               ),
             )

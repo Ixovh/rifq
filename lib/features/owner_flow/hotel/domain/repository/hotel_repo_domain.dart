@@ -7,4 +7,5 @@ abstract class HotelRepoDomain {
   Future<Result<List<ProviderEntity>, String>> getAllHotel();
 // تفاصيل فندق معين
   Future<Result<ProviderItemsViewEntity, String>> getHotelById(String id);
+
 }

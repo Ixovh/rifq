@@ -11,23 +11,41 @@ class HotelCubit extends Cubit<HotelState> {
   final HotelUsecase usecase;
   String? selectedRoomId; // للغرف يختار
   ProviderItemsViewEntity? _currentHotel;
+  List<ProviderEntity>? cachedHotels;
 
 
   ProviderItemsViewEntity? selectedRoomDetails;
   HotelCubit(this.usecase) : super(HotelInitial());
 
 
+  // void fetchAllHotels() async {
+  //   emit(HotelLoading());
+  //   final result = await usecase.getAllHotel();
+  //   result.when(
+  //     (hotels) => emit(HotelLoaded(hotels)),
+  //         (error) => emit(HotelError(error)),
+  //   );
+  // }
+
+  //
+  //
+
   void fetchAllHotels() async {
-    emit(HotelLoading());
+    // لو البيانات موجودة، نرسلها للعرض
+    if (cachedHotels != null) {
+      emit(HotelLoaded(cachedHotels!));
+    }
+    // بعدين نجيب آخر بيانات من الداتابيس
     final result = await usecase.getAllHotel();
     result.when(
-      (hotels) => emit(HotelLoaded(hotels)),
+          (hotels) {
+        cachedHotels = hotels; // تحديث الكاش
+        emit(HotelLoaded(hotels));
+      },
           (error) => emit(HotelError(error)),
     );
   }
 
-  //
-  //
 
 
 

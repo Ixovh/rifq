@@ -3,7 +3,6 @@ class ProviderItemsViewEntity {
   final String itemName;
   final String? itemDescription;
   final num? price;
-
   final String providerId;
   final String providerName;
   final String? providerImage;

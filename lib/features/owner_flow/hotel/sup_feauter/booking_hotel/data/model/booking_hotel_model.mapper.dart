@@ -36,8 +36,8 @@ class BookingHotelModelMapper extends ClassMapperBase<BookingHotelModel> {
     _$providerId,
     key: r'provider_id',
   );
-  static String _$serviceTypeId(BookingHotelModel v) => v.serviceTypeId;
-  static const Field<BookingHotelModel, String> _f$serviceTypeId = Field(
+  static int _$serviceTypeId(BookingHotelModel v) => v.serviceTypeId;
+  static const Field<BookingHotelModel, int> _f$serviceTypeId = Field(
     'serviceTypeId',
     _$serviceTypeId,
     key: r'service_type_id',
@@ -189,7 +189,7 @@ abstract class BookingHotelModelCopyWith<
     String? id,
     String? userId,
     String? providerId,
-    String? serviceTypeId,
+    int? serviceTypeId,
     String? serviceItemId,
     String? petId,
     DateTime? startDate,
@@ -216,7 +216,7 @@ class _BookingHotelModelCopyWithImpl<$R, $Out>
     String? id,
     String? userId,
     String? providerId,
-    String? serviceTypeId,
+    int? serviceTypeId,
     String? serviceItemId,
     String? petId,
     DateTime? startDate,

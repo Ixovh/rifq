@@ -29,7 +29,7 @@ class PetCardInfoDatasources  implements PatCard {
     final response = await supabase
         .from('pet_profile_view')
         .select()
-        .eq('owner_id', ownerId);
+        .eq('user_id', ownerId);
     return response.map((e) => PetProfileModelMapper.fromMap(e)).toList();
   }
 

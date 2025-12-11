@@ -4,7 +4,7 @@ class BookingHotelEntity {
   final String id;
   final String userId;
   final String providerId;
-  final String serviceTypeId;//نوع الخدمة
+  final int  serviceTypeId;//نوع الخدمة
   final String serviceItemId;
   final String petId;
   final DateTime startDate;
@@ -12,6 +12,8 @@ class BookingHotelEntity {
   final StatusBookingEnum status;
   final String notes;
   final DateTime createdAt;
+
+
 
   BookingHotelEntity({
     required this.id,

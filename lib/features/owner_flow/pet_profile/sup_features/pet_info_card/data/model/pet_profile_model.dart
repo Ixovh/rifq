@@ -13,7 +13,7 @@ class PetProfileModel extends PetProfileEntity with PetProfileModelMappable {
     @MappableField(key: 'pet_species') required super.species,
     @MappableField(key: 'pet_birthdate') required super.birthdate,
     @MappableField(key: 'pet_photo') required super.photoUrl,
-    @MappableField(key: 'owner_id') required super.ownerId,
+    @MappableField(key: 'user_id') required super.ownerId,
     @MappableField(key: 'pet_gender') required super.gender,
     @MappableField(key: 'pet_created_at') required super.createdAt,
   });
