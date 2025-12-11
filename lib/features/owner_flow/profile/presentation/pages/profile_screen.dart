@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../core/di/setup.dart';
 import '../../../../../core/routes/base_routes.dart';
+import '../../../../../core/shared/shared_in_owner_flow/shared_auth/helpers/auth_helper.dart';
 import '../../../pet_profile/sup_features/pet_info_card/domain/usecase/pet_profile_usecase.dart';
 import '../../../pet_profile/sup_features/pet_info_card/presentation/cubit/pet_info_cubit.dart';
 import '../../domain/entities/user_profile_entity.dart';
@@ -15,10 +16,15 @@ import '../widgets/listtiel/list_tiel_widgets.dart';
 class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final userId = AuthHelper.getUserId();
     return BlocProvider(
-      create: (context) =>
-      ProfileCubit(getIt<UserProfileUsecase>())
-        ..getUserProfile("e7c6dc83-bcf5-4c0a-9818-4fd1df190cf4"),
+      create: (context) {
+        final cubit = ProfileCubit(getIt<UserProfileUsecase>());
+        if (userId != null) {
+          cubit.getUserProfile(userId);
+        }
+        return cubit;
+      },
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -34,9 +40,10 @@ class ProfileScreen extends StatelessWidget {
         ),
         body: BlocListener<ProfileCubit, ProfileState>(
           listener: (context, state) {
-           if(state is ProfileUpdated){
-             context.read<ProfileCubit>().getUserProfile("e7c6dc83-bcf5-4c0a-9818-4fd1df190cf4");
-           }
+            if(state is ProfileUpdated){
+              context.read<ProfileCubit>().getUserProfile(userId!);
+
+            }
           },
           child: BlocBuilder<ProfileCubit, ProfileState>(
             builder: (context, state) {
