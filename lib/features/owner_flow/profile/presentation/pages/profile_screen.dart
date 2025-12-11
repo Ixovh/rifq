@@ -19,12 +19,12 @@ class ProfileScreen extends StatelessWidget {
     final userId = AuthHelper.getUserId();
     return BlocProvider(
       create: (context) {
-        final cubit = ProfileCubit(getIt<UserProfileUsecase>());
-        if (userId != null) {
-          cubit.getUserProfile(userId);
-        }
-        return cubit;
-      },
+         final cubit = ProfileCubit(getIt<UserProfileUsecase>());
+    if (userId != null) {
+      cubit.getUserProfile(userId);
+    }
+    return cubit;
+  },
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -40,10 +40,10 @@ class ProfileScreen extends StatelessWidget {
         ),
         body: BlocListener<ProfileCubit, ProfileState>(
           listener: (context, state) {
-            if(state is ProfileUpdated){
-              context.read<ProfileCubit>().getUserProfile(userId!);
+           if(state is ProfileUpdated){
+             context.read<ProfileCubit>().getUserProfile(userId!);
 
-            }
+           }
           },
           child: BlocBuilder<ProfileCubit, ProfileState>(
             builder: (context, state) {
