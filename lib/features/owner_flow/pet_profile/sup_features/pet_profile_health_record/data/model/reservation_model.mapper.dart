@@ -35,12 +35,6 @@ class ReservationModelMapper extends ClassMapperBase<ReservationModel> {
     _$providerId,
     key: r'provider_id',
   );
-  static int _$serviceTypeId(ReservationModel v) => v.serviceTypeId;
-  static const Field<ReservationModel, int> _f$serviceTypeId = Field(
-    'serviceTypeId',
-    _$serviceTypeId,
-    key: r'service_type_id',
-  );
   static String _$serviceItemId(ReservationModel v) => v.serviceItemId;
   static const Field<ReservationModel, String> _f$serviceItemId = Field(
     'serviceItemId',
@@ -53,10 +47,11 @@ class ReservationModelMapper extends ClassMapperBase<ReservationModel> {
     _$petId,
     key: r'pet_id',
   );
-  static DateTime _$date(ReservationModel v) => v.date;
-  static const Field<ReservationModel, DateTime> _f$date = Field(
-    'date',
-    _$date,
+  static String? _$time(ReservationModel v) => v.time;
+  static const Field<ReservationModel, String> _f$time = Field(
+    'time',
+    _$time,
+    opt: true,
   );
   static DateTime _$startDate(ReservationModel v) => v.startDate;
   static const Field<ReservationModel, DateTime> _f$startDate = Field(
@@ -79,6 +74,7 @@ class ReservationModelMapper extends ClassMapperBase<ReservationModel> {
   static const Field<ReservationModel, String> _f$notes = Field(
     'notes',
     _$notes,
+    opt: true,
   );
   static DateTime _$createdAt(ReservationModel v) => v.createdAt;
   static const Field<ReservationModel, DateTime> _f$createdAt = Field(
@@ -92,10 +88,9 @@ class ReservationModelMapper extends ClassMapperBase<ReservationModel> {
     #id: _f$id,
     #userId: _f$userId,
     #providerId: _f$providerId,
-    #serviceTypeId: _f$serviceTypeId,
     #serviceItemId: _f$serviceItemId,
     #petId: _f$petId,
-    #date: _f$date,
+    #time: _f$time,
     #startDate: _f$startDate,
     #endDate: _f$endDate,
     #status: _f$status,
@@ -108,10 +103,9 @@ class ReservationModelMapper extends ClassMapperBase<ReservationModel> {
       id: data.dec(_f$id),
       userId: data.dec(_f$userId),
       providerId: data.dec(_f$providerId),
-      serviceTypeId: data.dec(_f$serviceTypeId),
       serviceItemId: data.dec(_f$serviceItemId),
       petId: data.dec(_f$petId),
-      date: data.dec(_f$date),
+      time: data.dec(_f$time),
       startDate: data.dec(_f$startDate),
       endDate: data.dec(_f$endDate),
       status: data.dec(_f$status),
@@ -186,10 +180,9 @@ abstract class ReservationModelCopyWith<$R, $In extends ReservationModel, $Out>
     String? id,
     String? userId,
     String? providerId,
-    int? serviceTypeId,
     String? serviceItemId,
     String? petId,
-    DateTime? date,
+    String? time,
     DateTime? startDate,
     DateTime? endDate,
     String? status,
@@ -214,10 +207,9 @@ class _ReservationModelCopyWithImpl<$R, $Out>
     String? id,
     String? userId,
     String? providerId,
-    int? serviceTypeId,
     String? serviceItemId,
     String? petId,
-    DateTime? date,
+    Object? time = $none,
     DateTime? startDate,
     DateTime? endDate,
     String? status,
@@ -228,10 +220,9 @@ class _ReservationModelCopyWithImpl<$R, $Out>
       if (id != null) #id: id,
       if (userId != null) #userId: userId,
       if (providerId != null) #providerId: providerId,
-      if (serviceTypeId != null) #serviceTypeId: serviceTypeId,
       if (serviceItemId != null) #serviceItemId: serviceItemId,
       if (petId != null) #petId: petId,
-      if (date != null) #date: date,
+      if (time != $none) #time: time,
       if (startDate != null) #startDate: startDate,
       if (endDate != null) #endDate: endDate,
       if (status != null) #status: status,
@@ -244,10 +235,9 @@ class _ReservationModelCopyWithImpl<$R, $Out>
     id: data.get(#id, or: $value.id),
     userId: data.get(#userId, or: $value.userId),
     providerId: data.get(#providerId, or: $value.providerId),
-    serviceTypeId: data.get(#serviceTypeId, or: $value.serviceTypeId),
     serviceItemId: data.get(#serviceItemId, or: $value.serviceItemId),
     petId: data.get(#petId, or: $value.petId),
-    date: data.get(#date, or: $value.date),
+    time: data.get(#time, or: $value.time),
     startDate: data.get(#startDate, or: $value.startDate),
     endDate: data.get(#endDate, or: $value.endDate),
     status: data.get(#status, or: $value.status),

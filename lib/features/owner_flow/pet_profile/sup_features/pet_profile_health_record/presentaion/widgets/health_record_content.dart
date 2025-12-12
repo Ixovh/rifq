@@ -109,10 +109,17 @@ class HealthRecordTab extends StatelessWidget {
                 subtitle:
                 Text(record.description ?? 'No description'),
                 trailing: Text(
-                  "${record.date?.year}/${record.date?.month}/${record.date?.day}",
-                  style: const TextStyle(
-                      fontSize: 12, color: Colors.grey),
+                  record.date != null
+                      ? DateFormat("yyyy/MM/dd").format(record.date!)
+                      : "No date",
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
                 ),
+
+                // trailing: Text(
+                //   "${record.date?.year}/${record.date?.month}/${record.date?.day}",
+                //   style: const TextStyle(
+                //       fontSize: 12, color: Colors.grey),
+                // ),
               ),
             );
           },

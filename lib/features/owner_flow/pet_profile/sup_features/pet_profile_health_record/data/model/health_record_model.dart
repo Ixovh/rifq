@@ -12,10 +12,10 @@ class HealthRecordModel extends HealthRecordEntity with HealthRecordModelMappabl
     required super.id,
     @MappableField(key: 'pet_id')required super.petId,
     required super.type,
-    required super.title,
-    required super.description,
-    required super.date,
-    @MappableField(key: 'clinic_name')required super.clinicName
+     super.title,
+     super.description,
+     super.date,
+    @MappableField(key: 'clinic_name') super.clinicName
   });
 
   /// fromMapا

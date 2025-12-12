@@ -76,6 +76,14 @@ import '../../features/owner_flow/hotel/sup_feauter/booking_hotel/domain/reposit
     as _i104;
 import '../../features/owner_flow/hotel/sup_feauter/booking_hotel/domain/usecase/booking_hotel_usecase.dart'
     as _i189;
+import '../../features/owner_flow/hotel/sup_feauter/payment/data/datasource/payment_datasource.dart'
+    as _i18;
+import '../../features/owner_flow/hotel/sup_feauter/payment/data/repository/repo_data.dart'
+    as _i843;
+import '../../features/owner_flow/hotel/sup_feauter/payment/domain/repository/repo_domain.dart'
+    as _i835;
+import '../../features/owner_flow/hotel/sup_feauter/payment/domain/usecase/payment_usecase.dart'
+    as _i616;
 import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/data/datasources/edit_pet_profile_datasources.dart'
     as _i131;
 import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/data/repositories/edit_pet_profile_repo.dart'
@@ -129,6 +137,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i972.BaseUserProfileDataSourc>(
       () => _i972.DataBaseDataSource(gh<_i454.SupabaseClient>()),
     );
+    gh.lazySingleton<_i18.BaseDtaSourcePayment>(
+      () => _i18.PaymentDatasource(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i771.BaseBookingHotelDataSource>(
       () => _i771.BookingHotelDatasource(gh<_i454.SupabaseClient>()),
     );
@@ -155,6 +166,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i324.ClinicRepoDomain>(
       () => _i359.ClinicRepoData(gh<_i814.BaseClinicDataSource>()),
+    );
+    gh.lazySingleton<_i835.PaymentRepoDomain>(
+      () => _i843.PaymentRepoData(gh<_i18.BaseDtaSourcePayment>()),
     );
     gh.lazySingleton<_i189.BookingHotelUsecase>(
       () => _i189.BookingHotelUsecase(gh<_i104.BookingHotelRepoDomain>()),
@@ -194,6 +208,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i981.HomeRepoDomain>(
       () => _i663.HomeRepoImpl(gh<_i695.BaseHomeDataSource>()),
+    );
+    gh.lazySingleton<_i616.PaymentUsecase>(
+      () => _i616.PaymentUsecase(gh<_i835.PaymentRepoDomain>()),
     );
     gh.lazySingleton<_i809.PetProfileRecordsRepo>(
       () =>

@@ -35,22 +35,26 @@ class HealthRecordModelMapper extends ClassMapperBase<HealthRecordModel> {
   static const Field<HealthRecordModel, String> _f$title = Field(
     'title',
     _$title,
+    opt: true,
   );
   static String? _$description(HealthRecordModel v) => v.description;
   static const Field<HealthRecordModel, String> _f$description = Field(
     'description',
     _$description,
+    opt: true,
   );
   static DateTime? _$date(HealthRecordModel v) => v.date;
   static const Field<HealthRecordModel, DateTime> _f$date = Field(
     'date',
     _$date,
+    opt: true,
   );
   static String? _$clinicName(HealthRecordModel v) => v.clinicName;
   static const Field<HealthRecordModel, String> _f$clinicName = Field(
     'clinicName',
     _$clinicName,
     key: r'clinic_name',
+    opt: true,
   );
 
   @override

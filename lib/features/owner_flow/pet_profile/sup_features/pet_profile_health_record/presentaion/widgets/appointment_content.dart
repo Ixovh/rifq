@@ -40,7 +40,7 @@ class AppointmentTab extends StatelessWidget {
           child: ListTile(
             title: Text(appt.notes ?? 'No notes', style: const TextStyle(fontWeight: FontWeight.bold)),            subtitle: Text("Status: ${appt.status}"),
             trailing: Text(
-              "${appt.date.year}/${appt.date.month}/${appt.date.day}",
+              "${appt.startDate.year}/${appt.endDate.month}/${appt.startDate.day}",
               style: const TextStyle(fontSize: 12),
             ),
           ),

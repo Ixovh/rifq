@@ -33,10 +33,11 @@ import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_he
 import 'package:rifq/features/owner_flow/profile/presentation/cubit/profile_cubit.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/edit_profile_screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/profile_screen.dart';
-import '../../features/owner_flow/hotel/sup_feauter/payment/presentation/pages/test.dart';
+import '../../features/owner_flow/hotel/sup_feauter/payment/presentation/pages/confirm_and_pay_Screen.dart';
 import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/domain/usecase/edit_pet_profile_usecase.dart';
 import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/presentaion/cubit/edit_pet_profile_cubit.dart';
 import '../di/setup.dart';
+import '../shared/shared_in_owner_flow/shared/entities/reservation_opt_entity.dart';
 
 
 abstract class Routes {
@@ -57,7 +58,7 @@ abstract class Routes {
   static String navbar = '/navbar';
   static String addpet = '/addpet';
 
-  static String test = '/testpage';
+  static String confirmandpay = '/confirmandpay';
 
 
 
@@ -365,15 +366,32 @@ GoRoute(
         },
       ),
 
-
-
-
       GoRoute(
-        path: test,
+        path: confirmandpay,
         builder: (context, state) {
-          return Test();
-        },
+          final extra = state.extra as Map<String, dynamic>?;
+
+          final booking = extra?['booking'] as ReservationOptEntity?;
+          final hotel = extra?['hotel'] as ProviderItemsViewEntity?;
+          final selectedPets = extra?['selectedPets'] as List<String>?;
+          if (booking == null || hotel == null || selectedPets == null) {
+            return Scaffold(
+              body: Center(child: Text("Data missing")),
+            );
+          }
+          return ConfirmAndPayScreen(
+              booking: booking,
+              hotel: hotel,
+              selectedPets: selectedPets,
+              );
+         },
       ),
+      // GoRoute(
+      //   path: confirmandpay,
+      //   builder: (context, state) {
+      //     return ConfirmAndPayScreen();
+      //   },
+      // ),
 
     ],
   );

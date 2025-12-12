@@ -15,7 +15,7 @@ final class BookingHotelLoading extends BookingHotelState {}
 //
 // }
 final class BookingSuccess extends BookingHotelState {
-  final BookingHotelEntity booking;
+  final ReservationOptEntity booking;
   BookingSuccess(this.booking);
 }
 final class BookingError extends BookingHotelState {

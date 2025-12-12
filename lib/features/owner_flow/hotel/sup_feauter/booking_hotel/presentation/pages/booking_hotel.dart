@@ -6,15 +6,14 @@ import 'package:go_router/go_router.dart';
 import 'package:rifq/core/di/setup.dart';
 import 'package:rifq/core/routes/base_routes.dart';
 import 'package:rifq/core/theme/app_theme.dart';
-import 'package:uuid/uuid.dart';
 import '../../../../../../../core/common/widgets/button/custome_button_widgets.dart';
-import '../../../../../../../core/shared/enum/status_booking_enum.dart';
 import '../../../../../../../core/shared/shared_in_owner_flow/shared/entities/provider_items_view_entity.dart';
+import '../../../../../../../core/shared/shared_in_owner_flow/shared/entities/reservation_opt_entity.dart';
 import '../../../../../pet_profile/sup_features/pet_info_card/domain/usecase/pet_profile_usecase.dart';
 import '../../../../../pet_profile/sup_features/pet_info_card/presentation/cubit/pet_info_cubit.dart';
 import '../../../../../profile/domain/usecases/user_profile_usecase.dart';
 import '../../../../../profile/presentation/cubit/profile_cubit.dart';
-import '../../domain/entity/booking_hotel_entity.dart';
+import '../../../payment/presentation/pages/confirm_and_pay_Screen.dart';
 import '../../domain/usecase/booking_hotel_usecase.dart';
 import '../cubit/booking_hotel_cubit.dart';
 import '../widgets/date_time.dart';
@@ -64,13 +63,11 @@ class BookingHotel extends StatelessWidget {
                       listener: (context, state) {
                         if (state is ProfileLoaded) {
                           context.read<PetInfoCubit>().getPets(state.user.id);
-                        }
-                      },
+                        }},
                       child: BlocBuilder<ProfileCubit, ProfileState>(
                         builder: (context, state) {
                           if (state is ProfileLoading) {
-                            return Center(child: CircularProgressIndicator());
-                          }
+                            return Center(child: CircularProgressIndicator());}
                           if (state is ProfileLoaded) {
                             final user = state.user;
                             return Column(
@@ -80,8 +77,7 @@ class BookingHotel extends StatelessWidget {
                                 SizedBox(height: 10.h),
                                 Text("Email: ${user.email}"),
                               ],
-                            );
-                          }
+                            );}
                           return Container();
                         },
                       ),
@@ -123,9 +119,7 @@ class BookingHotel extends StatelessWidget {
                           );
                         }
                         return Container();
-                      },
-                    ),
-
+                      },),
                     SizedBox(height: 16.h),
                     Text("Service : ", style: TextStyle(
                         fontSize: 16.sp, fontWeight: FontWeight.bold)),
@@ -161,8 +155,7 @@ class BookingHotel extends StatelessWidget {
                       },),
                     SizedBox(height: 20.h),
                     Text(
-                      "Check-out Date",
-                      style: TextStyle(
+                      "Check-out Date", style: TextStyle(
                           fontSize: 16.sp, fontWeight: FontWeight.bold),),
                     SizedBox(height: 11.h),
                     ValueListenableBuilder<DateTime?>(
@@ -178,9 +171,7 @@ class BookingHotel extends StatelessWidget {
                               if (checkInDate != null &&
                                   date.isBefore(checkInDate)) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                        "Check-out must be after check-in"),),);
+                                  SnackBar(content: Text("Check-out must be after check-in"),),);
                                 return;
                               }
                               checkOut.value = date;
@@ -193,22 +184,61 @@ class BookingHotel extends StatelessWidget {
                     SizedBox(height: 60.h),
                     CustomeButtonWidgets(
                       titel: 'Book Now',
-                      onPressed: () {
-
-                        context.push(Routes.test);
-                      },
+                      onPressed: () async {
+                        final profileState = context.read<ProfileCubit>().state;
+                        if (profileState is! ProfileLoaded) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('User data is not loaded yet')),
+                          );
+                          return;
+                        }
+                        if (selectedPets.value.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Please select at least one pet')),
+                          );
+                          return;
+                        }
+                        if (checkIn.value == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Please select check-in date')),);
+                          return;
+                        }
+                        final bookingCubit = context.read<BookingHotelCubit>();
+                        for (String petId in selectedPets.value) {
+                          final booking = ReservationOptEntity(
+                            id: '',
+                            userId: profileState.user.id,
+                            providerId: hotel.providerId,
+                            serviceItemId: roomId,
+                            petId: petId,
+                            startDate: checkIn.value!,
+                            endDate: checkOut.value,
+                            status: 'pending',
+                            notes: '',
+                            createdAt: DateTime.now(),
+                            time: null,
+                          );
+                          await bookingCubit.createBooking(booking);
+                        }
+                        final state = bookingCubit.state;                        // استماع للنتيجة
+                        if (state is BookingSuccess) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Booking saved successfully!')),
+                          );
+                          context.push(Routes.confirmandpay, extra:{
+                            'booking':state.booking,
+                            'hotel':hotel,
+                            'selectedPets':selectedPets.value,
+                          });
+                        } else if (state is BookingError) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Booking failed: ${state.message}')),
+                          );
+                        }},
                       buttonWidth: 366.w,
                       buttonhight: 58.h,)
                   ],),
-              ),
-            ),
-          );
-        }
-      ),
-    );
-  }
-
-}
+              ),),);}),);}}
 
 
 
