@@ -19,10 +19,11 @@ class PaymentDatasource  implements BaseDtaSourcePayment{
 
   PaymentDatasource(this.supabase);
 
+
   @override
   Future<Result<void, String>> addPayment(PaymentEntity payment) async {
     try {
-      await supabase.from('payments').insert({
+      final response = await supabase.from('payments').insert({
         'id': payment.id,
         'user_id': payment.userId,
         'context': payment.context,
@@ -31,15 +32,17 @@ class PaymentDatasource  implements BaseDtaSourcePayment{
         'status': payment.status.name,
         'created_at': payment.createdAt.toIso8601String(),
       });
+      print(response.error);
+      print(response.data);
       return Success(null);
     } catch (e) {
       return Error("Unexpected error: $e");
     }
   }
 
-  //
-  //
-  //
+
+
+
   @override
   Future<Result<PaymentEntity?, String>> getPaymentById(String paymentId) async {
     try {
@@ -82,5 +85,28 @@ class PaymentDatasource  implements BaseDtaSourcePayment{
       return Error("Unexpected error: $e");
     }
   }
+
+
+  // @override
+  // Future<Result<void, String>> addPayment(PaymentEntity payment)async {
+  //   print("Inserting status: '${payment.status.name}'");
+  //   final response = await supabase.from('payments').insert({
+  //     'id': payment.id,
+  //     'user_id': payment.userId,
+  //     'context': payment.context,
+  //     'context_id': payment.contextId,
+  //     'amount': payment.amount,
+  //     'status': payment.status.name.toLowerCase(),
+  //     'created_at': payment.createdAt.toIso8601String(),
+  //   });
+  //
+  //   if (response.error != null) {
+  //     return Error("Supabase insert error: ${response.error!.message}");
+  //   } else {
+  //     return Success(null);
+  //   }
+  //
+  //
+  // }
 
 }
