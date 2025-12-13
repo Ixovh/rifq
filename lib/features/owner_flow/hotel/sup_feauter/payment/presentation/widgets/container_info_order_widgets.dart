@@ -107,12 +107,14 @@ class ContainerInfoOrderWidgets extends StatelessWidget {
   final ReservationOptEntity booking;
   final ProviderItemsViewEntity hotel;
   final List<String> selectedPets;
+  final double total;
 
   const ContainerInfoOrderWidgets({
     super.key,
     required this.booking,
     required this.hotel,
     required this.selectedPets,
+    required this.total,
   });
 
   @override
@@ -122,10 +124,10 @@ class ContainerInfoOrderWidgets extends StatelessWidget {
     final checkOutFormatted = booking.endDate != null
         ? dateFormat.format(booking.endDate!)
         :'No selected';
-    final nights = booking.endDate != null
-        ? booking.endDate!.difference(booking.startDate).inDays
-        : 0;
-    final total = nights * hotel.price!;
+    // final nights = booking.endDate != null
+    //     ? booking.endDate!.difference(booking.startDate).inDays
+    //     : 0;
+    // final total = nights * hotel.price!;
     final numberofPets = selectedPets.length;
 
     return Container(

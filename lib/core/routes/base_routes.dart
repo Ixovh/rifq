@@ -34,6 +34,7 @@ import 'package:rifq/features/owner_flow/profile/presentation/cubit/profile_cubi
 import 'package:rifq/features/owner_flow/profile/presentation/pages/edit_profile_screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/profile_screen.dart';
 import '../../features/owner_flow/hotel/sup_feauter/payment/presentation/pages/confirm_and_pay_Screen.dart';
+import '../../features/owner_flow/hotel/sup_feauter/payment/presentation/pages/payment_screen.dart';
 import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/domain/usecase/edit_pet_profile_usecase.dart';
 import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/presentaion/cubit/edit_pet_profile_cubit.dart';
 import '../di/setup.dart';
@@ -57,8 +58,8 @@ abstract class Routes {
   static String resetPassword = '/resetPassword';
   static String navbar = '/navbar';
   static String addpet = '/addpet';
-
   static String confirmandpay = '/confirmandpay';
+  static String paymentscreen = '/paymentScreen';
 
 
 
@@ -365,7 +366,9 @@ GoRoute(
           return PetHealthAndAppointmentScreen(pet: pet);
         },
       ),
-
+      //------//
+      //------//
+      //------//
       GoRoute(
         path: confirmandpay,
         builder: (context, state) {
@@ -393,6 +396,28 @@ GoRoute(
       //   },
       // ),
 
+      //------//
+      //------//
+      //------//
+
+
+      GoRoute(
+        path: paymentscreen,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          return PaymentScreen(
+            amount: extra['amount'] as int,
+            bookingId: extra['bookingId'] as String,
+          );
+        },
+      ),
+
+      // GoRoute(
+      //   path: paymentscreen,
+      //   builder: (context, state) {
+      //     return PaymentScreen();
+      //   },
+      // ),
     ],
   );
 
