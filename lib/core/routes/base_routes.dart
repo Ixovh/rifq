@@ -35,6 +35,7 @@ import 'package:rifq/features/owner_flow/profile/presentation/pages/edit_profile
 import 'package:rifq/features/owner_flow/profile/presentation/pages/profile_screen.dart';
 import '../../features/owner_flow/hotel/sup_feauter/payment/presentation/pages/confirm_and_pay_Screen.dart';
 import '../../features/owner_flow/hotel/sup_feauter/payment/presentation/pages/payment_screen.dart';
+import '../../features/owner_flow/hotel/sup_feauter/payment/presentation/pages/payment_succesfull.dart';
 import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/domain/usecase/edit_pet_profile_usecase.dart';
 import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/presentaion/cubit/edit_pet_profile_cubit.dart';
 import '../di/setup.dart';
@@ -60,6 +61,8 @@ abstract class Routes {
   static String addpet = '/addpet';
   static String confirmandpay = '/confirmandpay';
   static String paymentscreen = '/paymentScreen';
+  static String successfullpay = '/successfullpay';
+
 
 
 
@@ -418,6 +421,12 @@ GoRoute(
       //     return PaymentScreen();
       //   },
       // ),
+
+
+      GoRoute(
+        path: successfullpay,
+        builder: (context, state) => PaymentSuccesfull(),
+      ),
     ],
   );
 

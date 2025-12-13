@@ -38,7 +38,10 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:moyasar/moyasar.dart';
+
+import '../../../../../../../core/routes/base_routes.dart';
 
 class PaymentScreen extends StatelessWidget {
   final int amount;
@@ -63,7 +66,7 @@ class PaymentScreen extends StatelessWidget {
       if (result is PaymentResponse) {
         switch (result.status) {
           case PaymentStatus.paid:
-          // الدفع تم بنجاح
+            context.push(Routes.successfullpay);
             break;
             default:
         // case PaymentStatus.failed:
@@ -73,15 +76,25 @@ class PaymentScreen extends StatelessWidget {
     }
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: IconButton(onPressed: (){
+          context.pop();
+        }, icon: Icon(Icons.arrow_back,color: Colors.black,)),
+      ),
+      backgroundColor: Colors.white,
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: .center,
-          children: [
-            CreditCard(
-              config: paymentConfig,
-              onPaymentResult: onPaymentResult,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          child: Center(
+            child: SingleChildScrollView(
+            child: CreditCard(
+                  config: paymentConfig,
+                  onPaymentResult: onPaymentResult,
+                ),
+          
             ),
-          ],
+          ),
         ),
       ),
     );
