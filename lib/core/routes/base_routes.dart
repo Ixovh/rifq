@@ -37,6 +37,13 @@ import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_he
 import 'package:rifq/features/owner_flow/profile/presentation/cubit/profile_cubit.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/edit_profile_screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/profile_screen.dart';
+import 'package:rifq/features/services_provider_flow/auth/presentation/cubit/provider_auth_cubit.dart';
+import 'package:rifq/features/services_provider_flow/auth/presentation/pages/provider_auth_screen.dart';
+import 'package:rifq/features/services_provider_flow/auth/presentation/pages/provider_otp_screen.dart';
+import 'package:rifq/features/services_provider_flow/auth/presentation/pages/provider_reset_password_screen.dart';
+import 'package:rifq/features/services_provider_flow/auth/presentation/pages/provider_sends_to_email_screen.dart';
+import 'package:rifq/features/services_provider_flow/auth/presentation/pages/provider_select_service_types_screen.dart';
+import 'package:rifq/features/services_provider_flow/home/presentation/pages/provider_home_screen.dart';
 
 abstract class Routes {
   static String splash = '/';
@@ -55,9 +62,11 @@ abstract class Routes {
   static String resetPassword = '/resetPassword';
   static String navbar = '/navbar';
   static String addpet = '/addpet';
-
-
-
+  static String providerAuth = '/providerAuth';
+  static String providerOtp = '/providerOtp';
+  static String providerResetPassword = '/providerResetPassword';
+  static String providerSendsToEmail = '/providerSendsToEmail';
+  static String providerSelectServiceTypes = '/providerSelectServiceTypes';
 
   static String aiScreen = '/aiScreen';
   static String healthScreen = '/healthScreen';
@@ -70,11 +79,12 @@ abstract class Routes {
   static String seeRequests = '/seeRequests';
   static String petDetails = '/petDetails';
 
-
   static String hotel = '/HotelHome';
   static String detailsHotel = '/DetailsHotel';
   static String bookingHotel = '/BookingHotel';
   static String healthRecourdpet = '/HealthRecourdpet';
+
+  static String providerHome = '/providerHome';
 
   static final routers = GoRouter(
     initialLocation: splash,
@@ -146,6 +156,55 @@ abstract class Routes {
           );
         },
       ),
+
+      GoRoute(
+        path: providerAuth,
+        builder: (context, state) => ProviderAuthScreen(),
+      ),
+      GoRoute(
+        path: providerOtp,
+        builder: (context, state) {
+          final data = state.extra as Map<String, dynamic>;
+          return BlocProvider.value(
+            value: data['cubit'] as ProviderAuthCubit,
+            child: ProviderOtpScreen(
+              isResetPassword: data["isPassword"] as bool,
+            ),
+          );
+        },
+      ),
+      GoRoute(
+        path: providerResetPassword,
+        builder: (context, state) {
+          return BlocProvider.value(
+            value: state.extra as ProviderAuthCubit,
+            child: ProviderResetPasswordScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: providerSendsToEmail,
+        builder: (context, state) {
+          return BlocProvider.value(
+            value: state.extra as ProviderAuthCubit,
+            child: ProviderSendsToEmailScreen(),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: providerSelectServiceTypes,
+        builder: (context, state) {
+          return BlocProvider.value(
+            value: state.extra as ProviderAuthCubit,
+            child:  ProviderSelectServiceTypesScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: providerHome,
+        builder: (context, state) => ProviderHomeScreen(),
+      ),
       //------//
       //------//
       //------//
@@ -165,7 +224,6 @@ abstract class Routes {
       //     return ProfileScreen(userId: userId);
       //   },
       // ),
-
       GoRoute(
         path: editprofile,
         builder: (context, state) {
@@ -173,17 +231,16 @@ abstract class Routes {
           return BlocProvider.value(value: cubit, child: EditProfileScreen());
         },
       ),
-            GoRoute(
+      GoRoute(
         path: navbar,
         builder: (context, state) {
           return BlocProvider(create: (_) => NavCubit(), child: NavScreen());
         },
       ),
 
+      GoRoute(path: addpet, builder: (context, state) => AddPetScreen()),
 
-       GoRoute(path: addpet, builder: (context, state) => AddPetScreen()),
-
-           GoRoute(
+      GoRoute(
         path: editpetprofile,
         builder: (context, state) {
           final pet = state.extra;
@@ -195,14 +252,12 @@ abstract class Routes {
         },
       ),
 
-            GoRoute(
+      GoRoute(
         path: hotel,
         builder: (context, state) {
           return HotelHomeScreen();
         },
       ),
-
-
 
       //       GoRoute(
       //   path: detailsHotel,
@@ -217,7 +272,6 @@ abstract class Routes {
       //     );
       //   },
       // ),
-
       GoRoute(path: addpet, builder: (context, state) => AddPetScreen()),
 
       GoRoute(path: aiScreen, builder: (context, state) => AiScreen()),
@@ -227,10 +281,9 @@ abstract class Routes {
         path: hotelScreen,
         builder: (context, state) => HotelHomeScreen(),
       ),
+
       // GoRoute(path: adoptionScreen, builder: (context, state) => Ad()),
-
-
-GoRoute(
+      GoRoute(
         path: adoption,
         builder: (context, state) {
           return AdoptionScreen();
@@ -265,10 +318,7 @@ GoRoute(
           );
         },
       ),
-      GoRoute(
-        path: profile,
-        builder: (context, state) => ProfileScreen(),
-      ),
+      GoRoute(path: profile, builder: (context, state) => ProfileScreen()),
       //------//
       //------//
       //------//
@@ -277,10 +327,7 @@ GoRoute(
         path: editprofile,
         builder: (context, state) {
           final cubit = state.extra as ProfileCubit;
-          return BlocProvider.value(
-            value: cubit,
-            child: EditProfileScreen(),
-          );
+          return BlocProvider.value(value: cubit, child: EditProfileScreen());
         },
       ),
 
@@ -298,7 +345,6 @@ GoRoute(
       //------//
       //------//
       //------//
-
       GoRoute(
         path: detailsHotel,
         builder: (context, state) {
@@ -309,25 +355,20 @@ GoRoute(
             value: cubit,
             child: HotelDetailsScreen(hotel: hotel),
           );
-
         },
-
       ),
 
       //------//
       //------//
       //------//
-
       GoRoute(
         path: bookingHotel,
         builder: (context, state) {
-          final extra = state.extra as Map<String, dynamic>; // نجيب البيانات اللي مررناها
+          final extra =
+              state.extra as Map<String, dynamic>; // نجيب البيانات اللي مررناها
           final hotel = extra['hotel'] as ProviderItemsViewEntity;
           final roomId = extra['roomId'] as String;
-          return BookingHotel(
-            hotel: hotel,
-            roomId: roomId,
-          );
+          return BookingHotel(hotel: hotel, roomId: roomId);
         },
       ),
 
@@ -342,8 +383,6 @@ GoRoute(
       //------//
       //------//
       //------//
-
-
       GoRoute(
         path: Routes.healthRecourdpet,
         builder: (context, state) {
@@ -351,8 +390,6 @@ GoRoute(
           return PetHealthAndAppointmentScreen(pet: pet);
         },
       ),
-
     ],
   );
-
 }

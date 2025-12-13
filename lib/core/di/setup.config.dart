@@ -108,6 +108,14 @@ import '../../features/owner_flow/profile/domain/repositories/repo_domain.dart'
     as _i754;
 import '../../features/owner_flow/profile/domain/usecases/user_profile_usecase.dart'
     as _i591;
+import '../../features/services_provider_flow/auth/data/datasources/provider_atuh_data_source.dart'
+    as _i1048;
+import '../../features/services_provider_flow/auth/data/repositories/provider_auth_repo_data.dart'
+    as _i33;
+import '../../features/services_provider_flow/auth/domain/repositories/provider_auth_repo_domain.dart'
+    as _i446;
+import '../../features/services_provider_flow/auth/domain/usecases/provider_auth_use_case.dart'
+    as _i399;
 import 'third_party_module.dart' as _i811;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -159,6 +167,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i189.BookingHotelUsecase>(
       () => _i189.BookingHotelUsecase(gh<_i104.BookingHotelRepoDomain>()),
     );
+    gh.lazySingleton<_i1048.ProviderBaseAuthDataSource>(
+      () => _i1048.ProviderAtuhDataSource(supabase: gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i754.RepoDomain>(
       () => _i332.RepoData(gh<_i972.BaseUserProfileDataSourc>()),
     );
@@ -180,6 +191,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i585.AddPetRepoDomain>(
       () => _i891.AddPetRepoData(gh<_i1071.BaseAddPetDataSource>()),
     );
+    gh.lazySingleton<_i446.ProviderAuthRepoDomain>(
+      () => _i33.ProviderAuthRepoData(gh<_i1048.ProviderBaseAuthDataSource>()),
+    );
     gh.lazySingleton<_i591.UserProfileUsecase>(
       () => _i591.UserProfileUsecase(userProfileData: gh<_i754.RepoDomain>()),
     );
@@ -198,6 +212,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i809.PetProfileRecordsRepo>(
       () =>
           _i618.PetProfileRecordsRepoData(gh<_i595.BaseDataSourcePetReacord>()),
+    );
+    gh.lazySingleton<_i399.ProviderAuthUseCase>(
+      () => _i399.ProviderAuthUseCase(gh<_i446.ProviderAuthRepoDomain>()),
     );
     gh.factory<_i22.AddPetUseCase>(
       () => _i22.AddPetUseCase(gh<_i585.AddPetRepoDomain>()),
