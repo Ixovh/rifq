@@ -70,26 +70,6 @@ class ProviderAtuhDataSource implements ProviderBaseAuthDataSource {
     required String locationUrl,
   }) async {
     try {
-      // Validate input fields
-      if (name.trim().isEmpty) {
-        return Error('Name is required.');
-      }
-      if (email.trim().isEmpty) {
-        return Error('Email is required.');
-      }
-      if (password.isEmpty) {
-        return Error('Password is required.');
-      }
-      if (location.trim().isEmpty) {
-        return Error('Location is required.');
-      }
-      if (phoneNumber.trim().isEmpty) {
-        return Error('Phone number is required.');
-      }
-      if (locationUrl.trim().isEmpty) {
-        return Error('Location URL is required.');
-      }
-
       // Check if email already exists as provider
       final existingProvider = await _supabase
           .from('providers')
@@ -120,7 +100,7 @@ class ProviderAtuhDataSource implements ProviderBaseAuthDataSource {
       if (response.user == null) {
         return Error('Failed to create account. Please try again.');
       }
-
+      await _supabase.auth.signInWithPassword(email: email, password: password);
       providerId = response.user!.id;
 
       // Store signup data temporarily for use in verification
@@ -145,14 +125,6 @@ class ProviderAtuhDataSource implements ProviderBaseAuthDataSource {
     required String password,
   }) async {
     try {
-      // Validate input fields
-      if (email.trim().isEmpty) {
-        return Error('Email is required.');
-      }
-      if (password.isEmpty) {
-        return Error('Password is required.');
-      }
-
       // Check if user exists in users table (provider should not be in users table)
       final existingUser = await _supabase
           .from('users')
