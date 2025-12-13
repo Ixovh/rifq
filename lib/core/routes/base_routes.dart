@@ -43,6 +43,7 @@ import 'package:rifq/features/services_provider_flow/auth/presentation/pages/pro
 import 'package:rifq/features/services_provider_flow/auth/presentation/pages/provider_reset_password_screen.dart';
 import 'package:rifq/features/services_provider_flow/auth/presentation/pages/provider_sends_to_email_screen.dart';
 import 'package:rifq/features/services_provider_flow/auth/presentation/pages/provider_select_service_types_screen.dart';
+import 'package:rifq/features/services_provider_flow/auth/presentation/pages/provider_select_service_item_screen.dart';
 import 'package:rifq/features/services_provider_flow/home/presentation/pages/provider_home_screen.dart';
 
 abstract class Routes {
@@ -67,6 +68,7 @@ abstract class Routes {
   static String providerResetPassword = '/providerResetPassword';
   static String providerSendsToEmail = '/providerSendsToEmail';
   static String providerSelectServiceTypes = '/providerSelectServiceTypes';
+  static String providerSelectServiceItem = '/providerSelectServiceItem';
 
   static String aiScreen = '/aiScreen';
   static String healthScreen = '/healthScreen';
@@ -197,7 +199,16 @@ abstract class Routes {
         builder: (context, state) {
           return BlocProvider.value(
             value: state.extra as ProviderAuthCubit,
-            child:  ProviderSelectServiceTypesScreen(),
+            child: ProviderSelectServiceTypesScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: providerSelectServiceItem,
+        builder: (context, state) {
+          return BlocProvider.value(
+            value: state.extra as ProviderAuthCubit,
+            child: const ProviderSelectServiceItemScreen(),
           );
         },
       ),

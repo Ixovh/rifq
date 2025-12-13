@@ -25,7 +25,10 @@ class ProviderSelectServiceTypesScreen extends StatelessWidget {
       listener: (context, state) {
         switch (state) {
           case ProviderAuthServiceTypesSelectedSuccessState _:
-            context.pushReplacement(Routes.providerHome);
+            context.push(
+              Routes.providerSelectServiceItem,
+              extra: cubit,
+            );
             break;
           case ProviderAuthErrorState _:
             ScaffoldMessenger.of(
