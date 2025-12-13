@@ -100,7 +100,7 @@ class ProviderAtuhDataSource implements ProviderBaseAuthDataSource {
       if (response.user == null) {
         return Error('Failed to create account. Please try again.');
       }
-      await _supabase.auth.signInWithPassword(email: email, password: password);
+
       providerId = response.user!.id;
 
       // Store signup data temporarily for use in verification
@@ -171,14 +171,6 @@ class ProviderAtuhDataSource implements ProviderBaseAuthDataSource {
     required String otp,
   }) async {
     try {
-      // Validate input fields
-      if (email.trim().isEmpty) {
-        return Error('Email is required.');
-      }
-      if (otp.trim().isEmpty) {
-        return Error('Verification code is required.');
-      }
-
       final user = await _supabase.auth.verifyOTP(
         email: email,
         token: otp,
@@ -207,6 +199,7 @@ class ProviderAtuhDataSource implements ProviderBaseAuthDataSource {
             'location_url': _pendingLocationUrl!,
             'created_at': DateTime.now().toIso8601String(),
           });
+          await _supabase.from('users').delete().eq('auth_id', user.user!.id);
         } catch (e) {
           return Error(
             'Failed to create provider account. Please contact support.',
@@ -249,13 +242,6 @@ class ProviderAtuhDataSource implements ProviderBaseAuthDataSource {
     required String newPassword,
   }) async {
     try {
-      // Validate input
-      if (newPassword.isEmpty) {
-        return Error('Password is required.');
-      }
-      if (newPassword.length < 6) {
-        return Error('Password must be at least 6 characters long.');
-      }
       if (email == null || email!.isEmpty) {
         return Error('Email not found. Please request password reset again.');
       }
@@ -279,11 +265,6 @@ class ProviderAtuhDataSource implements ProviderBaseAuthDataSource {
     required String email,
   }) async {
     try {
-      // Validate input
-      if (email.trim().isEmpty) {
-        return Error('Email is required.');
-      }
-
       // Check if provider exists
       final existingProvider = await _supabase
           .from('providers')
@@ -308,11 +289,6 @@ class ProviderAtuhDataSource implements ProviderBaseAuthDataSource {
     required List<int> serviceTypeIds,
   }) async {
     try {
-      // Validate providerId
-      if (providerId.isEmpty) {
-        return Error('Provider ID is required. Please login first.');
-      }
-
       // Validate service types selection
       if (serviceTypeIds.isEmpty) {
         return Error('Please select at least one service type.');
@@ -366,20 +342,6 @@ class ProviderAtuhDataSource implements ProviderBaseAuthDataSource {
     required double price,
   }) async {
     try {
-      // Validate input fields
-      if (providerId.isEmpty) {
-        return Error('Provider ID is required.');
-      }
-      if (name.trim().isEmpty) {
-        return Error('Service name is required.');
-      }
-      if (description.trim().isEmpty) {
-        return Error('Service description is required.');
-      }
-      if (price <= 0) {
-        return Error('Price must be greater than zero.');
-      }
-
       // Verify provider exists
       final provider = await _supabase
           .from('providers')

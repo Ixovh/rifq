@@ -6,6 +6,7 @@ import 'package:rifq/core/routes/base_routes.dart';
 import 'package:rifq/core/theme/app_theme.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/widgets/container_button.dart';
 import 'package:rifq/features/services_provider_flow/auth/presentation/cubit/provider_auth_cubit.dart';
+import 'package:rifq/features/services_provider_flow/auth/presentation/widgets/build_service_type_option.dart';
 
 class ProviderSelectServiceTypesScreen extends StatelessWidget {
   const ProviderSelectServiceTypesScreen({super.key});
@@ -25,10 +26,7 @@ class ProviderSelectServiceTypesScreen extends StatelessWidget {
       listener: (context, state) {
         switch (state) {
           case ProviderAuthServiceTypesSelectedSuccessState _:
-            context.push(
-              Routes.providerSelectServiceItem,
-              extra: cubit,
-            );
+            context.push(Routes.providerSelectServiceItem, extra: cubit);
             break;
           case ProviderAuthErrorState _:
             ScaffoldMessenger.of(
@@ -74,44 +72,20 @@ class ProviderSelectServiceTypesScreen extends StatelessWidget {
                   SizedBox(height: 32.h),
                   Expanded(
                     child: isLoading
-                        ? const Center(child: CircularProgressIndicator())
+                        ? Center(
+                            child: CircularProgressIndicator(
+                              color: context.primary300,
+                            ),
+                          )
                         : ListView(
                             children: [
-                              _buildServiceTypeOption(
-                                context,
-                                cubit: cubit,
-                                id: 1,
-                                title: 'Clinic',
-                                icon: Icons.local_hospital,
-                                isSelected: selectedServiceTypes.contains(1),
-                              ),
+                              BuildServiceTypeOption(context: context, cubit: cubit, id: 1, title: 'Clinic', icon: Icons.local_hospital, isSelected: selectedServiceTypes.contains(1)),
                               SizedBox(height: 16.h),
-                              _buildServiceTypeOption(
-                                context,
-                                cubit: cubit,
-                                id: 2,
-                                title: 'Store',
-                                icon: Icons.store,
-                                isSelected: selectedServiceTypes.contains(2),
-                              ),
+                              BuildServiceTypeOption(context: context, cubit: cubit, id: 2, title: 'Store', icon: Icons.store, isSelected: selectedServiceTypes.contains(2)),
                               SizedBox(height: 16.h),
-                              _buildServiceTypeOption(
-                                context,
-                                cubit: cubit,
-                                id: 3,
-                                title: 'External Service',
-                                icon: Icons.build_circle,
-                                isSelected: selectedServiceTypes.contains(3),
-                              ),
+                              BuildServiceTypeOption(context: context, cubit: cubit, id: 3, title: 'External Service', icon: Icons.build_circle, isSelected: selectedServiceTypes.contains(3)),
                               SizedBox(height: 16.h),
-                              _buildServiceTypeOption(
-                                context,
-                                cubit: cubit,
-                                id: 4,
-                                title: 'Boarding',
-                                icon: Icons.home,
-                                isSelected: selectedServiceTypes.contains(4),
-                              ),
+                              BuildServiceTypeOption(context: context, cubit: cubit, id: 4, title: 'Boarding', icon: Icons.home, isSelected: selectedServiceTypes.contains(4)),
                             ],
                           ),
                   ),
@@ -121,6 +95,7 @@ class ProviderSelectServiceTypesScreen extends StatelessWidget {
                     containerColor: context.primary300,
                     textColor: context.neutral100,
                     fontSize: 20,
+                    isLoading: isLoading,
                     onTap: isLoading
                         ? null
                         : () => cubit.submitSelectedServiceTypes(),
@@ -132,54 +107,6 @@ class ProviderSelectServiceTypesScreen extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-
-  Widget _buildServiceTypeOption(
-    BuildContext context, {
-    required ProviderAuthCubit cubit,
-    required int id,
-    required String title,
-    required IconData icon,
-    required bool isSelected,
-  }) {
-    return InkWell(
-      onTap: () => cubit.toggleServiceType(id),
-      child: Container(
-        padding: EdgeInsets.all(16.w),
-        decoration: BoxDecoration(
-          color: isSelected ? context.primary50 : Colors.white,
-          border: Border.all(
-            color: isSelected ? context.primary300 : context.neutral300,
-            width: 2,
-          ),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Row(
-          children: [
-            Icon(
-              icon,
-              color: isSelected ? context.primary300 : context.neutral600,
-              size: 32.sp,
-            ),
-            SizedBox(width: 16.w),
-            Text(
-              title,
-              style: context.body1.copyWith(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w500,
-                color: isSelected ? context.primary400 : context.neutral800,
-              ),
-            ),
-            const Spacer(),
-            Icon(
-              isSelected ? Icons.check_circle : Icons.circle_outlined,
-              color: isSelected ? context.primary300 : context.neutral400,
-              size: 24.sp,
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

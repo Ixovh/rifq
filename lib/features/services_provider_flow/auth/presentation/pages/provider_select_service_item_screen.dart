@@ -145,6 +145,7 @@ class ProviderSelectServiceItemScreen extends StatelessWidget {
                       containerColor: context.primary300,
                       textColor: context.neutral100,
                       fontSize: 20,
+                      isLoading: isLoading,
                       onTap: isLoading
                           ? null
                           : () {

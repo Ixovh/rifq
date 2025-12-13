@@ -21,12 +21,38 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _checkAuth() async {
     await Future.delayed(const Duration(seconds: 3));
 
-    final user = Supabase.instance.client.auth.currentUser; //يشيك اذا اليوزر عنده توكن
+    final session =
+        Supabase.instance.client.auth.currentUser; //يشيك اذا اليوزر عنده توكن
 
-    if (user == null) {
-      context.go(Routes.choosePath);
+    if (session == null) {
+      if (mounted) {
+        context.go(Routes.choosePath);
+      }
+    }
+    if (session != null) {
+      final provider = await Supabase.instance.client
+          .from('providers')
+          .select('*')
+          .eq('id', session.id)
+          .maybeSingle();
+      final user = await Supabase.instance.client
+          .from('users')
+          .select('*')
+          .eq('id', session.id)
+          .maybeSingle();
+      if (user != null) {
+        if (mounted) {
+          context.go(Routes.navbar);
+        }
+      } else if (provider != null) {
+        if (mounted) {
+          context.go(Routes.providerHome);
+        }
+      }
     } else {
-      context.go(Routes.navbar);
+      if (mounted) {
+        context.go(Routes.choosePath);
+      }
     }
   }
 
@@ -34,11 +60,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text(
-          "RIFQ",
-          style: context.h1.copyWith(color: context.primary),
-
-        ),
+        child: Text("RIFQ", style: context.h1.copyWith(color: context.primary)),
       ),
     );
   }
