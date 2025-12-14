@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rifq/core/theme/app_color.dart';
 import '../../../../../core/common/widgets/button/custome_button_widgets.dart';
 import '../../../../../core/routes/base_routes.dart';
 import '../../../../../core/shared/shared_in_owner_flow/shared/entities/provider_items_view_entity.dart';
@@ -33,8 +34,15 @@ class RoomsTabContent extends StatelessWidget {
                       margin: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
                       padding: EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: isSelected ? Colors.blue.withValues(alpha:0.3) : Colors.white,
-                        borderRadius: BorderRadius.circular(16),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: isSelected
+                                ? AppColors.primary300//ااذا كان مختار الخدمة
+                                : Colors.grey.shade300,
+                            width: isSelected ? 2 : 0,
+                          ),
+                        // borderRadius: BorderRadius.circular(16),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

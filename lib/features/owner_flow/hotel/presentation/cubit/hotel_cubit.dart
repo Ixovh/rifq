@@ -93,7 +93,7 @@ class HotelCubit extends Cubit<HotelState> {
   // }
 
 
-
+//تحديد الغرف
   void selectRoom(String roomId, ProviderItemsViewEntity roomDetails) {
     selectedRoomId = roomId;
     selectedRoomDetails = roomDetails;
@@ -102,6 +102,12 @@ class HotelCubit extends Cubit<HotelState> {
       final hotel = (state as HotelDetailLoaded).hotel;
       emit(RoomSelectionChanged(roomId, hotel));
     }
+  }
+
+  // حذف التحديد من الغرف عان النستخدم اذا رجع للصفحه
+  void clearSelectedRoom() {
+    selectedRoomId = null;
+    emit(state);
   }
 
 

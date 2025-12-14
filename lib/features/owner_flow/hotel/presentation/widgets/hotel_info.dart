@@ -129,21 +129,23 @@ class HotelInfoTabContent extends StatelessWidget {
           SizedBox(height: 70.h),
           if (hotel.locationUrl != null && hotel.locationUrl!.isNotEmpty)
             //عشان النص و الصوره استخدمت   icon.
-            SizedBox(
-              width: 339.w,
-              height: 26.h,
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  context.read<HotelCubit>().openLocation(hotel.locationUrl);
-                },
-                icon: Icon(Icons.location_on,color: Colors.grey,),
-                label: Text("Location",style: TextStyle(color: Colors.black),),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    side: BorderSide(color: AppColors.neutral300,width: 1.w)
-                  )
+            Center(
+              child: SizedBox(
+                width: 339.w,
+                height: 26.h,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    context.read<HotelCubit>().openLocation(hotel.locationUrl);
+                  },
+                  icon: Icon(Icons.location_on,color: AppColors.primary300,),
+                  label: Text("Location",style: TextStyle(color: Colors.black),),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                      side: BorderSide(color: AppColors.primary300,width: 1.w)
+                    )
+                  ),
                 ),
               ),
             ),]),

@@ -60,10 +60,11 @@ class HotelHomeScreen extends StatelessWidget {
                           imageHotel: hotel.image!,
                           nameHotle: hotel.name,
                           location: hotel.location!,
-                          onTap: () {
+                          phone: hotel.phone!,
+                          onTap: ()  {
                             final cubit =context.read<HotelCubit>();
                             cubit.fetchHotelById(hotel.id.toString());
-                            context.push(Routes.detailsHotel, extra: {
+                             context.push(Routes.detailsHotel, extra: {
                               'hotel': hotel,
                               'cubit':cubit ,
                             });

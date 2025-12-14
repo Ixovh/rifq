@@ -36,8 +36,7 @@ class PyamentCubit extends Cubit<PyamentState> {
       result.when(
             (success) {
           print("Payment inserted successfully");
-          emit(PaymentSuccess());
-        },
+          emit(PaymentSuccess()); },
             (error) {
           print("Error inserting payment: $error");
           emit(PaymentError(message: error.toString()));

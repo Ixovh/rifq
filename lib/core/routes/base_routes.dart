@@ -33,9 +33,11 @@ import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_he
 import 'package:rifq/features/owner_flow/profile/presentation/cubit/profile_cubit.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/edit_profile_screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/profile_screen.dart';
+import '../../features/owner_flow/hotel/sup_feauter/payment/domain/entity/payment_entity.dart';
 import '../../features/owner_flow/hotel/sup_feauter/payment/presentation/pages/confirm_and_pay_Screen.dart';
 import '../../features/owner_flow/hotel/sup_feauter/payment/presentation/pages/payment_screen.dart';
 import '../../features/owner_flow/hotel/sup_feauter/payment/presentation/pages/payment_succesfull.dart';
+import '../../features/owner_flow/hotel/sup_feauter/payment/presentation/pages/receipt_screen.dart';
 import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/domain/usecase/edit_pet_profile_usecase.dart';
 import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/presentaion/cubit/edit_pet_profile_cubit.dart';
 import '../di/setup.dart';
@@ -59,9 +61,11 @@ abstract class Routes {
   static String resetPassword = '/resetPassword';
   static String navbar = '/navbar';
   static String addpet = '/addpet';
+  //صفحاتي الجديده
   static String confirmandpay = '/confirmandpay';
   static String paymentscreen = '/paymentScreen';
   static String successfullpay = '/successfullpay';
+  static String receipt = '/receipt';
 
 
 
@@ -422,11 +426,24 @@ GoRoute(
       //   },
       // ),
 
-
       GoRoute(
         path: successfullpay,
         builder: (context, state) => PaymentSuccesfull(),
       ),
+
+      // GoRoute(
+      //   path: successfullpay,
+      //   builder: (context, state) => PaymentSuccesfull(),
+      // ),
+
+      // GoRoute(
+      //   path: receipt,
+      //   builder: (context, state) => ReceiptScreen(),
+      // ),
+
+
+
+
     ],
   );
 

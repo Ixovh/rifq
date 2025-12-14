@@ -37,6 +37,7 @@
 //     );
 //   }
 // }
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -77,12 +78,12 @@ class PaymentSuccesfull extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 30.h),
-                  CustomeButtonWidgets(
-                    titel: 'See Details',
-                    onPressed: () {},
-                    buttonhight: 58.h,
-                    buttonWidth: 366.w,
-                  ),
+                  // CustomeButtonWidgets(
+                  //   titel: 'See Details',
+                  //   onPressed: () {},
+                  //   buttonhight: 58.h,
+                  //   buttonWidth: 366.w,
+                  // ),
                   SizedBox(height: 17.h),
                   TextButton(
                     onPressed: () {

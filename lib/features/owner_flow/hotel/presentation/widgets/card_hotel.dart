@@ -5,6 +5,8 @@ class CardHotel extends StatelessWidget {
   final String imageHotel;
   final String nameHotle;
   final String location;
+  final String phone;
+
   final VoidCallback? onTap;
 
   const CardHotel({
@@ -13,6 +15,8 @@ class CardHotel extends StatelessWidget {
      required this.imageHotel,
     required this.nameHotle,
     required this.location,
+    required this.phone,
+
   });
 
   @override
@@ -61,8 +65,15 @@ class CardHotel extends StatelessWidget {
                             Text(location, style: TextStyle(fontSize: 12.sp)),
                           ],
                         ),
-                        SizedBox(height: 4.h),
-                        SizedBox(height: 4.h),
+                        SizedBox(height: 8.h),
+                      Row(
+                        children: [
+                          Icon(Icons.phone,size: 14,),
+                          SizedBox(width: 4.w,),
+                          Text(phone,style:TextStyle(fontSize: 12.sp)),
+                        ],
+                      ),
+
                       ],
                     ),
                   ),

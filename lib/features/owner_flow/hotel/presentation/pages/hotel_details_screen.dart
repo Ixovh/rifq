@@ -99,7 +99,7 @@ class HotelDetailsScreen extends StatelessWidget {
             );
           }
           return Center(
-              child: Text('No data available'));
+              child: CircularProgressIndicator());
         },
       ),
     );
