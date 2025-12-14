@@ -126,6 +126,14 @@ import '../../features/services_provider_flow/home/domain/usecases/reservation_u
     as _i946;
 import '../../features/services_provider_flow/home/presentation/cubit/visit_details_cubit.dart'
     as _i991;
+import '../../features/services_provider_flow/profile/data/datasources/provider_profile_datasource.dart'
+    as _i262;
+import '../../features/services_provider_flow/profile/data/repositories/provider_profile_repo_data.dart'
+    as _i391;
+import '../../features/services_provider_flow/profile/domain/repositories/provider_profile_repo_domain.dart'
+    as _i468;
+import '../../features/services_provider_flow/profile/domain/usecases/provider_profile_usecase.dart'
+    as _i93;
 import 'third_party_module.dart' as _i811;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -146,6 +154,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i918.PatCard>(
       () => _i918.PetCardInfoDatasources(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i262.BaseProviderProfileDataSource>(
+      () => _i262.ProviderProfileDataSource(gh<_i454.SupabaseClient>()),
     );
     gh.lazySingleton<_i972.BaseUserProfileDataSourc>(
       () => _i972.DataBaseDataSource(gh<_i454.SupabaseClient>()),
@@ -195,6 +206,11 @@ extension GetItInjectableX on _i174.GetIt {
         box: gh<_i792.GetStorage>(),
       ),
     );
+    gh.lazySingleton<_i468.ProviderProfileRepoDomain>(
+      () => _i391.ProviderProfileRepoData(
+        gh<_i262.BaseProviderProfileDataSource>(),
+      ),
+    );
     gh.lazySingleton<_i274.ReservationRepoDomain>(
       () => _i37.ReservationRepoData(gh<_i548.BaseReservationDataSource>()),
     );
@@ -224,6 +240,11 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i981.HomeRepoDomain>(
       () => _i663.HomeRepoImpl(gh<_i695.BaseHomeDataSource>()),
+    );
+    gh.lazySingleton<_i93.ProviderProfileUsecase>(
+      () => _i93.ProviderProfileUsecase(
+        providerProfileRepo: gh<_i468.ProviderProfileRepoDomain>(),
+      ),
     );
     gh.lazySingleton<_i809.PetProfileRecordsRepo>(
       () =>

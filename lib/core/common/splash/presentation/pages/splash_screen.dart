@@ -46,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
         }
       } else if (provider != null) {
         if (mounted) {
-          context.go(Routes.providerHome);
+          context.go(Routes.providerNavbar);
         }
       }
     } else {

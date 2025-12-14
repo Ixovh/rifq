@@ -53,6 +53,11 @@ import 'package:rifq/features/services_provider_flow/auth/data/datasources/provi
 import 'package:rifq/features/services_provider_flow/home/data/datasources/reservation_data_source.dart';
 import 'package:rifq/features/services_provider_flow/home/domain/usecases/reservation_usecase.dart';
 import 'package:rifq/features/services_provider_flow/home/domain/entities/reservation_entity.dart';
+import 'package:rifq/features/services_provider_flow/nav/presentation/cubit/provider_nav_cubit.dart';
+import 'package:rifq/features/services_provider_flow/nav/presentation/pages/provider_nav_screen.dart';
+import 'package:rifq/features/services_provider_flow/profile/presentation/pages/provider_profile_screen.dart';
+import 'package:rifq/features/services_provider_flow/profile/presentation/pages/provider_edit_profile_screen.dart';
+import 'package:rifq/features/services_provider_flow/profile/presentation/cubit/provider_profile_cubit.dart';
 
 abstract class Routes {
   static String splash = '/';
@@ -95,6 +100,9 @@ abstract class Routes {
   static String healthRecourdpet = '/HealthRecourdpet';
 
   static String providerHome = '/providerHome';
+  static String providerNavbar = '/providerNavbar';
+  static String providerProfile = '/providerProfile';
+  static String providerEditProfile = '/providerEditProfile';
   static String visitDetails = '/visitDetails';
 
   static final routers = GoRouter(
@@ -231,6 +239,31 @@ abstract class Routes {
               getIt.get<BaseReservationDataSource>(),
             )..loadHomeData(),
             child: const ProviderHomeScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: providerNavbar,
+        builder: (context, state) {
+          return BlocProvider(
+            create: (_) => ProviderNavCubit(),
+            child: const ProviderNavScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: providerProfile,
+        builder: (context, state) {
+          return const ProviderProfileScreen();
+        },
+      ),
+      GoRoute(
+        path: providerEditProfile,
+        builder: (context, state) {
+          final cubit = state.extra as ProviderProfileCubit;
+          return BlocProvider.value(
+            value: cubit,
+            child: ProviderEditProfileScreen(),
           );
         },
       ),
