@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:rifq/core/di/setup.dart';
 import 'package:rifq/core/routes/base_routes.dart';
 import 'package:rifq/core/theme/app_theme.dart';
+import '../../../../../../../core/common/widgets/appbar/custom_app_bar.dart' as AuthHelper;
 import '../../../../../../../core/common/widgets/button/custome_button_widgets.dart';
 import '../../../../../../../core/shared/shared_in_owner_flow/shared/entities/provider_items_view_entity.dart';
 import '../../../../../../../core/shared/shared_in_owner_flow/shared/entities/reservation_opt_entity.dart';
@@ -35,9 +36,20 @@ class BookingHotel extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => ProfileCubit(getIt<UserProfileUsecase>())
-            ..getUserProfile("e7c6dc83-bcf5-4c0a-9818-4fd1df190cf4"),
+          create: (context) {
+            final cubit = ProfileCubit(getIt<UserProfileUsecase>());
+            AuthHelper.getUserId().then((userId) {
+              if (userId != null) {
+                cubit.getUserProfile(userId);
+              }
+            });
+            return cubit;
+          },
         ),
+        // BlocProvider(
+        //   create: (context) => ProfileCubit(getIt<UserProfileUsecase>())
+        //     ..getUserProfile("e7c6dc83-bcf5-4c0a-9818-4fd1df190cf4"),
+        // ),
         BlocProvider(
           create: (context) => PetInfoCubit(getIt<PetProfileUsecase>()),
         ),
