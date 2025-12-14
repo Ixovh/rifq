@@ -12,4 +12,9 @@ abstract class ReservationRepoDomain {
   );
   Future<Result<void, String>> acceptReservation(String reservationId);
   Future<Result<void, String>> rejectReservation(String reservationId);
+  Future<Result<String?, String>> getServiceItemName(String serviceItemId);
+  Future<Result<void, String>> updateReservationTreatment(
+    String reservationId,
+    String treatment,
+  );
 }

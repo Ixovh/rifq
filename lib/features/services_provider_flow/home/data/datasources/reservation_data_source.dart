@@ -16,6 +16,11 @@ abstract class BaseReservationDataSource {
   Future<Result<void, String>> acceptReservation(String reservationId);
   Future<Result<void, String>> rejectReservation(String reservationId);
   Future<Result<int?, String>> getProviderServiceType(String providerId);
+  Future<Result<String?, String>> getServiceItemName(String serviceItemId);
+  Future<Result<void, String>> updateReservationTreatment(
+    String reservationId,
+    String treatment,
+  );
 }
 
 @LazySingleton(as: BaseReservationDataSource)
@@ -158,6 +163,53 @@ class ReservationDataSource implements BaseReservationDataSource {
 
       final serviceTypeId = response['service_type_id'] as int?;
       return Result.success(serviceTypeId);
+    } catch (e) {
+      return Result.error(_extractErrorMessage(e));
+    }
+  }
+
+  @override
+  Future<Result<String?, String>> getServiceItemName(
+    String serviceItemId,
+  ) async {
+    try {
+      final response = await supabase
+          .from('provider_service_items')
+          .select('name')
+          .eq('id', serviceItemId)
+          .maybeSingle();
+
+      if (response == null) {
+        return Result.success(null);
+      }
+
+      final serviceName = response['name'] as String?;
+      return Result.success(serviceName);
+    } catch (e) {
+      return Result.error(_extractErrorMessage(e));
+    }
+  }
+
+  @override
+  Future<Result<void, String>> updateReservationTreatment(
+    String reservationId,
+    String treatment,
+  ) async {
+    try {
+      final response = await supabase
+          .from('reservations')
+          .update({'notes': treatment})
+          .eq('id', reservationId)
+          .select()
+          .maybeSingle();
+
+      if (response == null) {
+        return Result.error(
+          'Failed to update treatment. Reservation not found.',
+        );
+      }
+
+      return Result.success(null);
     } catch (e) {
       return Result.error(_extractErrorMessage(e));
     }

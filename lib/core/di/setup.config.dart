@@ -124,6 +124,8 @@ import '../../features/services_provider_flow/home/domain/repositories/reservati
     as _i274;
 import '../../features/services_provider_flow/home/domain/usecases/reservation_usecase.dart'
     as _i946;
+import '../../features/services_provider_flow/home/presentation/cubit/visit_details_cubit.dart'
+    as _i991;
 import 'third_party_module.dart' as _i811;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -265,6 +267,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i743.HomeCubit>(
       () => _i743.HomeCubit(gh<_i322.GetHomeDataUseCase>()),
+    );
+    gh.factory<_i991.VisitDetailsCubit>(
+      () => _i991.VisitDetailsCubit(gh<_i946.ReservationUseCase>()),
     );
     return this;
   }

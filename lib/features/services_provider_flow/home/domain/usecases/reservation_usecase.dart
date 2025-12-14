@@ -33,4 +33,15 @@ class ReservationUseCase {
   Future<Result<void, String>> rejectReservation(String reservationId) {
     return repository.rejectReservation(reservationId);
   }
+
+  Future<Result<String?, String>> getServiceItemName(String serviceItemId) {
+    return repository.getServiceItemName(serviceItemId);
+  }
+
+  Future<Result<void, String>> updateReservationTreatment(
+    String reservationId,
+    String treatment,
+  ) {
+    return repository.updateReservationTreatment(reservationId, treatment);
+  }
 }

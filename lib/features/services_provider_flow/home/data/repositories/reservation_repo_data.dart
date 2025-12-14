@@ -44,4 +44,24 @@ class ReservationRepoData implements ReservationRepoDomain {
     final result = await dataSource.rejectReservation(reservationId);
     return result;
   }
+
+  @override
+  Future<Result<String?, String>> getServiceItemName(
+    String serviceItemId,
+  ) async {
+    final result = await dataSource.getServiceItemName(serviceItemId);
+    return result;
+  }
+
+  @override
+  Future<Result<void, String>> updateReservationTreatment(
+    String reservationId,
+    String treatment,
+  ) async {
+    final result = await dataSource.updateReservationTreatment(
+      reservationId,
+      treatment,
+    );
+    return result;
+  }
 }

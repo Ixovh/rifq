@@ -45,11 +45,14 @@ import 'package:rifq/features/services_provider_flow/auth/presentation/pages/pro
 import 'package:rifq/features/services_provider_flow/auth/presentation/pages/provider_select_service_types_screen.dart';
 import 'package:rifq/features/services_provider_flow/auth/presentation/pages/provider_select_service_item_screen.dart';
 import 'package:rifq/features/services_provider_flow/home/presentation/pages/provider_home_screen.dart';
+import 'package:rifq/features/services_provider_flow/home/presentation/pages/visit_details_screen.dart';
 import 'package:rifq/core/di/setup.dart';
 import 'package:rifq/features/services_provider_flow/home/presentation/cubit/home_cubit.dart';
+import 'package:rifq/features/services_provider_flow/home/presentation/cubit/visit_details_cubit.dart';
 import 'package:rifq/features/services_provider_flow/auth/data/datasources/provider_atuh_data_source.dart';
 import 'package:rifq/features/services_provider_flow/home/data/datasources/reservation_data_source.dart';
 import 'package:rifq/features/services_provider_flow/home/domain/usecases/reservation_usecase.dart';
+import 'package:rifq/features/services_provider_flow/home/domain/entities/reservation_entity.dart';
 
 abstract class Routes {
   static String splash = '/';
@@ -92,6 +95,7 @@ abstract class Routes {
   static String healthRecourdpet = '/HealthRecourdpet';
 
   static String providerHome = '/providerHome';
+  static String visitDetails = '/visitDetails';
 
   static final routers = GoRouter(
     initialLocation: splash,
@@ -227,6 +231,16 @@ abstract class Routes {
               getIt.get<BaseReservationDataSource>(),
             )..loadHomeData(),
             child: const ProviderHomeScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: visitDetails,
+        builder: (context, state) {
+          final reservation = state.extra as ReservationEntity;
+          return BlocProvider(
+            create: (context) => getIt<VisitDetailsCubit>(),
+            child: VisitDetailsScreen(reservation: reservation),
           );
         },
       ),
