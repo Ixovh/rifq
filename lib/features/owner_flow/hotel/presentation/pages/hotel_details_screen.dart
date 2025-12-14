@@ -6,20 +6,17 @@ import 'package:rifq/features/owner_flow/hotel/presentation/cubit/hotel_cubit.da
 import 'package:rifq/features/owner_flow/hotel/presentation/widgets/hotel_info.dart' show HotelInfoTabContent;
 import 'package:rifq/features/owner_flow/hotel/presentation/widgets/room_content.dart';
 import 'package:rifq/features/owner_flow/hotel/presentation/widgets/tab_bar.dart';
-
 import '../../../../../core/shared/shared_in_owner_flow/shared/entities/provider_entity.dart';
 import '../../../../../core/theme/app_theme.dart';
 import '../widgets/hotel_image_carousel.dart';
 
 class HotelDetailsScreen extends StatelessWidget {
-
   final ProviderEntity hotel;
-
   const HotelDetailsScreen({super.key, required this.hotel});
 
   @override
   Widget build(BuildContext context) {
-    context.read<HotelCubit>().fetchHotelById(hotel.id);
+    // context.read<HotelCubit>().fetchHotelById(hotel.id);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -46,7 +43,9 @@ class HotelDetailsScreen extends StatelessWidget {
               ),
             );}
           if (state is HotelDetailLoaded) {
-            final hotelDetails = state.hotel; // ProviderItemsViewEntity
+            final hotelItems=state.hotelItems;
+            final hotelDetails=hotelItems.first;
+            // final hotelDetails = state.hotel; // ProviderItemsViewEntity
             return DefaultTabController(
               length: 2,
               child: Column(
@@ -88,9 +87,9 @@ class HotelDetailsScreen extends StatelessWidget {
                   Expanded(
                     child: TabBarView(
                       children: [
-                        RoomsTabContent(hotel: hotelDetails),
+                        RoomsTabContent(hotelItems: hotelItems,),
+                        // RoomsTabContent(hotel: hotelDetails),
                         HotelInfoTabContent(hotel: hotelDetails),
-
                       ],
                     ),
                   ),

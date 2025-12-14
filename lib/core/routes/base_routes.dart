@@ -33,6 +33,7 @@ import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_he
 import 'package:rifq/features/owner_flow/profile/presentation/cubit/profile_cubit.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/edit_profile_screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/profile_screen.dart';
+import '../../features/owner_flow/hotel/domain/usecase/hotel_usecase.dart';
 import '../../features/owner_flow/hotel/sup_feauter/payment/domain/entity/payment_entity.dart';
 import '../../features/owner_flow/hotel/sup_feauter/payment/presentation/pages/confirm_and_pay_Screen.dart';
 import '../../features/owner_flow/hotel/sup_feauter/payment/presentation/pages/payment_screen.dart';
@@ -321,20 +322,35 @@ GoRoute(
       //------//
       //------//
 
+      // GoRoute(
+      //   path: detailsHotel,
+      //   builder: (context, state) {
+      //     final extra = state.extra as Map<String, dynamic>;
+      //     final hotel = extra['hotel'] as ProviderEntity;
+      //     final cubit = extra['cubit'] as HotelCubit;
+      //     return BlocProvider.value(
+      //       value: cubit,
+      //       child: HotelDetailsScreen(hotel: hotel),
+      //     );
+      //
+      //   },
+      //
+      // ),
+
+
       GoRoute(
-        path: detailsHotel,
+        path: Routes.detailsHotel,
         builder: (context, state) {
-          final extra = state.extra as Map<String, dynamic>;
-          final hotel = extra['hotel'] as ProviderEntity;
-          final cubit = extra['cubit'] as HotelCubit;
-          return BlocProvider.value(
-            value: cubit,
+          final hotel = state.extra as ProviderEntity;
+
+          return BlocProvider(
+            create: (_) =>
+            HotelCubit(getIt<HotelUsecase>())..fetchHotelById(hotel.id),
             child: HotelDetailsScreen(hotel: hotel),
           );
-
         },
-
       ),
+
 
       //------//
       //------//

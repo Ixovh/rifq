@@ -10,7 +10,7 @@ part 'hotel_state.dart';
 class HotelCubit extends Cubit<HotelState> {
   final HotelUsecase usecase;
   String? selectedRoomId; // للغرف يختار
-  ProviderItemsViewEntity? _currentHotel;
+  // ProviderItemsViewEntity? _currentHotel;
   List<ProviderEntity>? cachedHotels;
 
 
@@ -63,6 +63,25 @@ class HotelCubit extends Cubit<HotelState> {
     );
   }
 
+  // void fetchHotelById(String id) async {
+  //   if (id.isEmpty) {
+  //     emit(HotelError("Hotel ID cannot be empty"));
+  //     return;
+  //   }
+  //   emit(HotelLoading());
+  //   final result = await usecase.getHotelById(id);
+  //   result.when(
+  //         (hotelItems) {
+  //       if (hotelItems.isEmpty) {
+  //         emit(HotelError("No items found for this hotel"));
+  //         return;
+  //       }
+  //       emit(HotelDetailLoaded(hotelItems));
+  //     },
+  //         (error) => emit(HotelError(error)),
+  //   );
+  // }
+
 
 
 
@@ -94,17 +113,26 @@ class HotelCubit extends Cubit<HotelState> {
 
 
 //تحديد الغرف
+//   void selectRoom(String roomId, ProviderItemsViewEntity roomDetails) {
+//     selectedRoomId = roomId;
+//     selectedRoomDetails = roomDetails;
+//
+//     if (state is HotelDetailLoaded) {
+//       final hotel = (state as HotelDetailLoaded).hotel;
+//       emit(RoomSelectionChanged(roomId, hotel));
+//     }
+//   }
+
+
   void selectRoom(String roomId, ProviderItemsViewEntity roomDetails) {
     selectedRoomId = roomId;
     selectedRoomDetails = roomDetails;
 
     if (state is HotelDetailLoaded) {
-      final hotel = (state as HotelDetailLoaded).hotel;
-      emit(RoomSelectionChanged(roomId, hotel));
+      emit(HotelDetailLoaded((state as HotelDetailLoaded).hotelItems));
+      // emit(RoomSelectionChanged(roomId, roomDetails));
     }
   }
-
-  // حذف التحديد من الغرف عان النستخدم اذا رجع للصفحه
   void clearSelectedRoom() {
     selectedRoomId = null;
     emit(state);

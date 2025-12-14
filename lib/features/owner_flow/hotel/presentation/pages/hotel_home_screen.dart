@@ -61,14 +61,20 @@ class HotelHomeScreen extends StatelessWidget {
                           nameHotle: hotel.name,
                           location: hotel.location!,
                           phone: hotel.phone!,
-                          onTap: ()  {
-                            final cubit =context.read<HotelCubit>();
-                            cubit.fetchHotelById(hotel.id.toString());
-                             context.push(Routes.detailsHotel, extra: {
-                              'hotel': hotel,
-                              'cubit':cubit ,
-                            });
+                          onTap: () {
+                            context.push(
+                              Routes.detailsHotel,
+                              extra: hotel, // فقط الفندق
+                            );
                           },
+                          // onTap: ()  {
+                          //   final cubit =context.read<HotelCubit>();
+                          //   cubit.fetchHotelById(hotel.id.toString());
+                          //    context.push(Routes.detailsHotel, extra: {
+                          //     'hotel': hotel,
+                          //     'cubit':cubit ,
+                          //   });
+                          // },
                         );
                       },
                     );

@@ -1,6 +1,5 @@
 import 'package:injectable/injectable.dart';
 import 'package:multiple_result/src/result.dart';
-import '../../../../../core/shared/shared_in_owner_flow/shared/entities/provider_entity.dart';
 import '../../../../../core/shared/shared_in_owner_flow/shared/models/provider_items_view_model.dart';
 import '../../../../../core/shared/shared_in_owner_flow/shared/models/provider_model.dart';
 import '../../domain/repository/hotel_repo_domain.dart';
@@ -20,9 +19,15 @@ class HotelRepoData implements HotelRepoDomain {
 
 
   @override
-  Future<Result<ProviderItemsViewModel, String>> getHotelById(String id) async{
+  Future<Result<List<ProviderItemsViewModel>, String>> getHotelById(String id)async{
   final result= await dataHotel.getHotelById(id);
   return result;
   }
+
+  // @override
+  // Future<Result<List<ProviderItemsViewModel>, String>> getHotelById(String id) async {
+  //   final result = await dataHotel.getHotelById(id);
+  //   return result;
+  // }
 
 }
