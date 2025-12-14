@@ -14,7 +14,6 @@ import '../../../../../pet_profile/sup_features/pet_info_card/domain/usecase/pet
 import '../../../../../pet_profile/sup_features/pet_info_card/presentation/cubit/pet_info_cubit.dart';
 import '../../../../../profile/domain/usecases/user_profile_usecase.dart';
 import '../../../../../profile/presentation/cubit/profile_cubit.dart';
-import '../../../payment/presentation/pages/confirm_and_pay_Screen.dart';
 import '../../domain/usecase/booking_hotel_usecase.dart';
 import '../cubit/booking_hotel_cubit.dart';
 import '../widgets/date_time.dart';
@@ -30,7 +29,6 @@ class BookingHotel extends StatelessWidget {
   final ValueNotifier<List<String>> selectedPets = ValueNotifier([]);
 
   BookingHotel({super.key, required this.hotel, required this.roomId,});
-
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
