@@ -116,6 +116,14 @@ import '../../features/services_provider_flow/auth/domain/repositories/provider_
     as _i446;
 import '../../features/services_provider_flow/auth/domain/usecases/provider_auth_use_case.dart'
     as _i399;
+import '../../features/services_provider_flow/home/data/datasources/reservation_data_source.dart'
+    as _i548;
+import '../../features/services_provider_flow/home/data/repositories/reservation_repo_data.dart'
+    as _i37;
+import '../../features/services_provider_flow/home/domain/repositories/reservation_repo_domain.dart'
+    as _i274;
+import '../../features/services_provider_flow/home/domain/usecases/reservation_usecase.dart'
+    as _i946;
 import 'third_party_module.dart' as _i811;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -130,6 +138,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i454.SupabaseClient>(() => thirdPartyModule.supabaseClient);
     gh.lazySingleton<_i131.BaseEditPetProfile>(
       () => _i131.EditPetProfileDatasources(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i548.BaseReservationDataSource>(
+      () => _i548.ReservationDataSource(gh<_i454.SupabaseClient>()),
     );
     gh.lazySingleton<_i918.PatCard>(
       () => _i918.PetCardInfoDatasources(gh<_i454.SupabaseClient>()),
@@ -181,6 +192,9 @@ extension GetItInjectableX on _i174.GetIt {
         supabase: gh<_i454.SupabaseClient>(),
         box: gh<_i792.GetStorage>(),
       ),
+    );
+    gh.lazySingleton<_i274.ReservationRepoDomain>(
+      () => _i37.ReservationRepoData(gh<_i548.BaseReservationDataSource>()),
     );
     gh.lazySingleton<_i796.AdoptionUseCase>(
       () => _i796.AdoptionUseCase(gh<_i979.AdoptionRepoDomain>()),
@@ -236,6 +250,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i693.AuthRepoDomain>(
       () => _i64.AuthRepoData(authDataSource: gh<_i386.BaseAuthDataSource>()),
+    );
+    gh.factory<_i946.ReservationUseCase>(
+      () => _i946.ReservationUseCase(gh<_i274.ReservationRepoDomain>()),
     );
     gh.factory<_i250.ClinicCubit>(
       () => _i250.ClinicCubit(gh<_i143.ClinicUseCase>()),

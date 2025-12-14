@@ -45,6 +45,11 @@ import 'package:rifq/features/services_provider_flow/auth/presentation/pages/pro
 import 'package:rifq/features/services_provider_flow/auth/presentation/pages/provider_select_service_types_screen.dart';
 import 'package:rifq/features/services_provider_flow/auth/presentation/pages/provider_select_service_item_screen.dart';
 import 'package:rifq/features/services_provider_flow/home/presentation/pages/provider_home_screen.dart';
+import 'package:rifq/core/di/setup.dart';
+import 'package:rifq/features/services_provider_flow/home/presentation/cubit/home_cubit.dart';
+import 'package:rifq/features/services_provider_flow/auth/data/datasources/provider_atuh_data_source.dart';
+import 'package:rifq/features/services_provider_flow/home/data/datasources/reservation_data_source.dart';
+import 'package:rifq/features/services_provider_flow/home/domain/usecases/reservation_usecase.dart';
 
 abstract class Routes {
   static String splash = '/';
@@ -214,7 +219,16 @@ abstract class Routes {
       ),
       GoRoute(
         path: providerHome,
-        builder: (context, state) => ProviderHomeScreen(),
+        builder: (context, state) {
+          return BlocProvider(
+            create: (context) => HomeCubit(
+              getIt.get<ReservationUseCase>(),
+              getIt.get<ProviderBaseAuthDataSource>(),
+              getIt.get<BaseReservationDataSource>(),
+            )..loadHomeData(),
+            child: const ProviderHomeScreen(),
+          );
+        },
       ),
       //------//
       //------//
