@@ -1,0 +1,106 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:go_router/go_router.dart';
+import 'package:rifq/core/routes/base_routes.dart';
+import 'package:rifq/core/theme/app_theme.dart';
+import 'package:rifq/features/owner_flow/auth/presentation/widgets/container_button.dart';
+import 'package:rifq/features/owner_flow/auth/presentation/widgets/custom_form_builder_text_field.dart';
+import 'package:rifq/features/services_provider_flow/auth/presentation/cubit/provider_auth_cubit.dart';
+
+class ProviderLoginTab extends StatelessWidget {
+  const ProviderLoginTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<ProviderAuthCubit>();
+    return BlocBuilder<ProviderAuthCubit, ProviderAuthState>(
+      builder: (context, state) {
+        final isLoading = state is ProviderAuthLoadingState;
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 24.h),
+              Text(
+                'Please enter your email and Password.',
+                style: context.body1.copyWith(fontSize: 16.sp),
+              ),
+              SizedBox(height: 24.h),
+              FormBuilder(
+                key: cubit.loginFormKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomFormBuilderTextField(
+                      name: 'email',
+                      label: 'Email',
+                      iconData: CupertinoIcons.mail_solid,
+                      controller: cubit.loginEmailController,
+                      validators: [
+                        FormBuilderValidators.required(
+                          errorText: '(e.g., username@example.com).',
+                        ),
+                        FormBuilderValidators.email(
+                          errorText: '(e.g., username@example.com).',
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 24.h),
+                    CustomFormBuilderTextField(
+                      name: 'password',
+                      label: 'Password',
+                      iconData: CupertinoIcons.lock_fill,
+                      controller: cubit.loginPasswordController,
+                      isPassword: true,
+                      validators: [
+                        FormBuilderValidators.required(
+                          errorText: 'Incorrect password. Please try again.',
+                        ),
+                        FormBuilderValidators.minLength(
+                          6,
+                          errorText:
+                              'Includes at least one number or symbol (e.g., @, #, \$, !).',
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 8.h),
+              TextButton(
+                onPressed: () {
+                  context.push(Routes.sendsToEmail, extra: cubit);
+                },
+                child: Text(
+                  'Forgot password?',
+                  style: context.body3.copyWith(color: context.primary300),
+                ),
+              ),
+              SizedBox(height: 16.h),
+              ContainerButton(
+                label: 'Log in',
+                containerColor: context.primary300,
+                textColor: context.neutral100,
+                fontSize: 20,
+                isLoading: isLoading,
+                onTap: () async {
+                  if (cubit.loginFormKey.currentState?.saveAndValidate() ??
+                      false) {
+                    await cubit.login(
+                      email: cubit.loginEmailController.text,
+                      password: cubit.loginPasswordController.text,
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}

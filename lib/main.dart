@@ -9,7 +9,7 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await configureDependencies();
  //عشان اسجل خروج "بحذفها بعد مانسوي لوق اوت "
-  await Supabase.instance.client.auth.signOut();
+  // await Supabase.instance.client.auth.signOut();
   // await GetStorage().erase();
 
   runApp(MyApp());

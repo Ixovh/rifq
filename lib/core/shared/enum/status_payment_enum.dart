@@ -13,4 +13,3 @@ enum StatusPaymentEnum{
   voided,
   verified
 }
-

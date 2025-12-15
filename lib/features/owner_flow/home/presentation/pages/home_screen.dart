@@ -111,6 +111,7 @@ class HomeContent extends StatelessWidget {
                           imageUrl: pet.photoUrl,
                           onTap: () {
                             //TODO : navigate to pet profile !!!!!!!!!!!!!!!!
+                            context.push(Routes.healthRecourdpet);
                           },
                         ),
                       );

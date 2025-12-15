@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
+import 'package:rifq/core/common/widgets/appbar/custom_app_bar.dart';
 import 'package:rifq/core/theme/app_theme.dart';
 import 'package:rifq/features/owner_flow/adoption/domain/usecases/adotion_use_case.dart';
 import 'package:rifq/features/owner_flow/adoption/presentation/cubit/adoption_cubit.dart';
@@ -17,14 +18,7 @@ class AdoptionScreen extends StatelessWidget {
       create: (context) => AdoptionCubit(GetIt.I.get<AdoptionUseCase>()),
       child: Scaffold(
         backgroundColor: context.background,
-        appBar: AppBar(
-          backgroundColor: context.background,
-          // TODO add profile icon
-          title: Text(
-            'Adoption',
-            style: context.body1.copyWith(color: context.primary300),
-          ),
-        ),
+       appBar: CustomAppBar(title: "Adoption"),
         body: Padding(
           padding: EdgeInsets.symmetric(vertical: 16.r, horizontal: 26.r),
           child: DefaultTabController(
