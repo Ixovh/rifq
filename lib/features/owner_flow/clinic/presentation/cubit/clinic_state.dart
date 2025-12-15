@@ -41,11 +41,11 @@ class ClinicError extends ClinicState {
 }
 
 //!!---------------------CLINIC DETAILS STATE-----------------------------
-class ClinicDetailsLoaded extends ClinicState {
-  final List<ProviderItemsViewEntity> details;
+// class ClinicDetailsLoaded extends ClinicState {
+//   final List<ProviderItemsViewEntity> details;
 
-  ClinicDetailsLoaded(this.details);
+//   ClinicDetailsLoaded(this.details);
 
-  @override
-  List<Object?> get props => [details];
-}
+//   @override
+//   List<Object?> get props => [details];
+// }

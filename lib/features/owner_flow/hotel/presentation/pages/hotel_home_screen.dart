@@ -98,6 +98,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rifq/core/common/widgets/appbar/custom_app_bar.dart';
 import 'package:rifq/core/di/setup.dart';
 import 'package:rifq/core/theme/app_theme.dart';
 import '../../../../../core/routes/base_routes.dart';
@@ -113,21 +114,22 @@ class HotelHomeScreen extends StatelessWidget {
       create: (context) => HotelCubit(getIt<HotelUsecase>())..fetchAllHotels(),
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          scrolledUnderElevation: 0,
-          leading: CircleAvatar(),
-          title: Text(
-            "Hotel", style: context.body1.copyWith(color: context.primary300),
-          ),
-          centerTitle: true,
-          actions: [
-            GestureDetector(
-              onTap: () {},
-              child: Image.asset("assets/images/notification-bing.png"),
-            ),
-          ],
-        ),
+        appBar: CustomAppBar(title: "Hotel"),
+        // appBar: AppBar(
+        //   backgroundColor: Colors.white,
+        //   scrolledUnderElevation: 0,
+        //   leading: CircleAvatar(),
+        //   title: Text(
+        //     "Hotel", style: context.body1.copyWith(color: context.primary300),
+        //   ),
+        //   centerTitle: true,
+        //   actions: [
+        //     GestureDetector(
+        //       onTap: () {},
+        //       child: Image.asset("assets/images/notification-bing.png"),
+        //     ),
+        //   ],
+        // ),
         body: Column(
           children: [
             Padding(

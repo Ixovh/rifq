@@ -1,10 +1,12 @@
 import 'package:bloc/bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import '../../domain/entity/pet_entity.dart';
 import '../../domain/usecase/pet_profile_usecase.dart';
 
 part 'pet_info_state.dart';
 
+@injectable
 class PetInfoCubit extends Cubit<PetInfoState> {
   final PetProfileUsecase usecase;
 

@@ -1,5 +1,4 @@
 import 'package:injectable/injectable.dart';
-import 'package:rifq/core/shared/shared_in_owner_flow/shared/models/provider_items_view_model.dart';
 import 'package:rifq/core/shared/shared_in_owner_flow/shared/models/provider_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:multiple_result/multiple_result.dart';
@@ -8,10 +7,6 @@ abstract class BaseClinicDataSource {
   Future<Result<List<ProviderModel>, String>> getClinics();
 
   Future<Result<List<ProviderModel>, String>> searchClinics(String query);
-
-  Future<Result<List<ProviderItemsViewModel>, String>> getClinicDetails(
-    String providerId,
-  );
 
   Future<List<Map<String, dynamic>>> fetchUserPets(String ownerId);
 }
@@ -68,25 +63,25 @@ class ClinicDataSource implements BaseClinicDataSource {
 
   //!!---------------------GET CLINIC DETAILS-----------------------------
 
-  @override
-  Future<Result<List<ProviderItemsViewModel>, String>> getClinicDetails(
-    String providerId,
-  ) async {
-    try {
-      final response = await supabase
-          .from('provider_service_view')
-          .select()
-          .eq('provider_id', providerId);
+  // @override
+  // Future<Result<List<ProviderItemsViewModel>, String>> getClinicDetails(
+  //   String providerId,
+  // ) async {
+  //   try {
+  //     final response = await supabase
+  //         .from('provider_service_view')
+  //         .select()
+  //         .eq('provider_id', providerId);
 
-      final data = (response as List)
-          .map((e) => ProviderItemsViewModelMapper.fromMap(e))
-          .toList();
+  //     final data = (response as List)
+  //         .map((e) => ProviderItemsViewModelMapper.fromMap(e))
+  //         .toList();
 
-      return Result.success(data);
-    } catch (e) {
-      return Result.error(e.toString());
-    }
-  }
+  //     return Result.success(data);
+  //   } catch (e) {
+  //     return Result.error(e.toString());
+  //   }
+  // }
 
   //!!----------------FETCH PETS--------------------
   @override

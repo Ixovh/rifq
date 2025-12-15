@@ -80,14 +80,14 @@ class ClinicCubit extends Cubit<ClinicState> {
   }
 
   //!!------------GET CLINIC DETAILS-----------
-  Future<void> getClinicDetails(String providerId) async {
-    emit(ClinicLoading());
+  // Future<void> getClinicDetails(String providerId) async {
+  //   emit(ClinicLoading());
 
-    final result = await useCase.getClinicDetails(providerId);
+  //   final result = await useCase.getClinicDetails(providerId);
 
-    result.when(
-      (details) => emit(ClinicDetailsLoaded(details)),
-      (error) => emit(ClinicError(error)),
-    );
-  }
+  //   result.when(
+  //     (details) => emit(ClinicDetailsLoaded(details)),
+  //     (error) => emit(ClinicError(error)),
+  //   );
+  // }
 }
