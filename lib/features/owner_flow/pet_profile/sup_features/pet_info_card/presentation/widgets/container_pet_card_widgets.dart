@@ -91,21 +91,56 @@ class ContainerPetCardWidgets extends StatelessWidget {
                     ),
                   ),
                 ),
-                IconButton(onPressed: (){
-                  print("name:${pet.name}");
-                  print("breed:${pet.breed}");
-                  print("species:${pet.species}");
-                  print("photo:${pet.photoUrl}");
-                  print("gender:${pet.gender}");
-                  print("birthdate:${pet.birthdate}");
-                  final petEntity=pet.toPetEntity(
-                    healthRecords: [],
-                    reservations: [],
-                  );
-                  context.push(Routes.healthRecourdpet,extra: petEntity);
-
-                },
-                    icon: Icon(Icons.arrow_forward_ios,size: 20.r,))
+                IconButton(
+                  onPressed: () {
+                    try {
+                      print("=== Before toPetEntity ===");
+                      print("pet object: $pet");
+                      print("pet type: ${pet.runtimeType}");
+                      final petEntity = pet.toPetEntity(
+                        healthRecords: [],
+                        reservations: [],
+                      );
+                      print("=== After toPetEntity ===");
+                      print("petEntity: $petEntity");
+                      context.push(Routes.healthRecourdpet, extra: petEntity);
+                    } catch (e, stackTrace) {
+                      print("=== ERROR ===");
+                      print("Error: $e");
+                      print("StackTrace: $stackTrace");
+                    }
+                  },
+                  icon: Icon(Icons.arrow_forward),
+                ),
+                // IconButton(onPressed: (){
+                //   print("name:${pet.name}");
+                //   print("breed:${pet.breed}");
+                //   print("species:${pet.species}");
+                //   print("photo:${pet.photoUrl}");
+                //   print("gender:${pet.gender}");
+                //   print("birthdate:${pet.birthdate}");
+                //   final petEntity=pet.toPetEntity(
+                //     healthRecords: [],
+                //     reservations: [],
+                //   );
+                //   context.push(Routes.healthRecourdpet,extra: petEntity);
+                // },
+                //     icon: Icon(Icons.arrow_forward_ios,size: 20.r,))
+                // IconButton(onPressed: (){
+                //   print("name:${pet.name}");
+                //   print("breed:${pet.breed}");
+                //   print("species:${pet.species}");
+                //   print("photo:${pet.photoUrl}");
+                //   print("gender:${pet.gender}");
+                //   print("birthdate:${pet.birthdate}");
+                //   final petEntity=pet.toPetEntity(
+                //     healthRecords: [],
+                //     reservations: [],
+                //   );
+                //   context.push(Routes.healthRecourdpet,extra: petEntity);
+                //
+                // },
+                //     icon: Icon(Icons.arrow_forward_ios,size: 20.r,))
               ],
             ),
           ),

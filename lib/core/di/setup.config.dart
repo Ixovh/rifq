@@ -106,6 +106,14 @@ import '../../features/owner_flow/hotel/sup_feauter/booking_hotel/domain/reposit
     as _i104;
 import '../../features/owner_flow/hotel/sup_feauter/booking_hotel/domain/usecase/booking_hotel_usecase.dart'
     as _i189;
+import '../../features/owner_flow/hotel/sup_feauter/payment/data/datasource/payment_datasource.dart'
+    as _i18;
+import '../../features/owner_flow/hotel/sup_feauter/payment/data/repository/repo_data.dart'
+    as _i843;
+import '../../features/owner_flow/hotel/sup_feauter/payment/domain/repository/repo_domain.dart'
+    as _i835;
+import '../../features/owner_flow/hotel/sup_feauter/payment/domain/usecase/payment_usecase.dart'
+    as _i616;
 import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/data/datasources/edit_pet_profile_datasources.dart'
     as _i131;
 import '../../features/owner_flow/pet_profile/sup_features/edit_pet_profile/data/repositories/edit_pet_profile_repo.dart'
@@ -140,6 +148,32 @@ import '../../features/owner_flow/profile/domain/repositories/repo_domain.dart'
     as _i754;
 import '../../features/owner_flow/profile/domain/usecases/user_profile_usecase.dart'
     as _i591;
+import '../../features/services_provider_flow/auth/data/datasources/provider_atuh_data_source.dart'
+    as _i1048;
+import '../../features/services_provider_flow/auth/data/repositories/provider_auth_repo_data.dart'
+    as _i33;
+import '../../features/services_provider_flow/auth/domain/repositories/provider_auth_repo_domain.dart'
+    as _i446;
+import '../../features/services_provider_flow/auth/domain/usecases/provider_auth_use_case.dart'
+    as _i399;
+import '../../features/services_provider_flow/home/data/datasources/reservation_data_source.dart'
+    as _i548;
+import '../../features/services_provider_flow/home/data/repositories/reservation_repo_data.dart'
+    as _i37;
+import '../../features/services_provider_flow/home/domain/repositories/reservation_repo_domain.dart'
+    as _i274;
+import '../../features/services_provider_flow/home/domain/usecases/reservation_usecase.dart'
+    as _i946;
+import '../../features/services_provider_flow/home/presentation/cubit/visit_details_cubit.dart'
+    as _i991;
+import '../../features/services_provider_flow/profile/data/datasources/provider_profile_datasource.dart'
+    as _i262;
+import '../../features/services_provider_flow/profile/data/repositories/provider_profile_repo_data.dart'
+    as _i391;
+import '../../features/services_provider_flow/profile/domain/repositories/provider_profile_repo_domain.dart'
+    as _i468;
+import '../../features/services_provider_flow/profile/domain/usecases/provider_profile_usecase.dart'
+    as _i93;
 import 'third_party_module.dart' as _i811;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -158,11 +192,20 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i39.BaseClinicDetailsDataSource>(
       () => _i39.ClinicDetailsDataSource(gh<_i454.SupabaseClient>()),
     );
+    gh.lazySingleton<_i548.BaseReservationDataSource>(
+      () => _i548.ReservationDataSource(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i918.PatCard>(
       () => _i918.PetCardInfoDatasources(gh<_i454.SupabaseClient>()),
     );
+    gh.lazySingleton<_i262.BaseProviderProfileDataSource>(
+      () => _i262.ProviderProfileDataSource(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i972.BaseUserProfileDataSourc>(
       () => _i972.DataBaseDataSource(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i18.BaseDtaSourcePayment>(
+      () => _i18.PaymentDatasource(gh<_i454.SupabaseClient>()),
     );
     gh.lazySingleton<_i771.BaseBookingHotelDataSource>(
       () => _i771.BookingHotelDatasource(gh<_i454.SupabaseClient>()),
@@ -197,11 +240,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i324.ClinicRepoDomain>(
       () => _i359.ClinicRepoData(gh<_i814.BaseClinicDataSource>()),
     );
+    gh.lazySingleton<_i835.PaymentRepoDomain>(
+      () => _i843.PaymentRepoData(gh<_i18.BaseDtaSourcePayment>()),
+    );
     gh.lazySingleton<_i378.BaseBookingDetailsDataSource>(
       () => _i378.BookingDetailsDataSource(gh<_i454.SupabaseClient>()),
     );
     gh.lazySingleton<_i189.BookingHotelUsecase>(
       () => _i189.BookingHotelUsecase(gh<_i104.BookingHotelRepoDomain>()),
+    );
+    gh.lazySingleton<_i1048.ProviderBaseAuthDataSource>(
+      () => _i1048.ProviderAtuhDataSource(supabase: gh<_i454.SupabaseClient>()),
     );
     gh.lazySingleton<_i754.RepoDomain>(
       () => _i332.RepoData(gh<_i972.BaseUserProfileDataSourc>()),
@@ -218,6 +267,11 @@ extension GetItInjectableX on _i174.GetIt {
         box: gh<_i792.GetStorage>(),
       ),
     );
+    gh.lazySingleton<_i468.ProviderProfileRepoDomain>(
+      () => _i391.ProviderProfileRepoData(
+        gh<_i262.BaseProviderProfileDataSource>(),
+      ),
+    );
     gh.lazySingleton<_i796.AdoptionUseCase>(
       () => _i796.AdoptionUseCase(gh<_i979.AdoptionRepoDomain>()),
     );
@@ -226,6 +280,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i585.AddPetRepoDomain>(
       () => _i891.AddPetRepoData(gh<_i1071.BaseAddPetDataSource>()),
+    );
+    gh.lazySingleton<_i446.ProviderAuthRepoDomain>(
+      () => _i33.ProviderAuthRepoData(gh<_i1048.ProviderBaseAuthDataSource>()),
     );
     gh.lazySingleton<_i591.UserProfileUsecase>(
       () => _i591.UserProfileUsecase(userProfileData: gh<_i754.RepoDomain>()),
@@ -251,12 +308,23 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i378.BaseBookingDetailsDataSource>(),
       ),
     );
+    gh.lazySingleton<_i616.PaymentUsecase>(
+      () => _i616.PaymentUsecase(gh<_i835.PaymentRepoDomain>()),
+    );
     gh.factory<_i619.ClinicBookingCubit>(
       () => _i619.ClinicBookingCubit(gh<_i382.CreateClinicBookingUseCase>()),
+    );
+    gh.lazySingleton<_i93.ProviderProfileUsecase>(
+      () => _i93.ProviderProfileUsecase(
+        providerProfileRepo: gh<_i468.ProviderProfileRepoDomain>(),
+      ),
     );
     gh.lazySingleton<_i809.PetProfileRecordsRepo>(
       () =>
           _i618.PetProfileRecordsRepoData(gh<_i595.BaseDataSourcePetReacord>()),
+    );
+    gh.lazySingleton<_i399.ProviderAuthUseCase>(
+      () => _i399.ProviderAuthUseCase(gh<_i446.ProviderAuthRepoDomain>()),
     );
     gh.factory<_i22.AddPetUseCase>(
       () => _i22.AddPetUseCase(gh<_i585.AddPetRepoDomain>()),
@@ -269,6 +337,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i343.ClinicDetailsUseCase>(
       () => _i343.ClinicDetailsUseCase(gh<_i15.ClinicDetailsRepoDomain>()),
+    );
+    gh.lazySingleton<_i274.ReservationRepoDomain>(
+      () => _i37.ReservationRepoData(
+        gh<_i548.BaseReservationDataSource>(),
+        gh<_i1048.ProviderBaseAuthDataSource>(),
+      ),
     );
     gh.lazySingleton<_i319.HealthRecordUsecase>(
       () => _i319.HealthRecordUsecase(gh<_i809.PetProfileRecordsRepo>()),
@@ -285,11 +359,20 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i693.AuthRepoDomain>(
       () => _i64.AuthRepoData(authDataSource: gh<_i386.BaseAuthDataSource>()),
     );
+    gh.factory<_i946.ReservationUseCase>(
+      () => _i946.ReservationUseCase(gh<_i274.ReservationRepoDomain>()),
+    );
     gh.factory<_i960.BookingDetailsUseCase>(
       () => _i960.BookingDetailsUseCase(gh<_i718.BookingDetailsRepoDomain>()),
     );
     gh.factory<_i250.ClinicCubit>(
       () => _i250.ClinicCubit(gh<_i143.ClinicUseCase>()),
+    );
+    gh.factory<_i743.HomeCubit>(
+      () => _i743.HomeCubit(
+        gh<_i322.GetHomeDataUseCase>(),
+        gh<_i1048.ProviderBaseAuthDataSource>(),
+      ),
     );
     gh.lazySingleton<_i1001.AuthUseCase>(
       () => _i1001.AuthUseCase(authRepoData: gh<_i693.AuthRepoDomain>()),
@@ -303,8 +386,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i763.AddPetCubit>(
       () => _i763.AddPetCubit(gh<_i22.AddPetUseCase>()),
     );
-    gh.factory<_i743.HomeCubit>(
-      () => _i743.HomeCubit(gh<_i322.GetHomeDataUseCase>()),
+    gh.factory<_i991.VisitDetailsCubit>(
+      () => _i991.VisitDetailsCubit(gh<_i946.ReservationUseCase>()),
     );
     return this;
   }

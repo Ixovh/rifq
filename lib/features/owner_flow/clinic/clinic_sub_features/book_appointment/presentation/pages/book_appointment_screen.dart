@@ -41,6 +41,7 @@ class _BookAppointmentView extends StatelessWidget {
     final selectedTime = ValueNotifier<String?>(null);
 
     return Scaffold(
+      backgroundColor: context.background,
       appBar: AppBar(
         title: const Text('Book Appointment'),
         backgroundColor: Colors.white,

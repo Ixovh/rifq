@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rifq/core/di/setup.dart';
 import 'package:rifq/core/routes/base_routes.dart';
+import 'package:rifq/core/theme/app_color.dart';
+import 'package:rifq/core/theme/app_theme.dart';
+import 'package:rifq/features/owner_flow/auth/presentation/widgets/container_button.dart';
 import '../cubit/clinic_details_cubit.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -16,6 +20,7 @@ class ClinicDetailsScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) => getIt<ClinicDetailsCubit>()..load(providerId),
       child: Scaffold(
+        backgroundColor: context.background,
         body: BlocBuilder<ClinicDetailsCubit, ClinicDetailsState>(
           builder: (context, state) {
             if (state is ClinicDetailsLoading) {
@@ -66,7 +71,7 @@ class ClinicDetailsScreen extends StatelessWidget {
                             ),
                           ),
 
-                           SizedBox(height: 10),
+                          SizedBox(height: 10),
 
                           //!------------------DESCRIPTION------------------
                           Text(
@@ -75,17 +80,17 @@ class ClinicDetailsScreen extends StatelessWidget {
                             style: const TextStyle(fontSize: 16, height: 1.4),
                           ),
 
-                           SizedBox(height: 20),
+                          SizedBox(height: 20),
 
                           //!------------------PRICE------------------
                           if (e.price != null)
                             Row(
                               children: [
-                                 Icon(Icons.payments, size: 22),
-                                 SizedBox(width: 10),
+                                Icon(Icons.payments, size: 22),
+                                SizedBox(width: 10),
                                 Text(
                                   "${e.price} SAR",
-                                  style:  TextStyle(
+                                  style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -101,11 +106,11 @@ class ClinicDetailsScreen extends StatelessWidget {
                               onTap: () => _call(e.phone),
                               child: Row(
                                 children: [
-                                   Icon(Icons.phone, size: 22),
-                                   SizedBox(width: 10),
+                                  Icon(Icons.phone, size: 22),
+                                  SizedBox(width: 10),
                                   Text(
                                     e.phone!,
-                                    style:  TextStyle(
+                                    style: TextStyle(
                                       fontSize: 18,
                                       color: Colors.blue,
                                       decoration: TextDecoration.underline,
@@ -115,14 +120,14 @@ class ClinicDetailsScreen extends StatelessWidget {
                               ),
                             ),
 
-                           SizedBox(height: 15),
+                          SizedBox(height: 15),
 
                           //!------------------LOCATION------------------
                           if (e.location != null)
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                 Icon(Icons.location_on, size: 22),
+                                Icon(Icons.location_on, size: 22),
                                 SizedBox(width: 10),
                                 Expanded(
                                   child: Text(
@@ -136,54 +141,65 @@ class ClinicDetailsScreen extends StatelessWidget {
                           SizedBox(height: 10),
 
                           if (e.locationUrl != null)
-                            ElevatedButton.icon(
-                              onPressed: () => _openLocation(e.locationUrl), //!!!!!!!!LOCATION METHOD
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green[600],
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 14,
-                                  horizontal: 20,
+                            // ElevatedButton.icon(
+                            //   onPressed: () => _openLocation(
+                            //     e.locationUrl,
+                            //   ), //!!!!!!!!LOCATION METHOD
+                            //   style: ElevatedButton.styleFrom(
+                            //     backgroundColor: Colors.green[600],
+                            //     padding: const EdgeInsets.symmetric(
+                            //       vertical: 14,
+                            //       horizontal: 20,
+                            //     ),
+                            //     shape: RoundedRectangleBorder(
+                            //       borderRadius: BorderRadius.circular(16),
+                            //     ),
+                            //   ),
+                            //   icon: Icon(Icons.map),
+                            //   label: Text(
+                            //     "Open in Maps",
+                            //     style: TextStyle(fontSize: 16),
+                            //   ),
+                            // ),
+                            Center(
+                              child: SizedBox(
+                                width: 339.w,
+                                height: 26.h,
+                                child: ElevatedButton.icon(
+                                  onPressed: () {
+                                    _openLocation(e.locationUrl);
+                                  },
+                                  icon: Icon(
+                                    Icons.location_on,
+                                    color: AppColors.primary300,
+                                  ),
+                                  label: Text(
+                                    "Location",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.r),
+                                      side: BorderSide(
+                                        color: AppColors.primary300,
+                                        width: 1.w,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                              ),
-                              icon: Icon(Icons.map),
-                              label: Text(
-                                "Open in Maps",
-                                style: TextStyle(fontSize: 16),
                               ),
                             ),
 
                           SizedBox(height: 25),
-
-                          SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                context.push(
-                                  Routes.bookAppointment,
-                                  extra: e
-                                );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.black,
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 16,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                              ),
-                              child:  Text(
-                                "Book Now",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
+                          ContainerButton(
+                            label: 'Book Now',
+                            containerColor: context.primary50,
+                            textColor: context.background,
+                            fontSize: 21,
+                            onTap: () {
+                              context.push(Routes.bookAppointment, extra: e);
+                            },
                           ),
                         ],
                       ),

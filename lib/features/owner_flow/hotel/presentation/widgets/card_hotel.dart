@@ -5,8 +5,8 @@ class CardHotel extends StatelessWidget {
   final String imageHotel;
   final String nameHotle;
   final String location;
-  // final String price;
-  // final String services;
+  final String phone;
+
   final VoidCallback? onTap;
 
   const CardHotel({
@@ -15,8 +15,8 @@ class CardHotel extends StatelessWidget {
      required this.imageHotel,
     required this.nameHotle,
     required this.location,
-    // required this.price,
-    // required this.services,
+    required this.phone,
+
   });
 
   @override
@@ -65,29 +65,20 @@ class CardHotel extends StatelessWidget {
                             Text(location, style: TextStyle(fontSize: 12.sp)),
                           ],
                         ),
-                        SizedBox(height: 4.h),
-                        // Row(
-                        //   children: [
-                        //     Icon(Icons.attach_money, size: 14),
-                        //     SizedBox(width: 4.w),
-                        //     Text(price, style: TextStyle(fontSize: 12.sp)),
-                        //   ],
-                        // ),
-                        SizedBox(height: 4.h),
-                        // Text(
-                        //   'Services : $services',
-                        //   style: TextStyle(fontSize: 13.sp, color: Colors.black87),
-                        // ),
+                        SizedBox(height: 8.h),
+                      Row(
+                        children: [
+                          Icon(Icons.phone,size: 14,),
+                          SizedBox(width: 4.w,),
+                          Text(phone,style:TextStyle(fontSize: 12.sp)),
+                        ],
+                      ),
+
                       ],
                     ),
                   ),
                 ],
               ),
-              // SizedBox(height: 12.h),
-              // Text(
-              //   'Services : $services',
-              //   style: TextStyle(fontSize: 13.sp, color: Colors.black87),
-              // ),
             ],
           ),
         ),

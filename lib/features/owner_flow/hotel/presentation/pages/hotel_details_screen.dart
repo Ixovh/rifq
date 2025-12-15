@@ -1,94 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:go_router/go_router.dart';
-// import 'package:rifq/core/theme/app_theme.dart';
-// import '../../../../../core/shared/shared_in_owner_flow/shared/models/provider_items_view_model.dart';
-// import '../widgets/hotel_image_carousel.dart';
-// import '../widgets/hotel_info.dart';
-// import '../widgets/room_content.dart';
-// import '../widgets/tab_bar.dart';
-//
-// class HotelDetailsScreen extends StatelessWidget {
-//   final ProviderItemsViewModel hotel;
-//   const HotelDetailsScreen({super.key, required this.hotel, });
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return DefaultTabController(
-//       length: 2,
-//       child: Scaffold(
-//         backgroundColor: Colors.white,
-//         appBar: AppBar(
-//           backgroundColor: Colors.white,
-//           leading: IconButton(
-//               onPressed: () {
-//                 context.pop();
-//                 },
-//               icon: Icon(Icons.arrow_back_ios)),
-//         ),
-//
-//         body: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//
-//             Expanded(
-//               child: SingleChildScrollView(
-//                 child: Column(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     HotelImagesCarousel(images: [hotel.providerImage!]),
-//                     SizedBox(height: 6.h),
-//                     Padding(
-//                       padding: EdgeInsets.all(6),
-//                         child: Text(hotel.providerName,style: context.h5,)),
-//                     Padding(
-//                       padding: const EdgeInsets.all(7),
-//                       child: Row(
-//                         children: [
-//                           Image.asset("assets/images/Frame 1984077898.png"),
-//                           SizedBox(width: 5.w),
-//                           Text(hotel.location!,style: context.body2.copyWith(color: context.neutral600),)
-//                         ],
-//                       ),
-//                     ),
-//
-//                   ],
-//                 ),
-//               ),
-//             ),
-//
-//             CustomTabBar(),
-//             Expanded(
-//               child: TabBarView(
-//                 children: [
-//                   RoomsTabContent(hotel: hotel,),
-//                   HotelInfoTabContent(hotel: hotel),
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -97,20 +6,17 @@ import 'package:rifq/features/owner_flow/hotel/presentation/cubit/hotel_cubit.da
 import 'package:rifq/features/owner_flow/hotel/presentation/widgets/hotel_info.dart' show HotelInfoTabContent;
 import 'package:rifq/features/owner_flow/hotel/presentation/widgets/room_content.dart';
 import 'package:rifq/features/owner_flow/hotel/presentation/widgets/tab_bar.dart';
-
 import '../../../../../core/shared/shared_in_owner_flow/shared/entities/provider_entity.dart';
 import '../../../../../core/theme/app_theme.dart';
 import '../widgets/hotel_image_carousel.dart';
 
 class HotelDetailsScreen extends StatelessWidget {
-
   final ProviderEntity hotel;
-
   const HotelDetailsScreen({super.key, required this.hotel});
 
   @override
   Widget build(BuildContext context) {
-    context.read<HotelCubit>().fetchHotelById(hotel.id);
+    // context.read<HotelCubit>().fetchHotelById(hotel.id);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -137,7 +43,9 @@ class HotelDetailsScreen extends StatelessWidget {
               ),
             );}
           if (state is HotelDetailLoaded) {
-            final hotelDetails = state.hotel; // ProviderItemsViewEntity
+            final hotelItems=state.hotelItems;
+            final hotelDetails=hotelItems.first;
+            // final hotelDetails = state.hotel; // ProviderItemsViewEntity
             return DefaultTabController(
               length: 2,
               child: Column(
@@ -179,9 +87,9 @@ class HotelDetailsScreen extends StatelessWidget {
                   Expanded(
                     child: TabBarView(
                       children: [
-                        RoomsTabContent(hotel: hotelDetails),
+                        RoomsTabContent(hotelItems: hotelItems,),
+                        // RoomsTabContent(hotel: hotelDetails),
                         HotelInfoTabContent(hotel: hotelDetails),
-
                       ],
                     ),
                   ),
@@ -190,7 +98,7 @@ class HotelDetailsScreen extends StatelessWidget {
             );
           }
           return Center(
-              child: Text('No data available'));
+              child: CircularProgressIndicator());
         },
       ),
     );

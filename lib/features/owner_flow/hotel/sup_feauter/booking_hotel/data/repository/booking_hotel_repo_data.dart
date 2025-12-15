@@ -1,10 +1,10 @@
 import 'package:injectable/injectable.dart';
 import 'package:multiple_result/src/result.dart';
-import 'package:rifq/features/owner_flow/hotel/sup_feauter/booking_hotel/data/model/booking_hotel_model.dart';
-
-import 'package:rifq/features/owner_flow/hotel/sup_feauter/booking_hotel/domain/entity/booking_hotel_entity.dart';
 
 
+
+import '../../../../../../../core/shared/shared_in_owner_flow/shared/entities/reservation_opt_entity.dart';
+import '../../../../../../../core/shared/shared_in_owner_flow/shared/models/reservation_model.dart';
 import '../../../../../pet_profile/sup_features/pet_info_card/domain/entity/pet_entity.dart';
 import '../../domain/repository/booking_hotel_repo_domain.dart';
 import '../datasource/booking_hotel_datasource.dart';
@@ -14,13 +14,12 @@ class BookingHotelRepoData implements BookingHotelRepoDomain {
   BookingHotelRepoData(this.hoteldata);
 
   @override
-  Future<Result<BookingHotelEntity, String>> createBooking(BookingHotelEntity booking) async {
+  Future<Result<ReservationModel, String>> createBooking(ReservationOptEntity booking) async {
     // Entity -> Model
-    final model = BookingHotelModel(
+    final model = ReservationModel(
       id: booking.id,
       userId: booking.userId,
       providerId: booking.providerId,
-      serviceTypeId: booking.serviceTypeId,
       serviceItemId: booking.serviceItemId,
       petId: booking.petId,
       startDate: booking.startDate,
@@ -38,7 +37,7 @@ class BookingHotelRepoData implements BookingHotelRepoDomain {
 
 
   @override
-  Future<Result<BookingHotelEntity, String>> getBookingById(String id) async {
+  Future<Result<ReservationOptEntity, String>> getBookingById(String id) async {
     final result = await hoteldata.getBookingById(id);
     return result.when(
           (success) => Result.success(success), // BookingHotelModel extends BookingHotelEntity بالفعل

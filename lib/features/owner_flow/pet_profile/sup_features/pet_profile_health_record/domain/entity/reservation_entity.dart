@@ -2,10 +2,9 @@ class ReservationEntity {
   final String id;
   final String userId;
   final String providerId;
-  final int serviceTypeId;
   final String serviceItemId;
   final String petId;
-  final DateTime date;
+  final String? time;
   final DateTime startDate;
   final DateTime endDate;
   final String status;
@@ -16,10 +15,9 @@ class ReservationEntity {
     required this.id,
     required this.userId,
     required this.providerId,
-    required this.serviceTypeId,
     required this.serviceItemId,
     required this.petId,
-    required this.date,
+     this.time,
     required this.startDate,
     required this.endDate,
     required this.status,

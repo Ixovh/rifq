@@ -13,9 +13,14 @@ class HotelLoaded extends HotelState {
 }
 
 class HotelDetailLoaded extends HotelState {
-  final ProviderItemsViewEntity hotel;
-  HotelDetailLoaded(this.hotel);
+  final List<ProviderItemsViewEntity> hotelItems;
+  HotelDetailLoaded(this.hotelItems);
 }
+
+// class HotelDetailLoaded extends HotelState {
+//   final List<ProviderItemsViewEntity> hotelItems;
+//   HotelDetailLoaded(this.hotelItems);
+// }
 
 class HotelError extends HotelState {
   final String message;
@@ -29,13 +34,25 @@ class HotelLocationOpened extends HotelState {}
 //   RoomSelectionChanged(this.roomId);
 // }
 
-class RoomSelectionChanged extends HotelDetailLoaded {
+// class RoomSelectionChanged extends HotelDetailLoaded {
+//   final String roomId;
+//   RoomSelectionChanged(
+//       this.roomId,
+//       List<ProviderItemsViewEntity> hotelItems // ✅ List الحين
+//       ) : super(hotelItems);
+// }
+// class RoomSelectionChanged extends HotelDetailLoaded {
+//   final String roomId;
+//   RoomSelectionChanged(this.roomId, ProviderItemsViewEntity hotel) : super(hotel);
+// }
+
+
+class RoomSelectionChanged extends HotelState {
   final String roomId;
-  RoomSelectionChanged(this.roomId, ProviderItemsViewEntity hotel) : super(hotel);
+  final ProviderItemsViewEntity room;
+
+  RoomSelectionChanged(this.roomId, this.room);
 }
-
-
-
 //
 // class RoomSelectionChanged extends HotelDetailLoaded {
 //   final String roomId;

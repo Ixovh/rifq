@@ -56,7 +56,8 @@ part 'pet_profiel_record_model.mapper.dart';
 class PetProfileRecordModel  with PetProfileRecordModelMappable {
  final String petId;
  final String ownerId;
- final String ownerName;
+ final String? ownerName;
+ // final String ownerName;
  final String petName;
  final String petSpecies;
  final String petBreed;
@@ -69,7 +70,7 @@ class PetProfileRecordModel  with PetProfileRecordModelMappable {
  PetProfileRecordModel({
   @MappableField(key: 'pet_id') required this.petId,
   @MappableField(key: 'owner_id') required this.ownerId,
-  @MappableField(key: 'owner_name') required this.ownerName,
+  @MappableField(key: 'owner_name')  this.ownerName,
   @MappableField(key: 'pet_name') required this.petName,
   @MappableField(key: 'pet_species') required this.petSpecies,
   @MappableField(key: 'pet_breed') required this.petBreed,

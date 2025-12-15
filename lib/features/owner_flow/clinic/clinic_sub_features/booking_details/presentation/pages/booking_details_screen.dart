@@ -6,6 +6,7 @@ import 'package:rifq/core/routes/base_routes.dart';
 import 'package:rifq/core/shared/shared_in_owner_flow/shared/entities/provider_items_view_entity.dart';
 import 'package:rifq/core/shared/shared_in_owner_flow/shared/entities/reservation_opt_entity.dart';
 import 'package:rifq/core/theme/app_theme.dart';
+import 'package:rifq/features/owner_flow/auth/presentation/widgets/container_button.dart';
 import 'package:rifq/features/owner_flow/clinic/clinic_sub_features/booking_details/presentation/cubit/booking_details_cubit.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -49,7 +50,8 @@ Widget build(BuildContext context) {
       }
     },
     child: Scaffold(
-      appBar: AppBar(title: const Text('Booking Details')),
+      backgroundColor: context.background,
+      appBar: AppBar(title: const Text('Booking Details'),backgroundColor: context.background,),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -87,6 +89,9 @@ Widget build(BuildContext context) {
             const Spacer(),
 
             //!----------CONFIRM----------
+            // ContainerButton(label: 'Confirm Booking', containerColor: null, textColor: null, fontSize: null, onTap: () {
+
+            // },),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -111,6 +116,8 @@ Widget build(BuildContext context) {
                 child: const Text('Confirm Booking'),
               ),
             ),
+
+
           ],
         ),
       ),

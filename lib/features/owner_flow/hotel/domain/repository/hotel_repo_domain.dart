@@ -6,5 +6,13 @@ abstract class HotelRepoDomain {
 //كل الفنادق
   Future<Result<List<ProviderEntity>, String>> getAllHotel();
 // تفاصيل فندق معين
-  Future<Result<ProviderItemsViewEntity, String>> getHotelById(String id);
+//   Future<Result<ProviderItemsViewEntity, String>> getHotelById(String id);
+
+  Future<Result<List<ProviderItemsViewEntity>, String>> getHotelById(String id);
+
+
 }
+
+// abstract class HotelRepoDomain {
+//   Future<Result<List<ProviderEntity>, String>> getAllHotel();
+// }

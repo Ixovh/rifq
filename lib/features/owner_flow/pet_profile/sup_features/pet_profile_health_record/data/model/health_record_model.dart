@@ -12,27 +12,40 @@ class HealthRecordModel extends HealthRecordEntity with HealthRecordModelMappabl
     required super.id,
     @MappableField(key: 'pet_id')required super.petId,
     required super.type,
-    required super.title,
-    required super.description,
-    required super.date,
-    @MappableField(key: 'clinic_name')required super.clinicName
+     super.title,
+     super.description,
+     super.date,
+    @MappableField(key: 'clinic_name') super.clinicName
   });
 
   /// fromMapا
+  // factory HealthRecordModel.fromMap(Map<String, dynamic> map) {
+  //   return HealthRecordModel(
+  //     id: map['id'],
+  //     petId: map['pet_id'] as String? ?? '',
+  //     // petId: map['pet_id'],
+  //     // type: map['type'],
+  //     type: map['type'] as String,
+  //
+  //     title: map['title']as String?,
+  //     description: map['description'] as String?,
+  //     // date: DateTime.parse(map['date']),
+  //     date: map['date'] != null
+  //         ? DateTime.parse(map['date'] as String)
+  //         : DateTime.now(),
+  //     clinicName: map['clinic_name'] as String?,
+  //   );
+  // }
   factory HealthRecordModel.fromMap(Map<String, dynamic> map) {
     return HealthRecordModel(
-      id: map['id'],
+      id: map['id'] as String? ?? '',
       petId: map['pet_id'] as String? ?? '',
-      // petId: map['pet_id'],
-      // type: map['type'],
-      type: map['type'] as String,
-
-      title: map['title']as String?,
+      type: map['type'] as String? ?? '',
+      title: map['title'] as String?,
       description: map['description'] as String?,
-      // date: DateTime.parse(map['date']),
       date: map['date'] != null
           ? DateTime.parse(map['date'] as String)
-          : DateTime.now(),
+          : null,
       clinicName: map['clinic_name'] as String?,
     );
   }

@@ -34,7 +34,7 @@ class _ClinicView extends StatelessWidget {
           builder: (context, state) {
 
             if (state is ClinicLoading) {
-              return const Center(child: CircularProgressIndicator());
+              // return const Center(child: CircularProgressIndicator());
             }
 
             //!!--------------Guest View------------

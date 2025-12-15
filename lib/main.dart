@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:rifq/core/routes/base_routes.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'core/di/setup.dart';
 
 void main() async{

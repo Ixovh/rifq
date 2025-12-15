@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rifq/features/owner_flow/add_pet/data/models/pet_model.dart';
 import 'package:rifq/features/owner_flow/home/domain/use_cases/home_use_case.dart';
+import 'package:rifq/features/services_provider_flow/auth/data/datasources/provider_atuh_data_source.dart';
 
 part 'home_state.dart';
 
@@ -10,7 +11,7 @@ part 'home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   final GetHomeDataUseCase useCase;
 
-  HomeCubit(this.useCase) : super(HomeInitial());
+  HomeCubit(this.useCase, ProviderBaseAuthDataSource providerBaseAuthDataSource) : super(HomeInitial());
 
   Future<void> loadHomeData() async {
     emit(HomeLoading());
