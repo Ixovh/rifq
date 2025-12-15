@@ -12,9 +12,8 @@ part 'edit_pet_profile_state.dart';
 
 class EditPetProfileCubit extends Cubit<EditPetProfileState> {
   final EditPetProfileUsecase usecase;
-  final PetProfileEntity pet;
+   PetProfileEntity pet;
   final SupabaseClient supabase = Supabase.instance.client;
-
   EditPetProfileCubit(this.usecase, {required this.pet,})
       : super(EditPetProfileInitial(pet: pet));
 
@@ -24,7 +23,7 @@ class EditPetProfileCubit extends Cubit<EditPetProfileState> {
       final updatedName = newName ?? pet.name;
       final updatedPhoto = (newPhotoUrl != null && newPhotoUrl.isNotEmpty)
           ? newPhotoUrl
-          : pet.photoUrl;
+          : state.pet.photoUrl;
 
       final result = await usecase.updatePetProfile(pet.id, updatedName, updatedPhoto);
       result.when(
@@ -41,13 +40,14 @@ class EditPetProfileCubit extends Cubit<EditPetProfileState> {
             gender: pet.gender,
             createdAt: pet.createdAt,
           );
+          pet = updatedPet;
           emit(EditPetProfileSuccess(pet: updatedPet));
         }, (error) {
-          emit(EditPetProfileError(pet: pet, message: error.toString()));
+          emit(EditPetProfileError(pet: state.pet, message: error.toString()));
         },
       );
     } catch (e) {
-      emit(EditPetProfileError(pet: pet, message: e.toString()));
+      emit(EditPetProfileError(pet: state.pet, message: e.toString()));
     }
   }
 

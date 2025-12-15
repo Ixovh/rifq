@@ -36,11 +36,12 @@ class PetProfileRecordModelMapper
     _$ownerId,
     key: r'owner_id',
   );
-  static String _$ownerName(PetProfileRecordModel v) => v.ownerName;
+  static String? _$ownerName(PetProfileRecordModel v) => v.ownerName;
   static const Field<PetProfileRecordModel, String> _f$ownerName = Field(
     'ownerName',
     _$ownerName,
     key: r'owner_name',
+    opt: true,
   );
   static String _$petName(PetProfileRecordModel v) => v.petName;
   static const Field<PetProfileRecordModel, String> _f$petName = Field(
@@ -256,7 +257,7 @@ class _PetProfileRecordModelCopyWithImpl<$R, $Out>
   $R call({
     String? petId,
     String? ownerId,
-    String? ownerName,
+    Object? ownerName = $none,
     String? petName,
     String? petSpecies,
     String? petBreed,
@@ -269,7 +270,7 @@ class _PetProfileRecordModelCopyWithImpl<$R, $Out>
     FieldCopyWithData({
       if (petId != null) #petId: petId,
       if (ownerId != null) #ownerId: ownerId,
-      if (ownerName != null) #ownerName: ownerName,
+      if (ownerName != $none) #ownerName: ownerName,
       if (petName != null) #petName: petName,
       if (petSpecies != null) #petSpecies: petSpecies,
       if (petBreed != null) #petBreed: petBreed,

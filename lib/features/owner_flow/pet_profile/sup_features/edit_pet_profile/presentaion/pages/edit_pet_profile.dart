@@ -107,6 +107,8 @@ class EditPetProfileScreen extends StatelessWidget {
                 lable: 'Pet’s breed',
               ),
 
+              SizedBox(height: 80.h,),
+
               CustomeButtonWidgets(
                 titel: 'Save', onPressed: () {
                 context.read<EditPetProfileCubit>().updatePet(

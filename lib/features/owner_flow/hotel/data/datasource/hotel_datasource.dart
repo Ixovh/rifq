@@ -68,7 +68,6 @@ class HotelDataBase implements BaseHotelDataSourc {
           .from('provider_items_view')
           .select()
           .eq('provider_id', id);
-
       if (response.isEmpty) {
         return Result.error("Hotel not found");
       }

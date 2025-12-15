@@ -22,19 +22,41 @@ class ReservationModel extends ReservationEntity with ReservationModelMappable {
  });
 
  /// Factory لتحويل Map (JSON) إلى ReservationModel
+ // factory ReservationModel.fromMap(Map<String, dynamic> map) {
+ //  return ReservationModel(
+ //   id: map['id'],
+ //   userId: map['user_id'],
+ //   providerId: map['provider_id'],
+ //   serviceItemId: map['service_item_id'],
+ //   petId: map['pet_id'],
+ //   time: map['time'],
+ //   startDate: DateTime.parse(map['start_date']),
+ //   endDate: DateTime.parse(map['end_date']),
+ //   status: map['status'],
+ //   notes: map['notes'] as String?,
+ //   createdAt: DateTime.parse(map['created_at']),
+ //  );
+ // }
+
  factory ReservationModel.fromMap(Map<String, dynamic> map) {
   return ReservationModel(
-   id: map['id'],
-   userId: map['user_id'],
-   providerId: map['provider_id'],
-   serviceItemId: map['service_item_id'],
-   petId: map['pet_id'],
-   time: map['time'],
-   startDate: DateTime.parse(map['start_date']),
-   endDate: DateTime.parse(map['end_date']),
-   status: map['status'],
+   id: map['id'] as String? ?? '',
+   userId: map['user_id'] as String? ?? '',
+   providerId: map['provider_id'] as String? ?? '',
+   serviceItemId: map['service_item_id'] as String? ?? '',
+   petId: map['pet_id'] as String? ?? '',
+   time: map['time'] as String?,
+   startDate: map['start_date'] != null
+       ? DateTime.parse(map['start_date'] as String)
+       : DateTime.now(),
+   endDate: map['end_date'] != null
+       ? DateTime.parse(map['end_date'] as String)
+       : DateTime.now(),
+   status: map['status'] as String? ?? 'pending',
    notes: map['notes'] as String?,
-   createdAt: DateTime.parse(map['created_at']),
+   createdAt: map['created_at'] != null
+       ? DateTime.parse(map['created_at'] as String)
+       : DateTime.now(),
   );
  }
 
