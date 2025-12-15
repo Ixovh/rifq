@@ -10,6 +10,14 @@ class ReservationUseCase {
 
   ReservationUseCase(this.repository);
 
+  Future<Result<String?, String>> getProviderIdByAuthId() {
+    return repository.getProviderIdByAuthId();
+  }
+
+  Future<Result<int?, String>> getProviderServiceType(String providerId) {
+    return repository.getProviderServiceType(providerId);
+  }
+
   Future<Result<List<ReservationEntity>, String>> getAllReservations(
     String providerId,
   ) {

@@ -1,7 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:rifq/features/services_provider_flow/auth/data/datasources/provider_atuh_data_source.dart';
-import 'package:rifq/features/services_provider_flow/home/data/datasources/reservation_data_source.dart';
 import 'package:rifq/features/services_provider_flow/home/domain/entities/reservation_entity.dart';
 import 'package:rifq/features/services_provider_flow/home/domain/usecases/reservation_usecase.dart';
 
@@ -9,24 +7,17 @@ part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   final ReservationUseCase reservationUseCase;
-  final ProviderBaseAuthDataSource providerAuthDataSource;
-  final BaseReservationDataSource reservationDataSource;
 
-  HomeCubit(
-    this.reservationUseCase,
-    this.providerAuthDataSource,
-    this.reservationDataSource,
-  ) : super(HomeInitial());
+  HomeCubit(this.reservationUseCase) : super(HomeInitial());
 
   Future<void> loadHomeData() async {
     emit(HomeLoading());
 
     // Get provider ID
-    final providerIdResult = await providerAuthDataSource
-        .getProviderIdByAuthId();
+    final providerIdResult = await reservationUseCase.getProviderIdByAuthId();
 
     final providerId = providerIdResult.when((success) => success, (error) {
-      emit(HomeError(error.toString()));
+      emit(HomeError(error));
       return null;
     });
 
@@ -35,8 +26,9 @@ class HomeCubit extends Cubit<HomeState> {
     }
 
     // Get service type
-    final serviceTypeResult = await reservationDataSource
-        .getProviderServiceType(providerId);
+    final serviceTypeResult = await reservationUseCase.getProviderServiceType(
+      providerId,
+    );
 
     int? serviceTypeId;
     bool hasError = false;

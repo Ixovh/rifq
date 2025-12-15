@@ -4,8 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rifq/core/di/setup.dart';
 import 'package:rifq/core/theme/app_theme.dart';
-import 'package:rifq/features/services_provider_flow/auth/data/datasources/provider_atuh_data_source.dart';
-import 'package:rifq/features/services_provider_flow/home/data/datasources/reservation_data_source.dart';
 import 'package:rifq/features/services_provider_flow/home/domain/usecases/reservation_usecase.dart';
 import 'package:rifq/features/services_provider_flow/home/presentation/cubit/home_cubit.dart';
 import 'package:rifq/features/services_provider_flow/nav/presentation/cubit/provider_nav_cubit.dart';
@@ -24,11 +22,8 @@ class ProviderNavScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => HomeCubit(
-            getIt.get<ReservationUseCase>(),
-            getIt.get<ProviderBaseAuthDataSource>(),
-            getIt.get<BaseReservationDataSource>(),
-          )..loadHomeData(),
+          create: (context) =>
+              HomeCubit(getIt.get<ReservationUseCase>())..loadHomeData(),
         ),
         BlocProvider(
           create: (context) =>

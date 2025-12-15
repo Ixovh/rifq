@@ -211,9 +211,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i262.BaseProviderProfileDataSource>(),
       ),
     );
-    gh.lazySingleton<_i274.ReservationRepoDomain>(
-      () => _i37.ReservationRepoData(gh<_i548.BaseReservationDataSource>()),
-    );
     gh.lazySingleton<_i796.AdoptionUseCase>(
       () => _i796.AdoptionUseCase(gh<_i979.AdoptionRepoDomain>()),
     );
@@ -261,6 +258,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i479.PetProfileUsecase>(
       () => _i479.PetProfileUsecase(gh<_i557.PetProfileRepoDomain>()),
+    );
+    gh.lazySingleton<_i274.ReservationRepoDomain>(
+      () => _i37.ReservationRepoData(
+        gh<_i548.BaseReservationDataSource>(),
+        gh<_i1048.ProviderBaseAuthDataSource>(),
+      ),
     );
     gh.lazySingleton<_i319.HealthRecordUsecase>(
       () => _i319.HealthRecordUsecase(gh<_i809.PetProfileRecordsRepo>()),

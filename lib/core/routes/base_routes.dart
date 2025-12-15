@@ -18,13 +18,9 @@ import 'package:rifq/features/owner_flow/auth/presentation/pages/otp_screen.dart
 import 'package:rifq/features/owner_flow/auth/presentation/pages/reset_password_screen.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/sends_to_email_screen.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/welcome_screen.dart';
-
-import 'package:rifq/features/owner_flow/hotel/data/model/hotel_model.dart';
 import 'package:rifq/features/owner_flow/hotel/presentation/cubit/hotel_cubit.dart';
 import 'package:rifq/features/owner_flow/hotel/presentation/pages/hotel_details_screen.dart';
-
 import 'package:rifq/features/owner_flow/clinic/presentation/pages/clinic_screen.dart';
-
 import 'package:rifq/features/owner_flow/hotel/presentation/pages/hotel_home_screen.dart';
 import 'package:rifq/features/owner_flow/hotel/sup_feauter/booking_hotel/presentation/pages/booking_hotel.dart';
 import 'package:rifq/features/owner_flow/nav/presentation/cubit/nav_cubit.dart';
@@ -49,8 +45,6 @@ import 'package:rifq/features/services_provider_flow/home/presentation/pages/vis
 import 'package:rifq/core/di/setup.dart';
 import 'package:rifq/features/services_provider_flow/home/presentation/cubit/home_cubit.dart';
 import 'package:rifq/features/services_provider_flow/home/presentation/cubit/visit_details_cubit.dart';
-import 'package:rifq/features/services_provider_flow/auth/data/datasources/provider_atuh_data_source.dart';
-import 'package:rifq/features/services_provider_flow/home/data/datasources/reservation_data_source.dart';
 import 'package:rifq/features/services_provider_flow/home/domain/usecases/reservation_usecase.dart';
 import 'package:rifq/features/services_provider_flow/home/domain/entities/reservation_entity.dart';
 import 'package:rifq/features/services_provider_flow/nav/presentation/cubit/provider_nav_cubit.dart';
@@ -233,11 +227,8 @@ abstract class Routes {
         path: providerHome,
         builder: (context, state) {
           return BlocProvider(
-            create: (context) => HomeCubit(
-              getIt.get<ReservationUseCase>(),
-              getIt.get<ProviderBaseAuthDataSource>(),
-              getIt.get<BaseReservationDataSource>(),
-            )..loadHomeData(),
+            create: (context) =>
+                HomeCubit(getIt.get<ReservationUseCase>())..loadHomeData(),
             child: const ProviderHomeScreen(),
           );
         },

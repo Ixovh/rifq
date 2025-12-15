@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:multiple_result/multiple_result.dart';
 import 'package:rifq/features/owner_flow/add_pet/domain/entities/add_pet_entity.dart';
+import 'package:rifq/features/services_provider_flow/auth/data/datasources/provider_atuh_data_source.dart';
 import 'package:rifq/features/services_provider_flow/home/data/datasources/reservation_data_source.dart';
 import 'package:rifq/features/services_provider_flow/home/domain/entities/reservation_entity.dart';
 import 'package:rifq/features/services_provider_flow/home/domain/repositories/reservation_repo_domain.dart';
@@ -8,8 +9,20 @@ import 'package:rifq/features/services_provider_flow/home/domain/repositories/re
 @LazySingleton(as: ReservationRepoDomain)
 class ReservationRepoData implements ReservationRepoDomain {
   final BaseReservationDataSource dataSource;
+  final ProviderBaseAuthDataSource authDataSource;
 
-  ReservationRepoData(this.dataSource);
+  ReservationRepoData(this.dataSource, this.authDataSource);
+
+  @override
+  Future<Result<String?, String>> getProviderIdByAuthId() async {
+    final result = await authDataSource.getProviderIdByAuthId();
+    return result.mapError((error) => error.toString());
+  }
+  @override
+  Future<Result<int?, String>> getProviderServiceType(String providerId) async {
+    final result = await dataSource.getProviderServiceType(providerId);
+    return result;
+  }
 
   @override
   Future<Result<List<ReservationEntity>, String>> getAllReservations(

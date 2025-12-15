@@ -3,6 +3,8 @@ import 'package:rifq/features/owner_flow/add_pet/domain/entities/add_pet_entity.
 import 'package:rifq/features/services_provider_flow/home/domain/entities/reservation_entity.dart';
 
 abstract class ReservationRepoDomain {
+  Future<Result<String?, String>> getProviderIdByAuthId();
+  Future<Result<int?, String>> getProviderServiceType(String providerId);
   Future<Result<List<ReservationEntity>, String>> getAllReservations(
     String providerId,
   );
