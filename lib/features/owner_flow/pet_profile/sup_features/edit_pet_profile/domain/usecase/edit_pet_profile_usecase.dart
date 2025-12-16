@@ -9,14 +9,11 @@ class EditPetProfileUsecase {
 
   EditPetProfileUsecase(this.repo);
 
-  // Future<Result<Null, Object>> updatePetProfile(String id, String name, String imageUrl) async {
-  //   return await repo.updatePetProfile(id, name, imageUrl);
-  // }
-
-
-
   Future<Result<Map<String, dynamic>, Object>> updatePetProfile(
-      String id, String name, String imageUrl) async {
+    String id,
+    String name,
+    String imageUrl,
+  ) async {
     return await repo.updatePetProfile(id, name, imageUrl);
   }
 }

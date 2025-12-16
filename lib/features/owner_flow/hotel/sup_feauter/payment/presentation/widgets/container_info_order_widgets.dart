@@ -1,99 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import '../../../../../../../core/shared/shared_in_owner_flow/shared/entities/provider_items_view_entity.dart';
-// import '../../../../../../../core/shared/shared_in_owner_flow/shared/entities/reservation_opt_entity.dart';
-// import 'package:dotted_line/dotted_line.dart';
-//
-// class ContainerInfoOrderWidgets extends StatelessWidget {
-//   final ReservationOptEntity booking;
-//   final ProviderItemsViewEntity hotel;
-//   final List<String> selectedPets;
-//
-//   const ContainerInfoOrderWidgets({super.key, required this.booking, required this.hotel, required this.selectedPets,  });
-//   @override
-//   Widget build(BuildContext context) {
-//     final nights=booking.endDate!=null?booking.endDate!.difference(booking.startDate).inDays:0;
-//     final total =nights * hotel.price!;
-//     final numberofPets=selectedPets.length;
-//     return Scaffold(
-//       body: SingleChildScrollView(
-//         child: Container(
-//           padding: EdgeInsets.all(16),
-//           width: 355.w,
-//           height: 663.h,
-//           decoration: BoxDecoration(
-//             borderRadius: BorderRadius.circular(16.r),
-//             border: Border.all(
-//               color: Color(0xFFDEE1E8),
-//               width: 1.w,
-//             )
-//           ),
-//           child: Column(
-//             children: [
-//               Row(
-//                 children: [
-//                   if (hotel.providerImage != null && hotel.providerImage!.isNotEmpty)
-//                     Image.network(
-//                       hotel.providerImage!,
-//                       height: 180,
-//                       width: double.infinity,
-//                     ),
-//                   SizedBox(width: 12.w),
-//                   Text(hotel.providerName),
-//                 ],),
-//               Text("Your Order"),
-//               Row(
-//                 children: [
-//                   Text("Services Selected"),
-//                   Text(hotel.itemName),
-//                 ],
-//               ),
-//               Row(
-//                 children: [
-//                   Text("Number of Pets"),
-//                   SizedBox(width: 12.w,),
-//                   Text('${numberofPets}'),
-//                 ],
-//               ),
-//               DottedLine(
-//                 direction: Axis.horizontal,
-//                 dashColor: Color(0xFFDEE1E8),
-//               ),
-//               Text("Booking Date"),
-//               Text("Check-in: ${booking.startDate}"),
-//               Text("Check-out: ${booking.endDate}"),
-//               DottedLine(
-//                 direction: Axis.horizontal,
-//                 dashColor: Color(0xFFDEE1E8),
-//               ),
-//               Text("Price Details"),
-//               Row(
-//                 children: [
-//                   Text("Room Price"),
-//                   SizedBox(width: 12.w),
-//                   Text('${hotel.price}'),
-//                 ],
-//               ),
-//               DottedLine(
-//                 direction: Axis.horizontal,
-//                 dashColor: Color(0xFFDEE1E8),
-//               ),
-//               Row(
-//                 children: [
-//                   Text("Total Price"),
-//                   SizedBox(width: 12.w),
-//                   Text('${total}'),
-//                 ],)
-//
-//             ],
-//           ),
-//         ),
-//       ),
-//
-//     );
-//   }
-// }
-
 import 'package:dotted_line/dotted_line.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -124,10 +28,6 @@ class ContainerInfoOrderWidgets extends StatelessWidget {
     final checkOutFormatted = booking.endDate != null
         ? dateFormat.format(booking.endDate!)
         :'No selected';
-    // final nights = booking.endDate != null
-    //     ? booking.endDate!.difference(booking.startDate).inDays
-    //     : 0;
-    // final total = nights * hotel.price!;
     final numberofPets = selectedPets.length;
 
     return Container(
@@ -209,9 +109,9 @@ class ContainerInfoOrderWidgets extends StatelessWidget {
           SizedBox(height: 17.h),
           Text("Booking Date",style: TextStyle(fontSize: 16.sp,color: AppColors.neutral1000,fontWeight: FontWeight.w500)),
           SizedBox(height: 17.h),
-          Text("Check-in: ${checkInFormatted}"),
+          Text("Check-in: $checkInFormatted"),
           SizedBox(height: 8.h),
-          Text("Check-out: ${checkOutFormatted}"),
+          Text("Check-out: $checkOutFormatted"),
 
           SizedBox(height: 17.h),
           DottedLine(dashColor: Color(0xFFDEE1E8)),

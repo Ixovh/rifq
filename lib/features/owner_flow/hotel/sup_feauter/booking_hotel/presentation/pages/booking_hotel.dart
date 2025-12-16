@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,7 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:rifq/core/di/setup.dart';
 import 'package:rifq/core/routes/base_routes.dart';
 import 'package:rifq/core/theme/app_theme.dart';
-import '../../../../../../../core/common/widgets/appbar/custom_app_bar.dart' as AuthHelper;
+// ignore: library_prefixes
+import '../../../../../../../core/common/widgets/appbar/custom_app_bar.dart'as AuthHelper;
 import '../../../../../../../core/common/widgets/button/custome_button_widgets.dart';
 import '../../../../../../../core/shared/shared_in_owner_flow/shared/entities/provider_items_view_entity.dart';
 import '../../../../../../../core/shared/shared_in_owner_flow/shared/entities/reservation_opt_entity.dart';
@@ -19,7 +19,6 @@ import '../cubit/booking_hotel_cubit.dart';
 import '../widgets/date_time.dart';
 import '../widgets/pet_name.dart';
 
-
 class BookingHotel extends StatelessWidget {
   // تأدي غرض نفس ستيتفل
   final ValueNotifier<DateTime?> checkIn = ValueNotifier<DateTime?>(null);
@@ -28,7 +27,7 @@ class BookingHotel extends StatelessWidget {
   final String roomId;
   final ValueNotifier<List<String>> selectedPets = ValueNotifier([]);
 
-  BookingHotel({super.key, required this.hotel, required this.roomId,});
+  BookingHotel({super.key, required this.hotel, required this.roomId});
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -44,10 +43,7 @@ class BookingHotel extends StatelessWidget {
             return cubit;
           },
         ),
-        // BlocProvider(
-        //   create: (context) => ProfileCubit(getIt<UserProfileUsecase>())
-        //     ..getUserProfile("e7c6dc83-bcf5-4c0a-9818-4fd1df190cf4"),
-        // ),
+     
         BlocProvider(
           create: (context) => PetInfoCubit(getIt<PetProfileUsecase>()),
         ),
@@ -59,7 +55,9 @@ class BookingHotel extends StatelessWidget {
         builder: (context) {
           return Scaffold(
             appBar: AppBar(
-              title: Text("Booking Details", style: context.body1.copyWith(color: context.primary300),
+              title: Text(
+                "Booking Details",
+                style: context.body1.copyWith(color: context.primary300),
               ),
               centerTitle: true,
             ),
@@ -73,11 +71,13 @@ class BookingHotel extends StatelessWidget {
                       listener: (context, state) {
                         if (state is ProfileLoaded) {
                           context.read<PetInfoCubit>().getPets(state.user.id);
-                        }},
+                        }
+                      },
                       child: BlocBuilder<ProfileCubit, ProfileState>(
                         builder: (context, state) {
                           if (state is ProfileLoading) {
-                            return Center(child: CircularProgressIndicator());}
+                            return Center(child: CircularProgressIndicator());
+                          }
                           if (state is ProfileLoaded) {
                             final user = state.user;
                             return Column(
@@ -87,7 +87,8 @@ class BookingHotel extends StatelessWidget {
                                 SizedBox(height: 10.h),
                                 Text("Email: ${user.email}"),
                               ],
-                            );}
+                            );
+                          }
                           return Container();
                         },
                       ),
@@ -115,9 +116,13 @@ class BookingHotel extends StatelessWidget {
                                         isSelected: selected.contains(pet.id),
                                         onTap: () {
                                           if (selected.contains(pet.id)) {
-                                            selectedPets.value = List.from(selected)..remove(pet.id);
+                                            selectedPets.value = List.from(
+                                              selected,
+                                            )..remove(pet.id);
                                           } else {
-                                            selectedPets.value = List.from(selected)..add(pet.id);
+                                            selectedPets.value = List.from(
+                                              selected,
+                                            )..add(pet.id);
                                           }
                                         },
                                       );
@@ -129,20 +134,30 @@ class BookingHotel extends StatelessWidget {
                           );
                         }
                         return Container();
-                      },),
+                      },
+                    ),
                     SizedBox(height: 16.h),
-                    Text("Service : ", style: TextStyle(
-                        fontSize: 16.sp, fontWeight: FontWeight.bold)),
+                    Text(
+                      "Service : ",
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     Row(
                       children: [
                         Text(hotel.itemName),
                         SizedBox(width: 20.w),
                         Text("${hotel.price} SAR"),
-                      ],),
+                      ],
+                    ),
                     SizedBox(height: 20.h),
-                    Text("Check-in Date",
+                    Text(
+                      "Check-in Date",
                       style: TextStyle(
-                          fontSize: 16.sp, fontWeight: FontWeight.bold),
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     SizedBox(height: 8.h),
                     ValueListenableBuilder<DateTime?>(
@@ -162,11 +177,16 @@ class BookingHotel extends StatelessWidget {
                             }
                           },
                         );
-                      },),
+                      },
+                    ),
                     SizedBox(height: 20.h),
                     Text(
-                      "Check-out Date", style: TextStyle(
-                          fontSize: 16.sp, fontWeight: FontWeight.bold),),
+                      "Check-out Date",
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     SizedBox(height: 11.h),
                     ValueListenableBuilder<DateTime?>(
                       valueListenable: checkOut,
@@ -180,8 +200,15 @@ class BookingHotel extends StatelessWidget {
                             if (date != null) {
                               if (checkInDate != null &&
                                   date.isBefore(checkInDate)) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("Check-out must be after check-in"),),);
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        "Check-out must be after check-in",
+                                      ),
+                                    ),
+                                  );
+                                }
                                 return;
                               }
                               checkOut.value = date;
@@ -198,19 +225,26 @@ class BookingHotel extends StatelessWidget {
                         final profileState = context.read<ProfileCubit>().state;
                         if (profileState is! ProfileLoaded) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('User data is not loaded yet')),
+                            SnackBar(
+                              content: Text('User data is not loaded yet'),
+                            ),
                           );
                           return;
                         }
                         if (selectedPets.value.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Please select at least one pet')),
+                            SnackBar(
+                              content: Text('Please select at least one pet'),
+                            ),
                           );
                           return;
                         }
                         if (checkIn.value == null) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Please select check-in date')),);
+                            SnackBar(
+                              content: Text('Please select check-in date'),
+                            ),
+                          );
                           return;
                         }
                         final bookingCubit = context.read<BookingHotelCubit>();
@@ -230,29 +264,47 @@ class BookingHotel extends StatelessWidget {
                           );
                           await bookingCubit.createBooking(booking);
                         }
-                        final state = bookingCubit.state;                        // استماع للنتيجة
+                        final state = bookingCubit.state; // استماع للنتيجة
                         if (state is BookingSuccess) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Booking saved successfully!')),
-                          );
-                          context.push(Routes.confirmandpay, extra:{
-                            'booking':state.booking,
-                            'hotel':hotel,
-                            'selectedPets':selectedPets.value,
-                          });
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Booking saved successfully!'),
+                              ),
+                            );
+                          }
+                          if (context.mounted) {
+                            context.push(
+                              Routes.confirmandpay,
+                              extra: {
+                                'booking': state.booking,
+                                'hotel': hotel,
+                                'selectedPets': selectedPets.value,
+                              },
+                            );
+                          }
                         } else if (state is BookingError) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Booking failed: ${state.message}')),
-                          );
-                        }},
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  'Booking failed: ${state.message}',
+                                ),
+                              ),
+                            );
+                          }
+                        }
+                      },
                       buttonWidth: 366.w,
-                      buttonhight: 58.h,)
-                  ],),
-              ),),);}),);}}
-
-
-
-
-
-
-
+                      buttonhight: 58.h,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}

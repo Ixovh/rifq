@@ -13,7 +13,7 @@ class PetProfileRecordsCubit extends Cubit<PetProfileRecordsState> {
 
   PetProfileRecordsCubit(this.usecase) : super(PetProfileRecordsInitial());
 
-// تحميل السجل الصحي و المواعيد
+  // تحميل السجل الصحي و المواعيد
   Future<void> loadPetData(PetEntity pet) async {
     emit(PetProfileLoading());
     try {
@@ -21,27 +21,26 @@ class PetProfileRecordsCubit extends Cubit<PetProfileRecordsState> {
       final reservationsResult = await usecase.getReservationsByPet(pet.petId);
 
       recordsResult.when((records) {
-          reservationsResult.when(
-                (reservations) {
-                  emit(PetProfileLoaded(
-                petent: pet,
-                healthRecords: records,
-                reservations: reservations,
-              ));
-            }, (err) => emit(PetProfileError(massege: err)),
+        reservationsResult.when((reservations) {
+          emit(
+            PetProfileLoaded(
+              petent: pet,
+              healthRecords: records,
+              reservations: reservations,
+            ),
           );
-        }, (err) => emit(PetProfileError(massege: err)),
-      );
+        }, (err) => emit(PetProfileError(massege: err)));
+      }, (err) => emit(PetProfileError(massege: err)));
     } catch (e) {
       emit(PetProfileError(massege: e.toString()));
     }
   }
 
   //
- //
- //
+  //
+  //
 
-// اضافة سجل صحي للحيوان
+  // اضافة سجل صحي للحيوان
   Future<void> addHealthRecord(HealthRecordEntity record) async {
     final currentState = state;
     if (currentState is! PetProfileLoaded) return;
@@ -51,40 +50,23 @@ class PetProfileRecordsCubit extends Cubit<PetProfileRecordsState> {
     final result = await usecase.addHealthRecord(record);
 
     result.when(
-          (_) {
-        final updatedRecords = List<HealthRecordEntity>.from(currentState.healthRecords)
-          ..add(record);
+      (_) {
+        final updatedRecords = List<HealthRecordEntity>.from(
+          currentState.healthRecords,
+        )..add(record);
 
-        emit(PetProfileLoaded(
-          petent: currentState.petent,
-          healthRecords: updatedRecords,
-          reservations: currentState.reservations,
-        ));
+        emit(
+          PetProfileLoaded(
+            petent: currentState.petent,
+            healthRecords: updatedRecords,
+            reservations: currentState.reservations,
+          ),
+        );
       },
-          (err) {
+      (err) {
         emit(HealthRecordAddError(masseg: "Failed to add record: $err"));
         emit(currentState);
       },
     );
   }
-
-//   Future<void> addHealthRecord(HealthRecordEntity record) async {
-//     emit(AddingHealthRecord());
-//
-//     final result = await usecase.addHealthRecord(record);
-//
-//     result.when(
-//           (_) {
-//         emit(HealthRecordAddedSuccess());
-//         final currentState = state;
-//         if (currentState is PetProfileLoaded) {
-//           loadPetData(currentState.petent);
-//         }
-//         }, (err) {
-//         emit(HealthRecordAddError(masseg: "Failed to add record: $err"));
-//       },
-//     );
-//   }
-
-
 }

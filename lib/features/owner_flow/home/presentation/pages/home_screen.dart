@@ -1,10 +1,7 @@
-// lib/features/owner_flow/home/presentation/pages/home_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:rifq/core/common/widgets/appbar/custom_app_bar.dart';
 import 'package:rifq/core/common/widgets/guest_card/guest_card_widget.dart';
 import 'package:rifq/core/routes/base_routes.dart';
@@ -14,7 +11,6 @@ import 'package:rifq/features/owner_flow/home/presentation/cubit/home_cubit.dart
 import 'package:rifq/features/owner_flow/home/presentation/widgets/add_pet_circle_widget.dart';
 import 'package:rifq/features/owner_flow/home/presentation/widgets/pet_circle_widget.dart';
 import 'package:rifq/features/owner_flow/home/presentation/widgets/quick_service_widget.dart';
-import 'package:rifq/features/owner_flow/home/presentation/widgets/recommendation_card_widget.dart';
 import 'package:rifq/features/owner_flow/home/presentation/widgets/recommendation_carousel_widget.dart';
 import 'package:rifq/features/owner_flow/nav/presentation/cubit/nav_cubit.dart';
 
@@ -113,8 +109,9 @@ class HomeContent extends StatelessWidget {
                           petName: pet.name,
                           imageUrl: pet.photoUrl,
                           onTap: () {
-                            //TODO : navigate to pet profile !!!!!!!!!!!!!!!!
-                            context.push(Routes.healthRecourdpet);
+                            if(context.mounted) {
+                              context.push(Routes.healthRecourdpet);
+                            }
                           },
                         ),
                       );
@@ -126,7 +123,9 @@ class HomeContent extends StatelessWidget {
 
                         if (result == true) {
                           //!!---load pets---
-                          context.read<HomeCubit>().loadHomeData();
+                          if(context.mounted) {
+                            context.read<HomeCubit>().loadHomeData();
+                          }
                         }
                       },
                     ),

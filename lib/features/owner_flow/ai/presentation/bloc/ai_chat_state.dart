@@ -15,11 +15,10 @@ final class AILoaded extends AiChatState {
   final LlmProvider provider;
   final String welcomeMessage;
 
-  AILoaded({required this.provider, required this.welcomeMessage});
+  const AILoaded({required this.provider, required this.welcomeMessage});
 }
 
 final class AIError extends AiChatState {
   final String message;
-
-  AIError(this.message);
+  const AIError(this.message);
 }

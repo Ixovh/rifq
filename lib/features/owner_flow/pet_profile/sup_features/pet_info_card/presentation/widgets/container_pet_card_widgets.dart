@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,21 +8,9 @@ import '../../domain/entity/pet_entity.dart';
 
 class ContainerPetCardWidgets extends StatelessWidget {
   final PetProfileEntity pet;
-
-  // final String petName;
-  // final String gender;
-  // final String age;
-  // final String breed;
-  // final String photo;
-
   const ContainerPetCardWidgets({
     super.key,
     required this.pet,
-    // required this.petName,
-    // required this.gender,
-    // required this.age,
-    // required this.breed,
-    // required this.photo,
   });
 
   @override
@@ -60,10 +47,6 @@ class ContainerPetCardWidgets extends StatelessWidget {
                 icon: Icon(Icons.edit_outlined),
               ),
 
-              // IconButton(onPressed: (){
-              //   context.push(Routes.editpetprofile);
-              //   },
-              //     icon: Icon(Icons.edit_outlined, color: AppColors.neutral900))
             ],
           ),
 
@@ -103,25 +86,7 @@ class ContainerPetCardWidgets extends StatelessWidget {
                   },
                   icon: Icon(Icons.arrow_forward),
                 ),
-                // IconButton(onPressed: (){
 
-                //   final petEntity=pet.toPetEntity(
-                //     healthRecords: [],
-                //     reservations: [],
-                //   );
-                //   context.push(Routes.healthRecourdpet,extra: petEntity);
-                // },
-                //     icon: Icon(Icons.arrow_forward_ios,size: 20.r,))
-                // IconButton(onPressed: (){
-
-                //   final petEntity=pet.toPetEntity(
-                //     healthRecords: [],
-                //     reservations: [],
-                //   );
-                //   context.push(Routes.healthRecourdpet,extra: petEntity);
-                //
-                // },
-                //     icon: Icon(Icons.arrow_forward_ios,size: 20.r,))
               ],
             ),
           ),

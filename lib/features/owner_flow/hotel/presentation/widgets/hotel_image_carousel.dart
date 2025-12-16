@@ -1,5 +1,4 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -38,7 +37,7 @@ class HotelImagesCarousel extends StatelessWidget {
         const SizedBox(height: 12),
         ValueListenableBuilder(
           valueListenable: currentIndex,
-          builder: (_, value, __) {
+          builder: (_, value, _) {
             return AnimatedSmoothIndicator(
               activeIndex: value,
               count: images.length,

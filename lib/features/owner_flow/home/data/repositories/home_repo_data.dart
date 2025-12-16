@@ -7,7 +7,7 @@ import 'package:rifq/features/owner_flow/home/domain/repositories/home_repo_doma
 import '../datasources/home_data_source.dart';
 
 @LazySingleton(as: HomeRepoDomain)
-class HomeRepoImpl implements HomeRepoDomain{
+class HomeRepoImpl implements HomeRepoDomain {
   final BaseHomeDataSource dataSource;
 
   HomeRepoImpl(this.dataSource);
@@ -16,11 +16,9 @@ class HomeRepoImpl implements HomeRepoDomain{
   Future<Result<HomeDataEntity, String>> getHomeData() async {
     try {
       //!!-----------guest check-----------
-      final isGuest = await AuthHelper.isGuestUser();
+      final isGuest = AuthHelper.isGuestUser();
       if (isGuest) {
-        return Success(
-           HomeDataEntity(username: "Guest", pets: []),
-        );
+        return Success(HomeDataEntity(username: "Guest", pets: []));
       }
 
       //!!----------profile-----------
@@ -35,10 +33,7 @@ class HomeRepoImpl implements HomeRepoDomain{
       //!!-----------pets-----------
       final pets = await dataSource.fetchUserPets(ownerId);
 
-      return Success(HomeDataEntity(
-        username: username,
-        pets: pets,
-      ));
+      return Success(HomeDataEntity(username: username, pets: pets));
     } catch (e) {
       return Error(e.toString());
     }

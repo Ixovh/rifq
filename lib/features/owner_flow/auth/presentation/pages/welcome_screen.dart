@@ -19,7 +19,7 @@ class WelcomeScreen extends StatelessWidget {
       create: (context) => AuthCubit(GetIt.I.get<AuthUseCase>()),
       child: Builder(
         builder: (context) {
-          final cubit = context.read<AuthCubit>();
+          final _ = context.read<AuthCubit>();
 
           return BlocListener<AuthCubit, AuthState>(
             listener: (context, state) {
@@ -39,7 +39,6 @@ class WelcomeScreen extends StatelessWidget {
                   break;
 
                 case AuthLoadingState _:
-                  // Center(child: CircularProgressIndicator());
                   break;
               }
             },
@@ -99,7 +98,6 @@ class WelcomeScreen extends StatelessWidget {
                             SizedBox(height: 18.h),
                             ContainerButton(
                               onTap: ()  {
-                                // await cubit.anonymousUser();
                                   context.go(Routes.navbar);
                               },
                               label: 'Continue as Guest',

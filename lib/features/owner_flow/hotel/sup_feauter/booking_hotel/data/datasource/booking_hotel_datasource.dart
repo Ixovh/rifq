@@ -5,13 +5,14 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../../../../core/shared/shared_in_owner_flow/shared/models/reservation_model.dart';
 import '../../../../../pet_profile/sup_features/pet_info_card/data/model/pet_profile_model.dart';
 
-
-abstract class BaseBookingHotelDataSource{
-  Future<Result<ReservationModel, String>> createBooking(ReservationModel booking);
+abstract class BaseBookingHotelDataSource {
+  Future<Result<ReservationModel, String>> createBooking(
+    ReservationModel booking,
+  );
 
   Future<Result<ReservationModel, String>> getBookingById(String id);
 
-  Future<Result<List<PetProfileModel>,String>> getPetForUser(String userId);
+  Future<Result<List<PetProfileModel>, String>> getPetForUser(String userId);
 }
 
 @LazySingleton(as: BaseBookingHotelDataSource)
@@ -19,21 +20,25 @@ class BookingHotelDatasource implements BaseBookingHotelDataSource {
   final SupabaseClient supabase;
   BookingHotelDatasource(this.supabase);
   @override
-  Future<Result<ReservationModel, String>> createBooking(ReservationModel booking) async {
+  Future<Result<ReservationModel, String>> createBooking(
+    ReservationModel booking,
+  ) async {
     try {
       final response = await supabase
-          .from('reservations').insert({
-        // 'id': booking.id,
-        'user_id': booking.userId,
-        'provider_id': booking.providerId,
-        'service_item_id': booking.serviceItemId,
-        'pet_id': booking.petId,
-        'start_date': booking.startDate.toIso8601String(),
-        'end_date': booking.endDate!.toIso8601String(),
-        'status': booking.status,
-        'notes': booking.notes,
-        'created_at': booking.createdAt.toIso8601String(),
-      }).select().single();
+          .from('reservations')
+          .insert({
+            'user_id': booking.userId,
+            'provider_id': booking.providerId,
+            'service_item_id': booking.serviceItemId,
+            'pet_id': booking.petId,
+            'start_date': booking.startDate.toIso8601String(),
+            'end_date': booking.endDate!.toIso8601String(),
+            'status': booking.status,
+            'notes': booking.notes,
+            'created_at': booking.createdAt.toIso8601String(),
+          })
+          .select()
+          .single();
 
       final bookingModel = ReservationModelMapper.fromMap(response);
 
@@ -44,7 +49,7 @@ class BookingHotelDatasource implements BaseBookingHotelDataSource {
   }
 
   @override
-  Future<Result<ReservationModel, String>> getBookingById(String id)async {
+  Future<Result<ReservationModel, String>> getBookingById(String id) async {
     try {
       final response = await supabase
           .from('reservations')
@@ -58,39 +63,23 @@ class BookingHotelDatasource implements BaseBookingHotelDataSource {
     }
   }
 
-
   @override
-  Future<Result<List<PetProfileModel>, String>> getPetForUser(String userId) async {
+  Future<Result<List<PetProfileModel>, String>> getPetForUser(
+    String userId,
+  ) async {
     try {
       final response = await supabase
           .from('pet_profile_view')
           .select()
           .eq('owner_id', userId);
       final pets = response
-          .map((e) => PetProfileModelMapper.fromMap(Map<String, dynamic>.from(e)))
+          .map(
+            (e) => PetProfileModelMapper.fromMap(Map<String, dynamic>.from(e)),
+          )
           .toList();
       return Result.success(pets);
     } catch (e) {
-    return Result.error(e.toString());
+      return Result.error(e.toString());
     }
   }
-
-
-// @override
-  // Future<Result<List<PetProfileModel>, String>> getPetForUser(String userId) async {
-  //   try {
-  //     final response = await supabase
-  //         .from('pet_profile_view')
-  //         .select()
-  //         .eq('owner_id', userId);
-  //
-  //     final pets = (response as List)
-  //         .map((e) => PetProfileModelMapper.fromMap(e))
-  //         .toList();
-  //
-  //     return Result.success(pets);
-  //   } catch (e) {
-  //     return Result.error(e.toString());
-  //   }
-  // }
 }

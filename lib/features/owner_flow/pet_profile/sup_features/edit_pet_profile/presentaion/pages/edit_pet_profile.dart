@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,16 +21,11 @@ class EditPetProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    // return BlocProvider(
-    //   create: (context) =>
-    //       EditPetProfileCubit(GetIt.I.get<EditPetProfileUsecase>(),pet: pet
-    //         // supabase: Supabase.instance.client, pet: pet,
-    //       ),
+
     return Scaffold(
         appBar: AppBar(
           surfaceTintColor: Colors.transparent,
-          // leading: IconButton(onPressed: () {},
-          //     icon: Icon(Icons.arrow_back_ios)),
+
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -41,13 +35,14 @@ class EditPetProfileScreen extends StatelessWidget {
                   builder: (context, state) {
                     PetProfileEntity currentPet;
                     bool isLoading = false;
-                    if (state is EditPetProfileInitial) currentPet = state.pet;
-                    else if (state is EditPetProfileLoading) {
+                    if (state is EditPetProfileInitial) {
+                      currentPet = state.pet;
+                    } else if (state is EditPetProfileLoading) {
                       currentPet = state.pet;
                       isLoading = true;
-                    } else if (state is EditPetProfileSuccess) currentPet = state.pet;
-                    else if (state is EditPetProfileError) currentPet = state.pet;
-                    else currentPet = pet;
+                    } else if (state is EditPetProfileSuccess) {currentPet = state.pet;}
+                    else if (state is EditPetProfileError) {currentPet = state.pet;}
+                    else {currentPet = pet;}
                     return Stack(
                       children: [
                         CircleAvatar(

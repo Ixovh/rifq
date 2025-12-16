@@ -242,7 +242,7 @@ Widget build(BuildContext context) {
                     userId: Supabase.instance.client.auth.currentUser!.id,
                     providerId: entity.providerId,
                     serviceItemId: entity.itemId,
-                    petId: petIds.first, //TODO: SHOULD ALLOW TO SELECT ALL PETS
+                    petId: petIds.first, //SHOULD ALLOW TO SELECT ALL PETS
                     startDate: date,
                     time: time,
                     status: 'pending',

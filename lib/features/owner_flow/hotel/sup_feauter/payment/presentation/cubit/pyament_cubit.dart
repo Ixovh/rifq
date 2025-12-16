@@ -41,10 +41,7 @@ class PyamentCubit extends Cubit<PyamentState> {
         },
       );
 
-      // result.when(
-      //       (success) => emit(PaymentSuccess()),
-      //       (error) => emit(PaymentError(message: error.toString())),
-      // );
+    
     } catch (e) {
       emit(PaymentError( message: 'Unexpected error: $e'));
     }

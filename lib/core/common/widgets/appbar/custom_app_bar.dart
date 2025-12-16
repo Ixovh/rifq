@@ -31,16 +31,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   onPressed: () async {
                     final userId = await getUserId();
                     if (userId != null) {
-                      context.push(Routes.profile, extra: userId);
+                      if (context.mounted) {
+                        context.push(Routes.profile, extra: userId);
+                      }
                     }
                   },
                 ),
-
-            // CircleAvatar(
-            //   radius: 24.r,
-            //   backgroundColor: Colors.white,
-            //   child: Icon(Icons.settings, color: Colors.teal),
-            // ),
             Text(
               title,
               style: TextStyle(

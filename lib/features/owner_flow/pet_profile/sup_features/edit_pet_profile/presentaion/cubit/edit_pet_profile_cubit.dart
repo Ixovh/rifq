@@ -9,13 +9,12 @@ import '../../domain/usecase/edit_pet_profile_usecase.dart';
 
 part 'edit_pet_profile_state.dart';
 
-
 class EditPetProfileCubit extends Cubit<EditPetProfileState> {
   final EditPetProfileUsecase usecase;
-   PetProfileEntity pet;
+  PetProfileEntity pet;
   final SupabaseClient supabase = Supabase.instance.client;
-  EditPetProfileCubit(this.usecase, {required this.pet,})
-      : super(EditPetProfileInitial(pet: pet));
+  EditPetProfileCubit(this.usecase, {required this.pet})
+    : super(EditPetProfileInitial(pet: pet));
 
   Future<void> updatePet({String? newName, String? newPhotoUrl}) async {
     emit(EditPetProfileLoading(pet: pet));
@@ -26,9 +25,13 @@ class EditPetProfileCubit extends Cubit<EditPetProfileState> {
           ? newPhotoUrl
           : state.pet.photoUrl;
 
-      final result = await usecase.updatePetProfile(pet.id, updatedName, updatedPhoto);
+      final result = await usecase.updatePetProfile(
+        pet.id,
+        updatedName,
+        updatedPhoto,
+      );
       result.when(
-            (success) {
+        (success) {
           final data = success;
           final updatedPet = PetProfileEntity(
             id: pet.id,
@@ -43,7 +46,8 @@ class EditPetProfileCubit extends Cubit<EditPetProfileState> {
           );
           pet = updatedPet;
           emit(EditPetProfileSuccess(pet: updatedPet));
-        }, (error) {
+        },
+        (error) {
           emit(EditPetProfileError(pet: state.pet, message: error.toString()));
         },
       );
@@ -63,26 +67,19 @@ class EditPetProfileCubit extends Cubit<EditPetProfileState> {
       final Uint8List fileBytes = await File(pickedFile.path).readAsBytes();
       final fileName =
           'pets/${pet.id}_${DateTime.now().millisecondsSinceEpoch}.jpg';
-      await supabase.storage.from('pets').uploadBinary(
-        fileName,
-        fileBytes,
-        fileOptions: const FileOptions(upsert: true),
-      );
+      await supabase.storage
+          .from('pets')
+          .uploadBinary(
+            fileName,
+            fileBytes,
+            fileOptions: const FileOptions(upsert: true),
+          );
       // الرابط
       final publicUrl = supabase.storage.from('pets').getPublicUrl(fileName);
       return publicUrl;
-
-      // await updatePet(newPhotoUrl: publicUrl);
-
     } catch (e) {
       emit(EditPetProfileError(pet: pet, message: e.toString()));
       return null;
     }
   }
-
 }
-
-
-
-
-

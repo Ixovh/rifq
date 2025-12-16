@@ -89,24 +89,5 @@ class PaymentDatasource implements BaseDtaSourcePayment {
     }
   }
 
-  // @override
-  // Future<Result<void, String>> addPayment(PaymentEntity payment)async {
-  //   final response = await supabase.from('payments').insert({
-  //     'id': payment.id,
-  //     'user_id': payment.userId,
-  //     'context': payment.context,
-  //     'context_id': payment.contextId,
-  //     'amount': payment.amount,
-  //     'status': payment.status.name.toLowerCase(),
-  //     'created_at': payment.createdAt.toIso8601String(),
-  //   });
-  //
-  //   if (response.error != null) {
-  //     return Error("Supabase insert error: ${response.error!.message}");
-  //   } else {
-  //     return Success(null);
-  //   }
-  //
-  //
-  // }
+  
 }

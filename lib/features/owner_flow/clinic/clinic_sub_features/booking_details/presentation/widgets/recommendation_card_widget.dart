@@ -37,12 +37,7 @@ class RecommendationCard extends StatelessWidget {
               ),
               ),
 
-              // child: Image.asset(
-              //   'assets/images/modern_clinic.png',
-              //   height: double.infinity,
-              //   fit: BoxFit.cover,
-              // ),
-
+           
             ),
           ),
 

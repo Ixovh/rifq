@@ -1,8 +1,5 @@
 import 'package:injectable/injectable.dart';
 import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_health_record/domain/entity/health_record_entity.dart';
-
-import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_health_record/domain/entity/reservation_entity.dart';
-
 import '../../domain/repositories/pet_profile_records_repo.dart';
 import '../datasourse/pet_prifile_record_data.dart';
 import '../model/health_record_model.dart';

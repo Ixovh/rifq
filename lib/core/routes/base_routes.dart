@@ -35,7 +35,7 @@ import 'package:rifq/features/owner_flow/hotel/presentation/pages/hotel_details_
 import 'package:rifq/features/owner_flow/clinic/presentation/pages/clinic_screen.dart';
 import 'package:rifq/features/owner_flow/hotel/presentation/pages/hotel_home_screen.dart';
 import 'package:rifq/features/owner_flow/hotel/sup_feauter/booking_hotel/presentation/pages/booking_hotel.dart';
-import 'package:rifq/features/owner_flow/hotel/sup_feauter/payment/presentation/pages/confirm_and_pay_Screen.dart';
+import 'package:rifq/features/owner_flow/hotel/sup_feauter/payment/presentation/pages/confirm_and_pay_screen.dart';
 import 'package:rifq/features/owner_flow/hotel/sup_feauter/payment/presentation/pages/payment_screen.dart';
 import 'package:rifq/features/owner_flow/hotel/sup_feauter/payment/presentation/pages/payment_succesfull.dart';
 import 'package:rifq/features/owner_flow/nav/presentation/cubit/nav_cubit.dart';
@@ -46,7 +46,7 @@ import 'package:rifq/features/owner_flow/pet_profile/sup_features/edit_pet_profi
 import 'package:rifq/features/owner_flow/pet_profile/sup_features/edit_pet_profile/presentaion/pages/edit_pet_profile.dart';
 import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_info_card/domain/entity/pet_entity.dart';
 import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_health_record/domain/entity/pet_profile_records_entity.dart';
-import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_health_record/presentaion/pages/PetProfile_HealthAppointment_Screen.dart';
+import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_health_record/presentaion/pages/pet_profile_health_appointment_Screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/cubit/profile_cubit.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/edit_profile_screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/profile_screen.dart';
@@ -92,17 +92,14 @@ abstract class Routes {
   static String selectPetForAdoption = '/selectPetForAdoption';
   static String seeRequests = '/seeRequests';
   static String petDetails = '/petDetails';
-
   static String hotel = '/HotelHome';
   static String detailsHotel = '/DetailsHotel';
   static String bookingHotel = '/BookingHotel';
   static String healthRecourdpet = '/HealthRecourdpet';
-
   static String clinicDetails = '/clinicDetails';
   static const bookAppointment = '/book-appointment';
   static const bookingDetails = '/bookingDetails';
   static const bookingConfirmed = '/bookingConfirmed';
-
   static String confirmandpay = '/confirmandpay';
   static String paymentscreen = '/paymentScreen';
   static String successfullpay = '/successfullpay';
@@ -151,6 +148,7 @@ abstract class Routes {
           return AuthScreen();
         },
       ),
+
 
       //------//
       //------//
@@ -363,7 +361,6 @@ abstract class Routes {
         path: Routes.bookAppointment,
         builder: (context, state) {
           final entity = state.extra as ProviderItemsViewEntity;
-
           return BookAppointmentScreen(entity: entity);
         },
       ),

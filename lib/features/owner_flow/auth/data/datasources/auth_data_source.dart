@@ -39,15 +39,13 @@ abstract class BaseAuthDataSource {
 @LazySingleton(as: BaseAuthDataSource)
 class SubaBaseDataSource implements BaseAuthDataSource {
   final SupabaseClient _supabase;
-  final GetStorage _box;
+
   String? email;
 
   SubaBaseDataSource({
     required SupabaseClient supabase,
     required GetStorage box,
-    // this.email,
-  }) : _supabase = supabase,
-       _box = box;
+  }) : _supabase = supabase;
 
   @override
   Future<Result<Null, Object>> signUp({

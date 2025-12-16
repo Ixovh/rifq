@@ -16,7 +16,6 @@ class HotelDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // context.read<HotelCubit>().fetchHotelById(hotel.id);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -45,7 +44,6 @@ class HotelDetailsScreen extends StatelessWidget {
           if (state is HotelDetailLoaded) {
             final hotelItems=state.hotelItems;
             final hotelDetails=hotelItems.first;
-            // final hotelDetails = state.hotel; // ProviderItemsViewEntity
             return DefaultTabController(
               length: 2,
               child: Column(
@@ -88,7 +86,6 @@ class HotelDetailsScreen extends StatelessWidget {
                     child: TabBarView(
                       children: [
                         RoomsTabContent(hotelItems: hotelItems,),
-                        // RoomsTabContent(hotel: hotelDetails),
                         HotelInfoTabContent(hotel: hotelDetails),
                       ],
                     ),

@@ -14,9 +14,6 @@ class HotelUsecase {
     final hotelresult=await hotelDomain.getAllHotel();
     return hotelresult;
   }
-  //
-  //
-  
 // تفاصيل فندق معين
   Future<Result<List<ProviderItemsViewEntity>, String>> getHotelById(String id)async {
     if (id.isEmpty) {

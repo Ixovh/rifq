@@ -33,7 +33,6 @@ class _ClinicView extends StatelessWidget {
       body: SafeArea(
         child: BlocBuilder<ClinicCubit, ClinicState>(
           builder: (context, state) {
-
             if (state is ClinicLoading) {
               return const Center(child: LottieLoding());
             }
@@ -69,7 +68,7 @@ class _ClinicView extends StatelessWidget {
               return Center(child: Text(state.message));
             }
 
-            return   SizedBox();
+            return SizedBox();
           },
         ),
       ),

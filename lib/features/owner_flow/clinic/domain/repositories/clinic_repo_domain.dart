@@ -10,7 +10,5 @@ abstract class ClinicRepoDomain {
 
   Future<Result<List<ProviderEntity>, String>> searchClinics(String query);
 
-  // Future<Result<List<ProviderItemsViewEntity>, String>> getClinicDetails(String providerId);
-
    Future<Result<List<PetModel>, String>> getUserPets(String ownerId);
 }

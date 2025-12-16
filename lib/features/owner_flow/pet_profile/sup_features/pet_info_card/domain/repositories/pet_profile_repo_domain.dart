@@ -7,6 +7,5 @@ abstract class PetProfileRepoDomain {
 
   Future<PetProfileEntity> getPetById(String petId);// عشان ادخل على تفاصيل كل حيوان
 
-  // Future<PetProfileEntity> updatePetProfile(PetProfileEntity  petId);
 
 }

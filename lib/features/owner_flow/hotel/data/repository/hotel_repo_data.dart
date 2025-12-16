@@ -36,10 +36,5 @@ class HotelRepoData implements HotelRepoDomain {
     );
   }
 
-  // @override
-  // Future<Result<List<ProviderItemsViewModel>, String>> getHotelById(String id) async {
-  //   final result = await dataHotel.getHotelById(id);
-  //   return result;
-  // }
 
 }

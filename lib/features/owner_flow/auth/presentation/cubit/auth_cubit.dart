@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:rifq/core/routes/base_routes.dart';
 import 'package:rifq/core/utils/Exception/custom_exception.dart';
 import 'package:rifq/features/owner_flow/auth/domain/usecases/auth_use_case.dart';
 
@@ -97,32 +96,6 @@ class AuthCubit extends Cubit<AuthState> {
       },
     );
   }
-
-  //
-  //
-  //
-
-  // Future anonymousUser() async {
-  //   emit(AuthLoadingState());
-
-  //   (await _authUseCase.anonymousUser()).when(
-  //     (whenSuccess) {
-  //       emit(AuthAnonymousSuccessState());
-  //       // context.go(Routes.home);
-  //     },
-  //     (whenError) {
-  //       emit(
-  //         AuthErrorState(
-  //           msg: CatchErrorMessage(error: whenError).getWriteMessage(),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-
-  //
-  //
-  //
 
   Future logOut() async {
     emit(AuthLoadingState());

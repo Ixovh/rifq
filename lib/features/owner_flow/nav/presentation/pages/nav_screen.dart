@@ -20,12 +20,10 @@ class NavScreen extends StatelessWidget {
               resizeToAvoidBottomInset: true, //عشان يثبت زر الai
               backgroundColor: context.background,
 
-
-
               floatingActionButton: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                   SizedBox(width: 16),
+                  SizedBox(width: 16),
                   FloatingActionButton(
                     elevation: 4,
                     shape: const CircleBorder(),
@@ -39,8 +37,7 @@ class NavScreen extends StatelessWidget {
                       height: 24,
                     ),
                   ),
-                  // SizedBox(width: 16),
-                   SizedBox(height: 6),
+                  SizedBox(height: 6),
                   Text(
                     'Ask AI',
                     style: context.body3.copyWith(
@@ -83,7 +80,7 @@ class NavScreen extends StatelessWidget {
                       height: 24,
                     ),
                   ),
-                  
+
                   BottomNavigationBarItem(
                     label: "Health",
                     icon: Image.asset(
@@ -115,7 +112,6 @@ class NavScreen extends StatelessWidget {
               ),
 
               body: cubit.screens[cubit.currentIndex],
-              // backgroundColor: context.background,
             );
           },
         );

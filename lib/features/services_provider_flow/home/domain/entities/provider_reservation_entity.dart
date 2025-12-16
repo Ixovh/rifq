@@ -5,14 +5,14 @@ class ProviderReservationEntity {
   final String userId;
   final String petId;
   final String providerId;
-  final String serviceItemId; // Changed from serviceId to serviceItemId
-  final String? notes; // Changed from note to notes
-  final String status; // Changed from ReservationStatus enum to String
-  final DateTime? startDate; // Used for boarding
-  final DateTime? endDate; // Used for boarding
-  final String? time; // Time field from schema
-  final DateTime? createdAt; // Created at timestamp
-  final AddPetEntity? pet; // Pet details
+  final String serviceItemId;
+  final String? notes;
+  final String status;
+  final DateTime? startDate;
+  final DateTime? endDate;
+  final String? time;
+  final DateTime? createdAt;
+  final AddPetEntity? pet;
 
   const ProviderReservationEntity({
     required this.id,

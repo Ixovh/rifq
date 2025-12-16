@@ -1,8 +1,5 @@
 import 'package:injectable/injectable.dart';
-import 'package:multiple_result/src/result.dart';
-
-
-
+import 'package:multiple_result/multiple_result.dart';
 import '../../../../../../../core/shared/shared_in_owner_flow/shared/entities/reservation_opt_entity.dart';
 import '../../../../../../../core/shared/shared_in_owner_flow/shared/models/reservation_model.dart';
 import '../../../../../pet_profile/sup_features/pet_info_card/domain/entity/pet_entity.dart';

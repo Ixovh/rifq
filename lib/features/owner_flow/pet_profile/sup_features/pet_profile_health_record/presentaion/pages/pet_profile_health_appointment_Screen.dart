@@ -1,3 +1,4 @@
+// ignore_for_file: file_names
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,7 +8,6 @@ import 'package:rifq/core/theme/app_theme.dart';
 import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_health_record/domain/entity/pet_profile_records_entity.dart';
 import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_health_record/domain/usecase/health_record_usecase.dart';
 import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_health_record/presentaion/cubit/pet_profile_records_cubit.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import '../../../../../../../core/routes/base_routes.dart';
 import '../widgets/appointment_content.dart';
 import '../widgets/cstoum_tab_bar.dart';
@@ -57,7 +57,6 @@ class PetHealthAndAppointmentScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text("${DateTime.now().year - state.petent.petBirthdate.year} years"),
-                      // Text(state.petent.petSpecies),
                       SizedBox(width: 5.w),
                       Text(state.petent.petGender),
                     ],),

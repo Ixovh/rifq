@@ -1,12 +1,8 @@
 import 'dart:convert';
-
 import 'package:injectable/injectable.dart';
-import 'package:rifq/core/shared/shared_in_owner_flow/shared/models/provider_items_view_model.dart';
-import 'package:rifq/core/shared/shared_in_owner_flow/shared/models/provider_model.dart';
 import 'package:rifq/core/shared/shared_in_owner_flow/shared_auth/helpers/auth_helper.dart';
 import 'package:rifq/features/owner_flow/add_pet/data/models/pet_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:multiple_result/multiple_result.dart';
 
 abstract class BaseHomeDataSource {
   Future<Map<String, dynamic>?> fetchUserProfile();

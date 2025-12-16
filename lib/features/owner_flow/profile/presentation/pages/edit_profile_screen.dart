@@ -7,6 +7,8 @@ import '../cubit/profile_cubit.dart';
 
 class EditProfileScreen extends StatelessWidget {
   final _formkey = GlobalKey<FormState>();
+
+  EditProfileScreen({super.key});
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<ProfileCubit>();

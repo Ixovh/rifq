@@ -7,35 +7,18 @@ part 'health_record_model.mapper.dart';
 
 @MappableClass()
 @MappableClass()
-class HealthRecordModel extends HealthRecordEntity with HealthRecordModelMappable {
+class HealthRecordModel extends HealthRecordEntity
+    with HealthRecordModelMappable {
   HealthRecordModel({
     required super.id,
-    @MappableField(key: 'pet_id')required super.petId,
+    @MappableField(key: 'pet_id') required super.petId,
     required super.type,
-     super.title,
-     super.description,
-     super.date,
-    @MappableField(key: 'clinic_name') super.clinicName
+    super.title,
+    super.description,
+    super.date,
+    @MappableField(key: 'clinic_name') super.clinicName,
   });
 
-  /// fromMapا
-  // factory HealthRecordModel.fromMap(Map<String, dynamic> map) {
-  //   return HealthRecordModel(
-  //     id: map['id'],
-  //     petId: map['pet_id'] as String? ?? '',
-  //     // petId: map['pet_id'],
-  //     // type: map['type'],
-  //     type: map['type'] as String,
-  //
-  //     title: map['title']as String?,
-  //     description: map['description'] as String?,
-  //     // date: DateTime.parse(map['date']),
-  //     date: map['date'] != null
-  //         ? DateTime.parse(map['date'] as String)
-  //         : DateTime.now(),
-  //     clinicName: map['clinic_name'] as String?,
-  //   );
-  // }
   factory HealthRecordModel.fromMap(Map<String, dynamic> map) {
     return HealthRecordModel(
       id: map['id'] as String? ?? '',
@@ -43,9 +26,7 @@ class HealthRecordModel extends HealthRecordEntity with HealthRecordModelMappabl
       type: map['type'] as String? ?? '',
       title: map['title'] as String?,
       description: map['description'] as String?,
-      date: map['date'] != null
-          ? DateTime.parse(map['date'] as String)
-          : null,
+      date: map['date'] != null ? DateTime.parse(map['date'] as String) : null,
       clinicName: map['clinic_name'] as String?,
     );
   }
@@ -62,8 +43,3 @@ class HealthRecordModel extends HealthRecordEntity with HealthRecordModelMappabl
     );
   }
 }
-
-
-
-
-

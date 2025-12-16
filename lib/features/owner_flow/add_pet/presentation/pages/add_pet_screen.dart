@@ -209,21 +209,24 @@ class AddPetScreen extends StatelessWidget {
                         final ownerId = await getOwnerId();
 
                         if (ownerId == null) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("User profile not found")),
-                          );
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("User profile not found")),
+                            );
+                          }
                           return;
                         }
-
-                        context.read<AddPetCubit>().addPet(
-                          ownerId: ownerId,
-                          name: nameCtrl.text,
-                          species: form.species,
-                          gender: form.gender,
-                          breed: breedCtrl.text,
-                          birthdate: form.birthdate!,
-                          photoFile: form.photoFile!,
-                        );
+                        if (context.mounted) {
+                          context.read<AddPetCubit>().addPet(
+                            ownerId: ownerId,
+                            name: nameCtrl.text,
+                            species: form.species,
+                            gender: form.gender,
+                            breed: breedCtrl.text,
+                            birthdate: form.birthdate!,
+                            photoFile: form.photoFile!,
+                          );
+                        }
                       },
                       buttonWidth: 366,
                       buttonhight: 58,

@@ -80,7 +80,7 @@ class _BookAppointmentView extends StatelessWidget {
                     children: state.pets.map((pet) {
                       return ValueListenableBuilder<List<String>>(
                         valueListenable: selectedPets,
-                        builder: (_, selectedList, __) {
+                        builder: (_, selectedList, _) {
                           final isSelected = selectedList.contains(pet.id);
 
                           return GestureDetector(
@@ -108,16 +108,8 @@ class _BookAppointmentView extends StatelessWidget {
                                   child: CircleAvatar(
                                     radius: 30,
                                     backgroundImage: NetworkImage(pet.photoUrl),
+                                    child: null,
                                   ),
-                                  // child: CircleAvatar(
-                                  //   radius: 30,
-                                  //   backgroundImage: pet.photoUrl != null
-                                  //       ? NetworkImage(pet.photoUrl!)
-                                  //       : null,
-                                  //   child: pet.photoUrl == null
-                                  //       ? const Icon(Icons.pets)
-                                  //       : null,
-                                  // ),
                                 ),
                                 const SizedBox(height: 6),
                                 Text(

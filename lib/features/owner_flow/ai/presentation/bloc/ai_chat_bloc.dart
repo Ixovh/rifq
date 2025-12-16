@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_ai_toolkit/flutter_ai_toolkit.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:rifq/features/owner_flow/ai/domain/usecases/ai_message_usecase.dart';
-
 part 'ai_chat_event.dart';
 part 'ai_chat_state.dart';
 

@@ -15,17 +15,19 @@ import '../../../pet_profile/sup_features/pet_info_card/presentation/widgets/con
 import '../widgets/listtiel/list_tiel_widgets.dart';
 
 class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final userId = AuthHelper.getUserId();
     return BlocProvider(
       create: (context) {
-         final cubit = ProfileCubit(getIt<UserProfileUsecase>());
-    if (userId != null) {
-      cubit.getUserProfile(userId);
-    }
-    return cubit;
-  },
+        final cubit = ProfileCubit(getIt<UserProfileUsecase>());
+        if (userId != null) {
+          cubit.getUserProfile(userId);
+        }
+        return cubit;
+      },
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -41,10 +43,9 @@ class ProfileScreen extends StatelessWidget {
         ),
         body: BlocListener<ProfileCubit, ProfileState>(
           listener: (context, state) {
-           if(state is ProfileUpdated){
-             context.read<ProfileCubit>().getUserProfile(userId!);
-
-           }
+            if (state is ProfileUpdated) {
+              context.read<ProfileCubit>().getUserProfile(userId!);
+            }
           },
           child: BlocBuilder<ProfileCubit, ProfileState>(
             builder: (context, state) {
@@ -83,16 +84,20 @@ class ProfileScreen extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 20.sp,
                               fontWeight: FontWeight.w600,
-                            ),),
+                            ),
+                          ),
                           SizedBox(width: 6.w),
                           IconButton(
                             onPressed: () {
-                              context.push(Routes.editprofile,
-                                  extra: context.read<ProfileCubit>());
+                              context.push(
+                                Routes.editprofile,
+                                extra: context.read<ProfileCubit>(),
+                              );
                             },
                             icon: Icon(Icons.edit_outlined),
-                          )
-                        ],),
+                          ),
+                        ],
+                      ),
                       SizedBox(height: 18.h),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,74 +118,57 @@ class ProfileScreen extends StatelessWidget {
                               hintText: user?.name ?? "Name",
                             ),
                           ),
-                        ],),
+                        ],
+                      ),
                       SizedBox(height: 32.h),
                       user == null
                           ? Center(child: CircularProgressIndicator())
                           : SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: BlocProvider(
-                          create: (context) =>
-                          PetInfoCubit(getIt<PetProfileUsecase>())
-                            ..getPets(user!.id),
-                          child: BlocBuilder<PetInfoCubit, PetInfoState>(
-                            builder: (context, state) {
-                              if (state is PetLoading) {
-                                return Center(
-                                    child: CircularProgressIndicator());
-                              }
-                              if (state is PetLoaded) {
-                                return Row(
-                                  children: state.pets
-                                      .map((pet) =>
-                                      ContainerPetCardWidgets(
-                                        pet: pet,
-                                      ))
-                                      .toList(),
-                                );
-                              }
-                              if (state is PetError) {
-                                return Text(state.msg);
-                              }
-                              return Container();
-                            },
-                          ),
-                        ),
-                      ),
-                      // SingleChildScrollView(
-                      //   scrollDirection: Axis.horizontal,
-                      //   child: BlocProvider(
-                      //     create: (context) =>
-                      //     PetInfoCubit(getIt<PetProfileUsecase>())..getPets(user!.id),
-                      //
-                      //     child: BlocBuilder<PetInfoCubit, PetInfoState>(
-                      //       builder: (context, state) {
-                      //         if (state is PetLoading) {
-                      //           return Center(child: CircularProgressIndicator());
-                      //         }
-                      //         if (state is PetLoaded) {
-                      //           return Row(
-                      //             children: state.pets.map((pet) => ContainerPetCardWidgets(
-                      //               pet: pet,
-                      //             )).toList(),
-                      //           );
-                      //         }
-                      //         if (state is PetError) {
-                      //           return Text(state.msg);
-                      //         }
-                      //         return Container();
-                      //       },
-                      //     ),),),
+                              scrollDirection: Axis.horizontal,
+                              child: BlocProvider(
+                                create: (context) =>
+                                    PetInfoCubit(getIt<PetProfileUsecase>())
+                                      ..getPets(user!.id),
+                                child: BlocBuilder<PetInfoCubit, PetInfoState>(
+                                  builder: (context, state) {
+                                    if (state is PetLoading) {
+                                      return Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    }
+                                    if (state is PetLoaded) {
+                                      return Row(
+                                        children: state.pets
+                                            .map(
+                                              (pet) => ContainerPetCardWidgets(
+                                                pet: pet,
+                                              ),
+                                            )
+                                            .toList(),
+                                      );
+                                    }
+                                    if (state is PetError) {
+                                      return Text(state.msg);
+                                    }
+                                    return Container();
+                                  },
+                                ),
+                              ),
+                            ),
+
                       SizedBox(height: 16.h),
                       ListTielWidgets(
                         images: 'assets/images/material.png',
-                        text: 'Security & Privacy',),
+                        text: 'Security & Privacy',
+                      ),
                       SizedBox(height: 13.h),
                       ListTielWidgets(
                         icone: IconButton(
                           onPressed: () {},
-                          icon: Icon(Icons.language, size: 28.r),),
-                        text: 'Language',),
+                          icon: Icon(Icons.language, size: 28.r),
+                        ),
+                        text: 'Language',
+                      ),
                       SizedBox(height: 13.h),
                       ListTielWidgets(
                         icone: IconButton(
@@ -200,4 +188,3 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
-

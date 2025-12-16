@@ -13,6 +13,7 @@ import '../widgets/hotel_search_bar.dart';
 
 
 class HotelHomeScreen extends StatelessWidget {
+  const HotelHomeScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -69,14 +70,7 @@ class HotelHomeScreen extends StatelessWidget {
                               extra: hotel, // فقط الفندق
                             );
                           },
-                          // onTap: ()  {
-                          //   final cubit =context.read<HotelCubit>();
-                          //   cubit.fetchHotelById(hotel.id.toString());
-                          //    context.push(Routes.detailsHotel, extra: {
-                          //     'hotel': hotel,
-                          //     'cubit':cubit ,
-                          //   });
-                          // },
+                        
                         );
                       },
                     );

@@ -8,7 +8,6 @@ part 'provider_reservation_model.mapper.dart';
 @MappableClass()
 class ProviderReservationModel extends ProviderReservationEntity with ProviderReservationModelMappable {
   @MappableField(key: 'user_id')
-  @override
   final String userId;
 
   @MappableField(key: 'pet_id')

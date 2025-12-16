@@ -8,26 +8,12 @@ class EditPetProfileRepo implements EditPetProfileRepoDomain {
   final BaseEditPetProfile dataSource;
 
   EditPetProfileRepo(this.dataSource);
-
+  @override
   Future<Result<Map<String, dynamic>, Object>> updatePetProfile(
-      String id, String name, String imageUrl) async {
+    String id,
+    String name,
+    String imageUrl,
+  ) async {
     return await dataSource.updatePetProfile(id, name, imageUrl);
   }
 }
-
-
-
-
-  // @override
-  // Future<PetProfileModel> updatePetProfile(PetProfileEntity pet)async {
-  //   final petModel = PetProfileModel.fromEntity(pet);
-  //   final updatedModel = await dataSource.updatePetProfile(petModel);
-  //   return updatedModel.toEntity();
-  //
-  // }
-
-
-
-
-
-

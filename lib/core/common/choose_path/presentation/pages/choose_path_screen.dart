@@ -47,7 +47,6 @@ class ChoosePathScreen extends StatelessWidget {
                   style: context.body1.copyWith(color: context.neutral100),
                 ),
 
-                // SizedBox(height: 40.h),
               ],
             ),
 
