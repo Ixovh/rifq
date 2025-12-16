@@ -10,6 +10,7 @@ import '../../../../../core/shared/shared_in_owner_flow/shared/entities/provider
 import '../../../../../core/theme/app_theme.dart';
 import '../widgets/hotel_image_carousel.dart';
 
+
 class HotelDetailsScreen extends StatelessWidget {
   final ProviderEntity hotel;
   const HotelDetailsScreen({super.key, required this.hotel});

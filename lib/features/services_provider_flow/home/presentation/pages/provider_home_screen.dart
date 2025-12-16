@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rifq/core/theme/app_theme.dart';
 import 'package:rifq/features/services_provider_flow/home/presentation/cubit/home_cubit.dart';
 import 'package:rifq/features/services_provider_flow/home/presentation/widgets/reservation_card.dart';
-
+import '../../../../../core/common/widgets/lottie_loading/lottie_loding.dart';
 class ProviderHomeScreen extends StatelessWidget {
   const ProviderHomeScreen({super.key});
 
@@ -36,9 +36,7 @@ class ProviderHomeScreen extends StatelessWidget {
         },
         builder: (context, state) {
           if (state is HomeLoading) {
-            return Center(
-              child: CircularProgressIndicator(color: context.primary),
-            );
+            return Center(child: LottieLoding());
           }
 
           if (state is HomeError) {

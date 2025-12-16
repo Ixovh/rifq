@@ -24,28 +24,6 @@ class HotelHomeScreen extends StatelessWidget {
         body: Column(
           children: [
             HotelSearchBar(),
-            // Padding(
-            //   padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 10),
-            //   child: TextField(
-            //     onChanged: (value) {
-            //       context.read<HotelCubit>().fetchAllHotels();
-            //     },
-            //     decoration: InputDecoration(
-            //       hintText: "Search here...",
-            //       prefixIcon: Icon(Icons.search),
-            //       filled: true,
-            //       fillColor: Colors.white,
-            //       contentPadding: EdgeInsets.symmetric(vertical: 12.h),
-            //       border: OutlineInputBorder(
-            //         borderRadius: BorderRadius.circular(12.r),
-            //         borderSide: BorderSide(
-            //           color: Color(0xFFECECEC),
-            //           width: 1.w,
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // ),
             Expanded(
               child: BlocBuilder<HotelCubit, HotelState>(
                 builder: (context, state) {
