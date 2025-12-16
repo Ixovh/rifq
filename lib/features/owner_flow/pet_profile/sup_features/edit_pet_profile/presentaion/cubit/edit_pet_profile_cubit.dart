@@ -56,9 +56,9 @@ class EditPetProfileCubit extends Cubit<EditPetProfileState> {
     try {
       final picker = ImagePicker();
       final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-      print("11111");
+
       if (pickedFile == null) return null;
-      print("11111=> ${pickedFile.path}");
+
       emit(EditPetProfileLoading(pet: pet));
       final Uint8List fileBytes = await File(pickedFile.path).readAsBytes();
       final fileName =

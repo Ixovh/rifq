@@ -4,11 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rifq/core/theme/app_color.dart';
 import 'package:rifq/core/theme/app_theme.dart';
-import 'package:rifq/features/owner_flow/add_pet/data/models/pet_model.dart';
-
 import '../../../../../../../core/routes/base_routes.dart';
-import '../../../pet_profile_health_record/domain/entity/pet_profile_records_entity.dart';
 import '../../domain/entity/pet_entity.dart';
+
 class ContainerPetCardWidgets extends StatelessWidget {
   final PetProfileEntity pet;
 
@@ -41,7 +39,7 @@ class ContainerPetCardWidgets extends StatelessWidget {
             color: Colors.black12,
             blurRadius: 12,
             offset: Offset(0, 4),
-          )
+          ),
         ],
       ),
 
@@ -52,13 +50,15 @@ class ContainerPetCardWidgets extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Pet Profile", style: context.body3.copyWith(color: context.neutral500)
+                "Pet Profile",
+                style: context.body3.copyWith(color: context.neutral500),
               ),
               IconButton(
                 onPressed: () {
-                    context.push(Routes.editpetprofile, extra: pet);
-                    }, icon: Icon(Icons.edit_outlined),
-              )
+                  context.push(Routes.editpetprofile, extra: pet);
+                },
+                icon: Icon(Icons.edit_outlined),
+              ),
 
               // IconButton(onPressed: (){
               //   context.push(Routes.editpetprofile);
@@ -94,31 +94,17 @@ class ContainerPetCardWidgets extends StatelessWidget {
                 IconButton(
                   onPressed: () {
                     try {
-                      print("=== Before toPetEntity ===");
-                      print("pet object: $pet");
-                      print("pet type: ${pet.runtimeType}");
                       final petEntity = pet.toPetEntity(
                         healthRecords: [],
                         reservations: [],
                       );
-                      print("=== After toPetEntity ===");
-                      print("petEntity: $petEntity");
                       context.push(Routes.healthRecourdpet, extra: petEntity);
-                    } catch (e, stackTrace) {
-                      print("=== ERROR ===");
-                      print("Error: $e");
-                      print("StackTrace: $stackTrace");
-                    }
+                    } catch (_) {}
                   },
                   icon: Icon(Icons.arrow_forward),
                 ),
                 // IconButton(onPressed: (){
-                //   print("name:${pet.name}");
-                //   print("breed:${pet.breed}");
-                //   print("species:${pet.species}");
-                //   print("photo:${pet.photoUrl}");
-                //   print("gender:${pet.gender}");
-                //   print("birthdate:${pet.birthdate}");
+
                 //   final petEntity=pet.toPetEntity(
                 //     healthRecords: [],
                 //     reservations: [],
@@ -127,12 +113,7 @@ class ContainerPetCardWidgets extends StatelessWidget {
                 // },
                 //     icon: Icon(Icons.arrow_forward_ios,size: 20.r,))
                 // IconButton(onPressed: (){
-                //   print("name:${pet.name}");
-                //   print("breed:${pet.breed}");
-                //   print("species:${pet.species}");
-                //   print("photo:${pet.photoUrl}");
-                //   print("gender:${pet.gender}");
-                //   print("birthdate:${pet.birthdate}");
+
                 //   final petEntity=pet.toPetEntity(
                 //     healthRecords: [],
                 //     reservations: [],
@@ -145,9 +126,18 @@ class ContainerPetCardWidgets extends StatelessWidget {
             ),
           ),
           SizedBox(height: 18.h),
-          Text("Gender: ${pet.gender}",style: TextStyle(color: AppColors.neutral500),),
-          Text("Age:  ${pet.birthdate}",style: TextStyle(color: AppColors.neutral500),),
-          Text("Breed:  ${pet.breed}",style: TextStyle(color: AppColors.neutral500),),
+          Text(
+            "Gender: ${pet.gender}",
+            style: TextStyle(color: AppColors.neutral500),
+          ),
+          Text(
+            "Age:  ${pet.birthdate}",
+            style: TextStyle(color: AppColors.neutral500),
+          ),
+          Text(
+            "Breed:  ${pet.breed}",
+            style: TextStyle(color: AppColors.neutral500),
+          ),
         ],
       ),
     );

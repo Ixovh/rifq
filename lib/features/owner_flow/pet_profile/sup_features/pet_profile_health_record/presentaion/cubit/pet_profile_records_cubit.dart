@@ -21,10 +21,8 @@ class PetProfileRecordsCubit extends Cubit<PetProfileRecordsState> {
       final reservationsResult = await usecase.getReservationsByPet(pet.petId);
 
       recordsResult.when((records) {
-        print("reccc${records.length}");
           reservationsResult.when(
                 (reservations) {
-                  print("reservations${reservations.length}");
                   emit(PetProfileLoaded(
                 petent: pet,
                 healthRecords: records,

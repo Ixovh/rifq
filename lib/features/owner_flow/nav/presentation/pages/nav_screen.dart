@@ -60,7 +60,6 @@ class NavScreen extends StatelessWidget {
                 currentIndex: cubit.currentIndex,
 
                 onTap: (value) {
-                  // print(value);
                   cubit.changeIndex(index: value);
                 },
 

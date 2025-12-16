@@ -14,13 +14,11 @@ class EditPetProfileDatasources implements BaseEditPetProfile {
   @override
   Future<Result<Map<String, dynamic>, Object>> updatePetProfile(String id, String name, String imageUrl) async {
     try {
-      print("Updating pet: $id, name=$name, photo=$imageUrl");
       final response = await supabase.from('pets')
           .update({'name': name, 'photo': imageUrl})
           .eq('id', id)
           .select()
           .single();
-      print("Update response: $response");
       return Success(response);
     } catch (e) {
       return Error(e);

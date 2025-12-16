@@ -35,10 +35,8 @@ class PyamentCubit extends Cubit<PyamentState> {
       final result = await paymentUsecase.addPayment(paymentEntity);
       result.when(
             (success) {
-          print("Payment inserted successfully");
           emit(PaymentSuccess()); },
             (error) {
-          print("Error inserting payment: $error");
           emit(PaymentError(message: error.toString()));
         },
       );
