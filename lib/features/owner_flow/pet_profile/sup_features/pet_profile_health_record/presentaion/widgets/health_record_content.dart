@@ -64,6 +64,7 @@ import 'package:intl/intl.dart';
 import 'package:rifq/core/theme/app_color.dart';
 import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_health_record/domain/entity/health_record_entity.dart';
 
+import '../../../../../../../core/common/widgets/button/custome_button_widgets.dart';
 import '../cubit/pet_profile_records_cubit.dart';
 import 'add_health_container_widgets.dart';
 
@@ -143,7 +144,10 @@ class HealthRecordTab extends StatelessWidget {
                 isScrollControlled: true,
                 backgroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40.r),
+                    topRight: Radius.circular(40.r),
+                  ),
                 ),
                 builder: (context) => Padding(
                   padding: EdgeInsets.only(
@@ -163,7 +167,9 @@ class HealthRecordTab extends StatelessWidget {
                         titleController: titleController,
                       ),
                       SizedBox(height: 12.h),
-                      ElevatedButton(
+
+                      CustomeButtonWidgets(
+                        titel: 'Save Record',
                         onPressed: () async {
                           final recordDate = DateFormat('d/M/yyyy').parse(dateController.text);
                           final record = HealthRecordEntity(
@@ -177,11 +183,30 @@ class HealthRecordTab extends StatelessWidget {
                             id: '',
                             type: typeController.text,
                           );
-                         await cubit.addHealthRecord(record);
+                          await cubit.addHealthRecord(record);
                           context.pop();
                         },
-                        child: const Text("Save Record"),
-                      ),
+                        buttonWidth: 366.w,
+                        buttonhight: 58.h,),
+                      // ElevatedButton(
+                      //   onPressed: () async {
+                      //     final recordDate = DateFormat('d/M/yyyy').parse(dateController.text);
+                      //     final record = HealthRecordEntity(
+                      //       petId: cubit.state is PetProfileLoaded
+                      //           ? (cubit.state as PetProfileLoaded).petent.petId
+                      //           : '',
+                      //       title: typeController.text,
+                      //       description: descriptionController.text,
+                      //       clinicName: clinicController.text,
+                      //       date: recordDate,
+                      //       id: '',
+                      //       type: typeController.text,
+                      //     );
+                      //    await cubit.addHealthRecord(record);
+                      //     context.pop();
+                      //   },
+                      //   child: const Text("Save Record"),
+                      // ),
                     ],
                   ),
                 ),

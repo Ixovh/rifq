@@ -69,41 +69,71 @@ class PetPrifileRecordDataSource implements BaseDataSourcePetReacord {
 
   // @override
   // Future<List<ReservationModel>> getReservationsByPet(String petId) async {
-  //   try {
-  //     final data = await supabase
-  //         .from('pet_profile_view')
-  //         .select()
-  //         .eq('pet_id', petId);
-  //     print("🔍 Raw data: $data");
-  //     return data.map((e) => ReservationModel.fromMap(e)).toList();
-  //   } catch (e) {
-  //     throw Exception('Failed to get reservations: $e');
+  //   final data = await supabase
+  //       .from('pet_profile_view')
+  //       .select()
+  //       .eq('pet_id', petId);
+  //   print("🔍 Raw data: $data");
+  //   if (data.isEmpty) {
+  //     return [];
   //   }
+  //   final row = data.first;
+  //   final reservationsList = row['reservations'] as List<dynamic>?;
+  //   if (reservationsList == null || reservationsList.isEmpty) {
+  //     return [];
+  //   }
+  //   return reservationsList
+  //       .map((e) => ReservationModel.fromMap(e as Map<String, dynamic>))
+  //       .toList();
   // }
-
-
-
-  @override
   Future<List<ReservationModel>> getReservationsByPet(String petId) async {
     final data = await supabase
         .from('pet_profile_view')
         .select()
         .eq('pet_id', petId);
-
     print("🔍 Raw data: $data");
-
     if (data.isEmpty) {
       return [];
     }
     final row = data.first;
     final reservationsList = row['reservations'] as List<dynamic>?;
+
     if (reservationsList == null || reservationsList.isEmpty) {
       return [];
     }
-    return reservationsList
+    final allReservations = reservationsList
         .map((e) => ReservationModel.fromMap(e as Map<String, dynamic>))
         .toList();
+    // فلترة المواعيد حسب الحالة "accepted" فقط
+    final acceptedReservations = allReservations
+        .where((r) => r.status?.toLowerCase() == 'accepted')
+        .toList();
+
+    return acceptedReservations;
   }
+
+
+  // @override
+  // Future<List<ReservationModel>> getReservationsByPet(String petId) async {
+  //   final data = await supabase
+  //       .from('pet_profile_view')
+  //       .select()
+  //       .eq('pet_id', petId);
+  //   print("🔍 Raw data: $data");
+  //   if (data.isEmpty) {
+  //     return [];}
+  //   final row = data.first;
+  //   final reservationsList = row['reservations'] as List<dynamic>?;
+  //   if (reservationsList == null || reservationsList.isEmpty) {
+  //     return [];
+  //   }
+  //   return reservationsList
+  //       .map((e) => ReservationModel.fromMap(e as Map<String, dynamic>))
+  //       .toList();
+  // }
+
+
+
 
 
 }

@@ -13,10 +13,8 @@ import '../widgets/appointment_content.dart';
 import '../widgets/cstoum_tab_bar.dart';
 import '../widgets/health_record_content.dart';
 
-
 class PetHealthAndAppointmentScreen extends StatelessWidget {
   final PetEntity pet;
-
   const PetHealthAndAppointmentScreen({super.key, required this.pet});
 
   @override
@@ -28,6 +26,7 @@ class PetHealthAndAppointmentScreen extends StatelessWidget {
         PetProfileRecordsCubit(getIt<HealthRecordUsecase>())
           ..loadPetData(pet),
         child: Scaffold(
+          resizeToAvoidBottomInset: true,
           appBar: AppBar(title: Text("Pet Profile",
             style: context.h5.copyWith(color: context.primary300),),
               centerTitle: true,

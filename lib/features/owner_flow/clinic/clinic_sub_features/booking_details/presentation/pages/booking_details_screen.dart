@@ -61,19 +61,6 @@ Widget build(BuildContext context) {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //!----------PET----------
-            //كودي
-              // Row(
-              //   children: [
-              //     Image.asset("assets/images/pet_icone.png"),
-              //     SizedBox(width: 10.h,),
-              //     Text('Pet', style: context.body1.copyWith(color: context.neutral800)),
-              //   ],
-              // ),
-              // SizedBox(height: 10.h),
-              // PetContainerWidgets(
-              //   width: 366.w,
-              //   height: 88.h,
-              //   radius: 12.r,)
           Row(
           children: [
           Image.asset("assets/images/pet_icone.png"),
