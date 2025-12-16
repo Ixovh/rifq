@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rifq/core/theme/app_theme.dart';
 
 class RecommendationCard extends StatelessWidget {
-  const RecommendationCard({super.key});
+  const RecommendationCard({super.key, required String imagePath});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,6 @@ class RecommendationCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-
           Expanded(
             flex: 4,
             child: ClipRRect(
@@ -64,26 +63,6 @@ class RecommendationCard extends StatelessWidget {
                     ),
                   ),
                    SizedBox(height: 8),
-                  Text(
-                    "Book a check-up for your pet with trusted vets and full-care services.",
-                    style: context.body3,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                   SizedBox(height: 12),
-                  Row(
-                    children:  [
-                      _InfoChip(
-                        icon: Icons.star_border,
-                        label: "4.9",
-                      ),
-                      SizedBox(width: 8),
-                      _InfoChip(
-                        icon: Icons.place_outlined,
-                        label: "1.5 Km",
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),
@@ -96,34 +75,3 @@ class RecommendationCard extends StatelessWidget {
 
 //!=================chip widget =====================
 
-class _InfoChip extends StatelessWidget {
-  final IconData icon;
-  final String label;
-
-  const _InfoChip({
-    required this.icon,
-    required this.label,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: context.primary50.withValues(alpha: 0.4)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 16, color: context.primary50),
-           SizedBox(width: 4),
-          Text(
-            label,
-            style: context.body3.copyWith(color: context.primary50),
-          ),
-        ],
-      ),
-    );
-  }
-}

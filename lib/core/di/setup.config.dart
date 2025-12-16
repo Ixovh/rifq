@@ -32,6 +32,14 @@ import '../../features/owner_flow/adoption/domain/repositories/adoption_repo_dom
     as _i979;
 import '../../features/owner_flow/adoption/domain/usecases/adotion_use_case.dart'
     as _i796;
+import '../../features/owner_flow/ai/data/datasources/ai_message_datasource.dart'
+    as _i822;
+import '../../features/owner_flow/ai/data/repositories/ai_message_repo_data.dart'
+    as _i257;
+import '../../features/owner_flow/ai/domain/repositories/ai_message_repo_domain.dart'
+    as _i333;
+import '../../features/owner_flow/ai/domain/usecases/ai_message_usecase.dart'
+    as _i66;
 import '../../features/owner_flow/auth/data/datasources/auth_data_source.dart'
     as _i386;
 import '../../features/owner_flow/auth/data/repositories/auth_repo_data.dart'
@@ -211,6 +219,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1071.BaseAddPetDataSource>(
       () => _i1071.AddPetDataSource(gh<_i454.SupabaseClient>()),
     );
+    gh.lazySingleton<_i822.AIDatasource>(() => _i822.RemoteDataSource());
     gh.lazySingleton<_i810.BaseBookingDataSource>(
       () => _i810.BookingDataSource(gh<_i454.SupabaseClient>()),
     );
@@ -270,11 +279,17 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i262.BaseProviderProfileDataSource>(),
       ),
     );
+    gh.lazySingleton<_i333.AiRepoDomain>(
+      () => _i257.AIRepoData(gh<_i822.AIDatasource>()),
+    );
     gh.lazySingleton<_i796.AdoptionUseCase>(
       () => _i796.AdoptionUseCase(gh<_i979.AdoptionRepoDomain>()),
     );
     gh.lazySingleton<_i557.PetProfileRepoDomain>(
       () => _i384.RepoDataPet(gh<_i918.PatCard>()),
+    );
+    gh.lazySingleton<_i66.AIConfigUsecase>(
+      () => _i66.AIConfigUsecase(gh<_i333.AiRepoDomain>()),
     );
     gh.lazySingleton<_i585.AddPetRepoDomain>(
       () => _i891.AddPetRepoData(gh<_i1071.BaseAddPetDataSource>()),

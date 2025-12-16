@@ -1,160 +1,164 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+// import 'dart:io';
 
-class AiScreen extends StatelessWidget {
-  const AiScreen({super.key});
+// import 'package:flutter/cupertino.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:rifq/features/owner_flow/ai/domain/entity/ai_message_entity.dart';
+// import 'package:rifq/features/owner_flow/ai/presentation/cubit/ai_cubit.dart';
+// import 'package:rifq/features/owner_flow/nav/presentation/cubit/nav_cubit.dart';
+
+// class AiScreen extends StatelessWidget {
+//   const AiScreen({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     final controller = TextEditingController();
+
+//     return Scaffold(
+//       backgroundColor: Colors.white,
+//       appBar: AppBar(
+//         leading: IconButton(
+//           icon: const Icon(CupertinoIcons.back, color: Colors.white),
+//           onPressed: () {
+//             // context.read<NavCubit>().clearAiActive();
+//             Navigator.pop(context);
+//           },
+//         ),
+
+//         title: const Text('AI Assistant'),
+//         backgroundColor: const Color(0xFF2CC3B5),
+//       ),
+
+//       body: Column(
+//         children: [
+//           ///!-------- Messages --------
+//           Expanded(
+//             child: BlocBuilder<AiCubit, List<AiMessageEntity>>(
+//               builder: (context, messages) {
+//                 if (messages.isEmpty) {
+//                   return const Center(
+//                     child: Text('Ask me anything about your pet 🐾'),
+//                   );
+//                 }
+
+//                 return ListView.builder(
+//                   padding: const EdgeInsets.all(16),
+//                   itemCount: messages.length,
+//                   itemBuilder: (context, index) {
+//                     final msg = messages[index];
+
+//                     return Align(
+//                       alignment: msg.isUser
+//                           ? Alignment.centerRight
+//                           : Alignment.centerLeft,
+//                       child: Container(
+//                         margin: const EdgeInsets.only(bottom: 10),
+//                         padding: const EdgeInsets.all(12),
+//                         decoration: BoxDecoration(
+//                           color: msg.isUser
+//                               ? const Color(0xFF2CC3B5)
+//                               : Colors.grey.shade200,
+//                           borderRadius: BorderRadius.circular(16),
+//                         ),
+//                         child: Column(
+//                           crossAxisAlignment: CrossAxisAlignment.start,
+//                           children: [
+//                             if (msg.imagePath != null)
+//                               Padding(
+//                                 padding: const EdgeInsets.only(bottom: 6),
+//                                 child: Image.file(
+//                                   File(msg.imagePath!),
+//                                   height: 120,
+//                                 ),
+//                               ),
+//                             Text(
+//                               msg.text,
+//                               style: TextStyle(
+//                                 color: msg.isUser ? Colors.white : Colors.black,
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                     );
+//                   },
+//                 );
+//               },
+//             ),
+//           ),
+
+//           /// -------- Input --------
+//           Padding(
+//             padding: const EdgeInsets.all(12),
+//             child: Row(
+//               children: [
+//                 Expanded(
+//                   child: TextField(
+//                     controller: controller,
+//                     decoration: const InputDecoration(
+//                       hintText: 'Ask me anything...',
+//                       filled: true,
+//                       fillColor: Color(0xFFF4F4F4),
+//                       border: OutlineInputBorder(
+//                         borderRadius: BorderRadius.all(Radius.circular(30)),
+//                         borderSide: BorderSide.none,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 const SizedBox(width: 8),
+//                 CircleAvatar(
+//                   backgroundColor: const Color(0xFF2CC3B5),
+//                   child: IconButton(
+//                     icon: const Icon(Icons.send, color: Colors.white),
+//                     onPressed: () {
+//                       final text = controller.text.trim();
+//                       if (text.isEmpty) return;
+
+//                       context.read<AiCubit>().sendText(text);
+//                       controller.clear();
+//                     },
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rifq/features/owner_flow/ai/domain/usecases/ai_message_usecase.dart';
+import 'package:rifq/features/owner_flow/ai/presentation/bloc/ai_chat_bloc.dart';
+import 'package:rifq/features/owner_flow/ai/presentation/widgets/chat_widget.dart';
+class ChatScreen extends StatelessWidget {
+  final AIConfigUsecase _useCase;
+  const ChatScreen({super.key, required AIConfigUsecase useCase}): _useCase = useCase;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: const Color(0xFF2CC3B5),
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(CupertinoIcons.back, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
+    return BlocProvider<AiChatBloc>(
+      create: (context) => AiChatBloc(_useCase)..add(AIStarted()),
+      child: Scaffold(
+        appBar: AppBar(title: Text("AI Chatbot"),
         ),
-        title: Center(
-          child: Row(
-            children: [
-              Image.asset(
-                "assets/images/Vector(1).png",
-                height: 15,
-              ),
-              const SizedBox(width: 6),
-              const Text(
-                "Ai assistant",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
 
-      body: Column(
-        children: [
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            decoration: const BoxDecoration(
-              color: Color(0xFFF6F6F6),
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Avatar
-                CircleAvatar(
-                  radius: 22,
-                  backgroundColor: const Color(0xFF2CC3B5).withValues(alpha:  0.15),
-                  child: Image.asset(
-                    "assets/images/Vector(1).png",
-                    height: 22,
-                  ),
-                ),
-                const SizedBox(width: 12),
-
-                // Text
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        "Hi! I'm Rifq, your smart pet assistant",
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        "How can I help you today?",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black54,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // Icons
-                Column(
-                  children: [
-                    Icon(Icons.copy, color: Colors.black45, size: 20),
-                    const SizedBox(height: 6),
-                    Icon(Icons.share_outlined, color: Colors.black45, size: 20),
-                  ],
-                )
-              ],
-            ),
-          ),
-
-          Expanded(
-            child: Container(
-              color: Colors.white,
-            ),
-          ),
-
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black12, blurRadius: 4, offset: Offset(0, -2)),
-              ],
-            ),
-            child: Row(
-              children: [
-                // Images icon
-                IconButton(
-                  icon: const Icon(Icons.image_outlined,
-                      color: Colors.black54, size: 26),
-                  onPressed: () {},
-                ),
-                IconButton(
-                  icon: const Icon(Icons.camera_alt_outlined,
-                      color: Colors.black54, size: 26),
-                  onPressed: () {},
-                ),
-
-                // TextField
-                Expanded(
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF4F4F4),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: const TextField(
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Ask me anything....",
-                        hintStyle:
-                            TextStyle(color: Colors.black38, fontSize: 15),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-
-                CircleAvatar(
-                  radius: 22,
-                  backgroundColor: const Color(0xFF2CC3B5),
-                  child: const Icon(Icons.mic, color: Colors.white),
-                ),
-              ],
-            ),
-          ),
-        ],
+        body: BlocBuilder<AiChatBloc, AiChatState>(
+          builder: (context, state) {
+          if(state is AILoading) {
+            return Center(child: CircularProgressIndicator());
+          }
+          else if (state is AILoaded) {
+            return ChatHeader(provider: state.provider, welcomeMessage: state.welcomeMessage,);
+          }
+          else if (state is AIError) {
+            return Center(child: Text(state.message));
+          }
+          return const SizedBox.shrink();
+        })
       ),
     );
   }
