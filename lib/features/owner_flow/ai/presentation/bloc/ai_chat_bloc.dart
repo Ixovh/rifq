@@ -13,8 +13,11 @@ class AiChatBloc extends Bloc<AiChatEvent, AiChatState> {
     on<AIStarted>((event, emit) {
       emit(AILoading());
       try {
+        print("-----here i am");
         final entity = _useCase();
-        final provider = GeminiProvider(
+           print("-----here i am m ${entity.model}");
+              print("-----here i am k ${entity.apiKey}");
+        GeminiProvider provider = GeminiProvider(
           model: GenerativeModel(
             model: entity.model,
             apiKey: entity.apiKey,
@@ -25,6 +28,9 @@ class AiChatBloc extends Bloc<AiChatEvent, AiChatState> {
         emit(AILoaded(provider: provider, welcomeMessage: entity.welcomeMessage));
       }
     catch(e) {
+              print("-----here i error");
+
+      print(e.toString());
       emit(AIError("Failed to start chat: $e"));
     }
     });

@@ -161,12 +161,14 @@ class HomeContent extends StatelessWidget {
                       context.read<NavCubit>().changeIndex(index: 3);
                     },
                   ),
+
                 ],
               ),
 
+
               //!!--------recommendations----------
-              SizedBox(height: 24),
-              Text("Recommendations", style: context.body1),
+              SizedBox(height: 36),
+              Text("Exclusive Deals", style: context.body1),
               SizedBox(height: 12),
                RecommendationCarousel(),
             ],

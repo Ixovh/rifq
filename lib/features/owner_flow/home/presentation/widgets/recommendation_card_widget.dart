@@ -14,7 +14,7 @@ class RecommendationCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 6),
       decoration: BoxDecoration(
-        color: context.neutral100,
+        color: context.red10,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
@@ -28,8 +28,9 @@ class RecommendationCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         child: Image.asset(
           imagePath,
-          width: double.infinity,
-          fit: BoxFit.cover,
+          // height: double.infinity,
+          // width: double.infinity,
+          fit: BoxFit.fill,
         ),
       ),
     );

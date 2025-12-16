@@ -12,7 +12,7 @@ final class AiChatInitial extends AiChatState {}
 final class AILoading extends AiChatState {}
 
 final class AILoaded extends AiChatState {
-  final LlmProvider provider;
+  final GeminiProvider provider;
   final String welcomeMessage;
 
   AILoaded({required this.provider, required this.welcomeMessage});
