@@ -43,6 +43,7 @@ dependencies:
   flutter_animate: ^4.5.2
   dotted_line: ^3.2.3
   moyasar: ^2.1.1
+  flutter_ai_toolkit: ^0.8.0
 
 
 
@@ -54,7 +55,7 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   build_runner: ^2.10.4
   injectable_generator:
-  dart_mappable_builder: ^4.6.1
+  dart_mappable_builder: ^4.6.3
 flutter:
   uses-material-design: true
   assets:

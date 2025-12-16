@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:rifq/core/routes/base_routes.dart';
 import 'package:rifq/core/theme/app_theme.dart';
 import 'package:rifq/features/owner_flow/nav/presentation/cubit/nav_cubit.dart';
 import 'package:rifq/features/owner_flow/nav/presentation/cubit/nav_state.dart';
@@ -15,27 +17,43 @@ class NavScreen extends StatelessWidget {
         return BlocBuilder<NavCubit, NavState>(
           builder: (context, state) {
             return Scaffold(
-
               resizeToAvoidBottomInset: true, //عشان يثبت زر الai
               backgroundColor: context.background,
-             floatingActionButton:
 
-              FloatingActionButton(
-              shape:  CircleBorder(),
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("data 12"),behavior: .floating,));
-                  // context.push(Routes.aiScreen);
-                  cubit.changeIndex(index: 2);
-                },
-                backgroundColor: context.primary50,
-                child: Image.asset(
-                  'assets/images/Vector(1).png',
-                  height: 24,
-                ),
+
+
+              floatingActionButton: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                   SizedBox(width: 16),
+                  FloatingActionButton(
+                    elevation: 4,
+                    shape: const CircleBorder(),
+                    backgroundColor: context.primary50,
+                    onPressed: () {
+                      context.push(Routes.aiScreen);
+                      cubit.setAiActive();
+                    },
+                    child: Image.asset(
+                      'assets/images/Vector(1).png',
+                      height: 24,
+                    ),
+                  ),
+                  // SizedBox(width: 16),
+                   SizedBox(height: 6),
+                  Text(
+                    'Ask AI',
+                    style: context.body3.copyWith(
+                      color: context.primary50,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
               ),
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerDocked,
-                  floatingActionButtonAnimator: .noAnimation,
+              floatingActionButtonAnimator:
+                  FloatingActionButtonAnimator.noAnimation,
               bottomNavigationBar: BottomNavigationBar(
                 backgroundColor: context.background,
                 type: BottomNavigationBarType.fixed,
@@ -51,7 +69,6 @@ class NavScreen extends StatelessWidget {
 
                 selectedLabelStyle: context.body3.copyWith(
                   fontWeight: FontWeight.w600,
-
                 ),
 
                 unselectedLabelStyle: context.body3.copyWith(
@@ -67,6 +84,7 @@ class NavScreen extends StatelessWidget {
                       height: 24,
                     ),
                   ),
+                  
                   BottomNavigationBarItem(
                     label: "Health",
                     icon: Image.asset(
@@ -94,7 +112,6 @@ class NavScreen extends StatelessWidget {
                       height: 24,
                     ),
                   ),
-
                 ],
               ),
 

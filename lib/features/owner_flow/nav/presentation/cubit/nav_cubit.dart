@@ -8,8 +8,15 @@ import 'package:rifq/features/owner_flow/hotel/presentation/pages/hotel_home_scr
 import 'nav_state.dart';
 
 class NavCubit extends Cubit<NavState> {
-  List<Widget> screens = [HomeScreen(),ClinicScreen(),HotelHomeScreen(),AdoptionScreen()];
+  List<Widget> screens = [
+    HomeScreen(),
+    ClinicScreen(),
+    HotelHomeScreen(),
+    AdoptionScreen(),
+  ];
   int currentIndex = 0;
+  bool isAiActive = false;
+
   NavCubit() : super(NavInitialState());
 
   void changeIndex({required int index}) {
@@ -22,5 +29,15 @@ class NavCubit extends Cubit<NavState> {
   Future<void> close() {
     //here is when close cubit
     return super.close();
+  }
+
+  void setAiActive() {
+    isAiActive = true;
+    emit(NavLoadedState());
+  }
+
+  void clearAiActive() {
+    isAiActive = false;
+    emit(NavLoadedState());
   }
 }

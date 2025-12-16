@@ -15,6 +15,7 @@ import 'package:rifq/features/owner_flow/home/presentation/widgets/add_pet_circl
 import 'package:rifq/features/owner_flow/home/presentation/widgets/pet_circle_widget.dart';
 import 'package:rifq/features/owner_flow/home/presentation/widgets/quick_service_widget.dart';
 import 'package:rifq/features/owner_flow/home/presentation/widgets/recommendation_card_widget.dart';
+import 'package:rifq/features/owner_flow/home/presentation/widgets/recommendation_carousel_widget.dart';
 import 'package:rifq/features/owner_flow/nav/presentation/cubit/nav_cubit.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -23,9 +24,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-  create: (_) => GetIt.I<HomeCubit>()..loadHomeData(),
-  child: BlocBuilder<HomeCubit, HomeState>(
-    builder: (context, state) {
+      create: (_) => GetIt.I<HomeCubit>()..loadHomeData(),
+      child: BlocBuilder<HomeCubit, HomeState>(
+        builder: (context, state) {
           if (state is HomeLoading || state is HomeInitial) {
             // return Center(child: CircularProgressIndicator());
           }
@@ -167,21 +168,7 @@ class HomeContent extends StatelessWidget {
               SizedBox(height: 24),
               Text("Recommendations", style: context.body1),
               SizedBox(height: 12),
-
-              CarouselSlider(
-                items: [
-                  RecommendationCard(),
-                  RecommendationCard(),
-                  RecommendationCard(),
-                ],
-                options: CarouselOptions(
-                  height: 190,
-                  viewportFraction: 0.9,
-                  enableInfiniteScroll: false,
-                  enlargeCenterPage: true,
-                  padEnds: false,
-                ),
-              ),
+               RecommendationCarousel(),
             ],
           ),
         ),

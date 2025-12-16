@@ -13,6 +13,11 @@ import 'package:rifq/features/owner_flow/adoption/presentation/pages/adoption_sc
 import 'package:rifq/features/owner_flow/adoption/presentation/pages/pet_details_screen.dart';
 import 'package:rifq/features/owner_flow/adoption/presentation/pages/see_requeset_screen.dart';
 import 'package:rifq/features/owner_flow/adoption/presentation/pages/select_pet_for_adoption_screen.dart';
+import 'package:rifq/features/owner_flow/ai/data/datasources/ai_message_datasource.dart';
+import 'package:rifq/features/owner_flow/ai/data/repositories/ai_message_repo_data.dart';
+import 'package:rifq/features/owner_flow/ai/domain/repositories/ai_message_repo_domain.dart';
+import 'package:rifq/features/owner_flow/ai/domain/usecases/ai_message_usecase.dart';
+// import 'package:rifq/features/owner_flow/ai/presentation/cubit/ai_cubit.dart';
 import 'package:rifq/features/owner_flow/ai/presentation/pages/ai_screen.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/cubit/auth_cubit.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/auth_screen.dart';
@@ -164,6 +169,16 @@ abstract class Routes {
       //------//
       //------//
       //------//
+
+      GoRoute(
+        path: aiScreen,
+        builder: (context, state) {
+          final AIDatasource datasource = RemoteDataSource();
+          final AiRepoDomain repo = AIRepoData(datasource);
+          final AIConfigUsecase usecase = AIConfigUsecase(repo);
+          return ChatScreen(useCase: usecase,);
+        }
+      ),
       GoRoute(
         path: otpScreen,
         builder: (context, state) {
@@ -205,7 +220,6 @@ abstract class Routes {
       //------//
       //------//
       //------//
-
       GoRoute(
         path: editprofile,
         builder: (context, state) {
@@ -222,7 +236,7 @@ abstract class Routes {
 
       GoRoute(path: addpet, builder: (context, state) => AddPetScreen()),
 
-     GoRoute(
+      GoRoute(
         path: editpetprofile,
         builder: (context, state) {
           final pet = state.extra;
@@ -230,8 +244,8 @@ abstract class Routes {
             return Center(child: Text("data"));
           }
           return BlocProvider(
-            create: (context) => EditPetProfileCubit(
-                getIt<EditPetProfileUsecase>(), pet: pet),
+            create: (context) =>
+                EditPetProfileCubit(getIt<EditPetProfileUsecase>(), pet: pet),
             child: EditPetProfileScreen(pet: pet),
           );
         },
@@ -249,7 +263,16 @@ abstract class Routes {
       ///
       GoRoute(path: addpet, builder: (context, state) => AddPetScreen()),
 
-      GoRoute(path: aiScreen, builder: (context, state) => AiScreen()),
+      // GoRoute(
+      //   path: Routes.aiScreen,
+      //   builder: (context, state) {
+      //     return BlocProvider(
+      //       create: (_) => getIt<AiCubit>(),
+      //       child: const AiScreen(),
+      //     );
+      //   },
+      // ),
+
       GoRoute(path: healthScreen, builder: (context, state) => ClinicScreen()),
 
       GoRoute(
@@ -273,7 +296,6 @@ abstract class Routes {
         },
       ),
 
-
       GoRoute(
         path: seeRequests,
         builder: (context, state) {
@@ -284,7 +306,6 @@ abstract class Routes {
           );
         },
       ),
-
 
       GoRoute(
         path: petDetails,
@@ -323,7 +344,6 @@ abstract class Routes {
       //------//
       //------//
       //------//
-
 
       //------//
       //------//
@@ -379,7 +399,6 @@ abstract class Routes {
       ///
       ///
       ///
-
       GoRoute(
         path: Routes.bookingDetails,
         builder: (context, state) {
@@ -413,11 +432,10 @@ abstract class Routes {
           );
         },
       ),
+
       ///!
       ///!
-
-
-        GoRoute(
+      GoRoute(
         path: confirmandpay,
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>?;
@@ -426,23 +444,19 @@ abstract class Routes {
           final hotel = extra?['hotel'] as ProviderItemsViewEntity?;
           final selectedPets = extra?['selectedPets'] as List<String>?;
           if (booking == null || hotel == null || selectedPets == null) {
-            return Scaffold(
-              body: Center(child: Text("Data missing")),
-            );
+            return Scaffold(body: Center(child: Text("Data missing")));
           }
           return ConfirmAndPayScreen(
-              booking: booking,
-              hotel: hotel,
-              selectedPets: selectedPets,
-              );
-         },
+            booking: booking,
+            hotel: hotel,
+            selectedPets: selectedPets,
+          );
+        },
       ),
 
       //------//
       //------//
       //------//
-
-
       GoRoute(
         path: paymentscreen,
         builder: (context, state) {
@@ -457,7 +471,6 @@ abstract class Routes {
       ///
       ///
       ///
-
       GoRoute(
         path: successfullpay,
         builder: (context, state) => PaymentSuccesfull(),
@@ -470,33 +483,28 @@ abstract class Routes {
 
           return BlocProvider(
             create: (_) =>
-            HotelCubit(getIt<HotelUsecase>())..fetchHotelById(hotel.id),
+                HotelCubit(getIt<HotelUsecase>())..fetchHotelById(hotel.id),
             child: HotelDetailsScreen(hotel: hotel),
           );
         },
       ),
 
-
       //------//
       //------//
       //------//
-
       GoRoute(
         path: bookingHotel,
         builder: (context, state) {
-          final extra = state.extra as Map<String, dynamic>; // نجيب البيانات اللي مررناها
+          final extra =
+              state.extra as Map<String, dynamic>; // نجيب البيانات اللي مررناها
           final hotel = extra['hotel'] as ProviderItemsViewEntity;
           final roomId = extra['roomId'] as String;
-          return BookingHotel(
-            hotel: hotel,
-            roomId: roomId,
-          );
+          return BookingHotel(hotel: hotel, roomId: roomId);
         },
       ),
 
       ///!
       ///!
-
       GoRoute(
         path: confirmandpay,
         builder: (context, state) {
@@ -519,8 +527,7 @@ abstract class Routes {
       ///-----///
       ///-----///
       ///-----///
-
-       GoRoute(
+      GoRoute(
         path: paymentscreen,
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>;
@@ -534,15 +541,12 @@ abstract class Routes {
       ///-----///
       ///-----///
       ///-----///
-
-         GoRoute(
+      GoRoute(
         path: successfullpay,
         builder: (context, state) => PaymentSuccesfull(),
       ),
 
-
       //!!!
-
       GoRoute(
         path: providerAuth,
         builder: (context, state) => ProviderAuthScreen(),
@@ -597,14 +601,13 @@ abstract class Routes {
         },
       ),
 
-
       GoRoute(
         path: providerHome,
         builder: (context, state) {
           return BlocProvider(
-            create: (context) => ProviderHomeCubit(
-              getIt.get<ReservationUseCase>(),
-            )..loadHomeData(),
+            create: (context) =>
+                ProviderHomeCubit(getIt.get<ReservationUseCase>())
+                  ..loadHomeData(),
             child: const ProviderHomeScreen(),
           );
         },
