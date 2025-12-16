@@ -21,6 +21,7 @@ class EditPetProfileCubit extends Cubit<EditPetProfileState> {
     emit(EditPetProfileLoading(pet: pet));
     try {
       final updatedName = newName ?? pet.name;
+
       final updatedPhoto = (newPhotoUrl != null && newPhotoUrl.isNotEmpty)
           ? newPhotoUrl
           : state.pet.photoUrl;

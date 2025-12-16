@@ -83,8 +83,16 @@ class PetNameCardinfoWidgets extends StatelessWidget {
         child: ListTile(
           leading: CircleAvatar(
             radius: 22.r,
-            backgroundImage: NetworkImage(pet.photoUrl),
+            backgroundImage:
+            pet.photoUrl != null ? NetworkImage(pet.photoUrl!) : null,
+            child: pet.photoUrl == null
+                ? const Icon(Icons.pets)
+                : null,
           ),
+          // leading: CircleAvatar(
+          //   radius: 22.r,
+          //   backgroundImage: NetworkImage(pet.photoUrl),
+          // ),
           title: Text(
             pet.name,
             style: TextStyle(

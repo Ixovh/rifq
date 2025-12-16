@@ -3,12 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rifq/core/di/setup.dart';
-import 'package:rifq/core/theme/app_theme.dart';
 import '../../../../../core/common/widgets/appbar/custom_app_bar.dart';
+import '../../../../../core/common/widgets/lottie_loading/lottie_loding.dart';
 import '../../../../../core/routes/base_routes.dart';
 import '../../domain/usecase/hotel_usecase.dart';
 import '../cubit/hotel_cubit.dart';
 import '../widgets/card_hotel.dart';
+import '../widgets/hotel_search_bar.dart';
 
 
 class HotelHomeScreen extends StatelessWidget {
@@ -21,33 +22,34 @@ class HotelHomeScreen extends StatelessWidget {
         appBar:CustomAppBar(title: 'Hotel',),
         body: Column(
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 10),
-              child: TextField(
-                onChanged: (value) {
-                  context.read<HotelCubit>().fetchAllHotels();
-                },
-                decoration: InputDecoration(
-                  hintText: "Search here...",
-                  prefixIcon: Icon(Icons.search),
-                  filled: true,
-                  fillColor: Colors.white,
-                  contentPadding: EdgeInsets.symmetric(vertical: 12.h),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.r),
-                    borderSide: BorderSide(
-                      color: Color(0xFFECECEC),
-                      width: 1.w,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            HotelSearchBar(),
+            // Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 10),
+            //   child: TextField(
+            //     onChanged: (value) {
+            //       context.read<HotelCubit>().fetchAllHotels();
+            //     },
+            //     decoration: InputDecoration(
+            //       hintText: "Search here...",
+            //       prefixIcon: Icon(Icons.search),
+            //       filled: true,
+            //       fillColor: Colors.white,
+            //       contentPadding: EdgeInsets.symmetric(vertical: 12.h),
+            //       border: OutlineInputBorder(
+            //         borderRadius: BorderRadius.circular(12.r),
+            //         borderSide: BorderSide(
+            //           color: Color(0xFFECECEC),
+            //           width: 1.w,
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
             Expanded(
               child: BlocBuilder<HotelCubit, HotelState>(
                 builder: (context, state) {
                   if (state is HotelLoading) {
-                    return Center(child: CircularProgressIndicator());
+                    return Center(child: LottieLoding());
                   } else if (state is HotelLoaded) {
                     final hotels = state.hotels; // البيانات من Cubit
                     return ListView.separated(
@@ -81,7 +83,7 @@ class HotelHomeScreen extends StatelessWidget {
                   } else if (state is HotelError) {
                     return Center(child: Text(state.message));
                   }
-                  return Center(child: CircularProgressIndicator());
+                  return Center(child: LottieLoding());
                 },
               ),
             )

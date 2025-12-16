@@ -28,16 +28,9 @@ class HotelUsecase {
     }
   }
 
-  // Future<Result<List<ProviderItemsViewEntity>, String>> getHotelById(String id) async {
-  //   if (id.isEmpty) {
-  //     return Result.error("Hotel ID cannot be empty");
-  //   }
-  //   try {
-  //     return await hotelDomain.getHotelById(id);
-  //   } catch (e) {
-  //     return Result.error(e.toString());
-  //   }
-  // }
+  Future<Result<List<ProviderEntity>, String>> searchHotels(String query) {
+    return hotelDomain.searchHotels(query);
+  }
 
 
 }

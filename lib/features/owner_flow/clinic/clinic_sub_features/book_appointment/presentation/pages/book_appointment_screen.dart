@@ -8,6 +8,8 @@ import 'package:rifq/core/shared/shared_in_owner_flow/shared/entities/provider_i
 import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_info_card/presentation/cubit/pet_info_cubit.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../../../../../core/common/widgets/lottie_loading/lottie_loding.dart';
+
 class BookAppointmentScreen extends StatelessWidget {
   final ProviderItemsViewEntity entity;
 
@@ -68,7 +70,7 @@ class _BookAppointmentView extends StatelessWidget {
             BlocBuilder<PetInfoCubit, PetInfoState>(
               builder: (context, state) {
                 if (state is PetLoading) {
-                  return const CircularProgressIndicator();
+                  return const LottieLoding();
                 }
 
                 if (state is PetLoaded) {
@@ -105,13 +107,17 @@ class _BookAppointmentView extends StatelessWidget {
                                   ),
                                   child: CircleAvatar(
                                     radius: 30,
-                                    backgroundImage: pet.photoUrl != null
-                                        ? NetworkImage(pet.photoUrl!)
-                                        : null,
-                                    child: pet.photoUrl == null
-                                        ? const Icon(Icons.pets)
-                                        : null,
+                                    backgroundImage: NetworkImage(pet.photoUrl),
                                   ),
+                                  // child: CircleAvatar(
+                                  //   radius: 30,
+                                  //   backgroundImage: pet.photoUrl != null
+                                  //       ? NetworkImage(pet.photoUrl!)
+                                  //       : null,
+                                  //   child: pet.photoUrl == null
+                                  //       ? const Icon(Icons.pets)
+                                  //       : null,
+                                  // ),
                                 ),
                                 const SizedBox(height: 6),
                                 Text(

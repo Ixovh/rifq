@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rifq/core/common/widgets/appbar/custom_app_bar.dart';
 import 'package:rifq/core/di/setup.dart';
 import 'package:rifq/features/owner_flow/clinic/presentation/cubit/clinic_cubit.dart';
+import '../../../../../core/common/widgets/lottie_loading/lottie_loding.dart';
 import '../widgets/clinic_header.dart';
 import '../widgets/clinic_search_bar.dart';
 import '../widgets/clinic_section_title.dart';
@@ -34,7 +35,7 @@ class _ClinicView extends StatelessWidget {
           builder: (context, state) {
 
             if (state is ClinicLoading) {
-              // return const Center(child: CircularProgressIndicator());
+              return const Center(child: LottieLoding());
             }
 
             //!!--------------Guest View------------

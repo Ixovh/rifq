@@ -149,65 +149,54 @@ class HealthRecordTab extends StatelessWidget {
                     topRight: Radius.circular(40.r),
                   ),
                 ),
-                builder: (context) => Padding(
-                  padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom,
-                    left: 16.w,
-                    right: 16.w,
-                    top: 16.h,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      AddHealthContainerWidgets(
-                        typeController: typeController,
-                        descriptionController: descriptionController,
-                        clinicNameController: clinicController,
-                        dateController: dateController,
-                        titleController: titleController,
+                builder: (context) => GestureDetector(
+                  onTap: () => FocusScope.of(context).unfocus(),// الكيبورد يتقفل
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom,
+                      left: 16.w,
+                      right: 16.w,
+                      top: 16.h,
+                    ),
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            AddHealthContainerWidgets(
+                              typeController: typeController,
+                              descriptionController: descriptionController,
+                              clinicNameController: clinicController,
+                              dateController: dateController,
+                              titleController: titleController,
+                            ),
+                            SizedBox(height: 12.h),
+                  
+                            CustomeButtonWidgets(
+                              titel: 'Save Record',
+                              onPressed: () async {
+                                final recordDate = DateFormat('d/M/yyyy').parse(dateController.text);
+                                final record = HealthRecordEntity(
+                                  petId: cubit.state is PetProfileLoaded
+                                      ? (cubit.state as PetProfileLoaded).petent.petId
+                                      : '',
+                                  title: typeController.text,
+                                  description: descriptionController.text,
+                                  clinicName: clinicController.text,
+                                  date: recordDate,
+                                  id: '',
+                                  type: typeController.text,
+                                );
+                                await cubit.addHealthRecord(record);
+                                context.pop();
+                              },
+                              buttonWidth: 366.w,
+                              buttonhight: 58.h,),
+                          ],
+                        ),
                       ),
-                      SizedBox(height: 12.h),
-
-                      CustomeButtonWidgets(
-                        titel: 'Save Record',
-                        onPressed: () async {
-                          final recordDate = DateFormat('d/M/yyyy').parse(dateController.text);
-                          final record = HealthRecordEntity(
-                            petId: cubit.state is PetProfileLoaded
-                                ? (cubit.state as PetProfileLoaded).petent.petId
-                                : '',
-                            title: typeController.text,
-                            description: descriptionController.text,
-                            clinicName: clinicController.text,
-                            date: recordDate,
-                            id: '',
-                            type: typeController.text,
-                          );
-                          await cubit.addHealthRecord(record);
-                          context.pop();
-                        },
-                        buttonWidth: 366.w,
-                        buttonhight: 58.h,),
-                      // ElevatedButton(
-                      //   onPressed: () async {
-                      //     final recordDate = DateFormat('d/M/yyyy').parse(dateController.text);
-                      //     final record = HealthRecordEntity(
-                      //       petId: cubit.state is PetProfileLoaded
-                      //           ? (cubit.state as PetProfileLoaded).petent.petId
-                      //           : '',
-                      //       title: typeController.text,
-                      //       description: descriptionController.text,
-                      //       clinicName: clinicController.text,
-                      //       date: recordDate,
-                      //       id: '',
-                      //       type: typeController.text,
-                      //     );
-                      //    await cubit.addHealthRecord(record);
-                      //     context.pop();
-                      //   },
-                      //   child: const Text("Save Record"),
-                      // ),
-                    ],
+                    ),
                   ),
                 ),
               );

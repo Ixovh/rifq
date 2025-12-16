@@ -17,6 +17,8 @@ import 'package:rifq/features/owner_flow/home/presentation/widgets/quick_service
 import 'package:rifq/features/owner_flow/home/presentation/widgets/recommendation_card_widget.dart';
 import 'package:rifq/features/owner_flow/nav/presentation/cubit/nav_cubit.dart';
 
+import '../../../../../core/common/widgets/lottie_loading/lottie_loding.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -27,7 +29,7 @@ class HomeScreen extends StatelessWidget {
   child: BlocBuilder<HomeCubit, HomeState>(
     builder: (context, state) {
           if (state is HomeLoading || state is HomeInitial) {
-            // return Center(child: CircularProgressIndicator());
+            return Center(child: LottieLoding());
           }
 
           //!!==========guest=============

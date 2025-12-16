@@ -10,9 +10,9 @@ abstract class HotelRepoDomain {
 
   Future<Result<List<ProviderItemsViewEntity>, String>> getHotelById(String id);
 
+  Future<Result<List<ProviderEntity>, String>> searchHotels(String query);
+
+
 
 }
 
-// abstract class HotelRepoDomain {
-//   Future<Result<List<ProviderEntity>, String>> getAllHotel();
-// }

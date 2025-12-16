@@ -9,6 +9,8 @@ abstract  class BaseHotelDataSourc{
   // تفاصيل فندق معين
   // Future<Result<ProviderItemsViewModel, String>> getHotelById(String id);
   Future<Result<List<ProviderItemsViewModel>, String>>  getHotelById(String id);
+  Future<Result<List<ProviderModel>, String>> searchHotels(String query);
+
 }
 
 @LazySingleton(as: BaseHotelDataSourc)
@@ -75,6 +77,26 @@ class HotelDataBase implements BaseHotelDataSourc {
 
       final data = (response as List)
           .map((e) => ProviderItemsViewModelMapper.fromMap(e))
+          .toList();
+
+      return Result.success(data);
+    } catch (e) {
+      return Result.error(e.toString());
+    }
+  }
+
+  @override
+  Future<Result<List<ProviderModel>, String>> searchHotels(
+      String query,
+      ) async {
+    try {
+      final response = await supabase
+          .from('providers')
+          .select('*, provider_services!inner(service_type_id)')
+          .eq('provider_services.service_type_id', 4)
+          .ilike('name', "%$query%");
+      final data = (response as List)
+          .map((e) => ProviderModelMapper.fromMap(e))
           .toList();
 
       return Result.success(data);

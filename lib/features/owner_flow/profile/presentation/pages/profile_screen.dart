@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../../core/common/widgets/lottie_loading/lottie_loding.dart';
 import '../../../../../core/di/setup.dart';
 import '../../../../../core/routes/base_routes.dart';
 import '../../../../../core/shared/shared_in_owner_flow/shared_auth/helpers/auth_helper.dart';
@@ -48,7 +49,7 @@ class ProfileScreen extends StatelessWidget {
           child: BlocBuilder<ProfileCubit, ProfileState>(
             builder: (context, state) {
               if (state is ProfileLoading) {
-                return Center(child: CircularProgressIndicator());
+                return Center(child: LottieLoding());
               }
               UserProfileEntity? user;
               if (state is ProfileLoaded) {

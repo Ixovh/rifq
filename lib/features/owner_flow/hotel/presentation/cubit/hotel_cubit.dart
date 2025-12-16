@@ -18,17 +18,6 @@ class HotelCubit extends Cubit<HotelState> {
   HotelCubit(this.usecase) : super(HotelInitial());
 
 
-  // void fetchAllHotels() async {
-  //   emit(HotelLoading());
-  //   final result = await usecase.getAllHotel();
-  //   result.when(
-  //     (hotels) => emit(HotelLoaded(hotels)),
-  //         (error) => emit(HotelError(error)),
-  //   );
-  // }
-
-  //
-  //
 
   void fetchAllHotels() async {
     // لو البيانات موجودة، نرسلها للعرض
@@ -63,29 +52,6 @@ class HotelCubit extends Cubit<HotelState> {
     );
   }
 
-  // void fetchHotelById(String id) async {
-  //   if (id.isEmpty) {
-  //     emit(HotelError("Hotel ID cannot be empty"));
-  //     return;
-  //   }
-  //   emit(HotelLoading());
-  //   final result = await usecase.getHotelById(id);
-  //   result.when(
-  //         (hotelItems) {
-  //       if (hotelItems.isEmpty) {
-  //         emit(HotelError("No items found for this hotel"));
-  //         return;
-  //       }
-  //       emit(HotelDetailLoaded(hotelItems));
-  //     },
-  //         (error) => emit(HotelError(error)),
-  //   );
-  // }
-
-
-
-
-
   Future<void> openLocation(String? url) async {
     if (url == null || url.isEmpty) {
       emit(HotelError("Location URL not available"));
@@ -106,24 +72,6 @@ class HotelCubit extends Cubit<HotelState> {
 //
 //
 
-  // void selectRoom(String roomId) {
-  //   selectedRoomId = roomId;
-  //   emit(RoomSelectionChanged(roomId));
-  // }
-
-
-//تحديد الغرف
-//   void selectRoom(String roomId, ProviderItemsViewEntity roomDetails) {
-//     selectedRoomId = roomId;
-//     selectedRoomDetails = roomDetails;
-//
-//     if (state is HotelDetailLoaded) {
-//       final hotel = (state as HotelDetailLoaded).hotel;
-//       emit(RoomSelectionChanged(roomId, hotel));
-//     }
-//   }
-
-
   void selectRoom(String roomId, ProviderItemsViewEntity roomDetails) {
     selectedRoomId = roomId;
     selectedRoomDetails = roomDetails;
@@ -138,19 +86,22 @@ class HotelCubit extends Cubit<HotelState> {
     emit(state);
   }
 
-
-
-  // void selectRoom(String roomId, ProviderItemsViewEntity roomDetails) {
-  //   selectedRoomId = roomId;
-  //   selectedRoomDetails = roomDetails;
-  //   if (state is HotelDetailLoaded) {
-  //     emit(RoomSelectionChanged(roomId));
-  //     // emit(RoomSelectionChanged(roomId, (state as HotelDetailLoaded).hotel));
-  //   }
-  //   // emit(RoomSelectionChanged(roomId));
-  //   // );
   //
-  // }
+ //
+ //
+  //!!-------------SEARCH Hotels ----------------
+  Future<void> searchHotels(String query) async {
+    emit(HotelLoading());
+
+    final result = await usecase.searchHotels(query);
+
+    result.when(
+          (hotels) => emit(HotelLoaded(hotels)),
+          (error) => emit(HotelError(error)),
+    );
+  }
+
+
 
 }
 
