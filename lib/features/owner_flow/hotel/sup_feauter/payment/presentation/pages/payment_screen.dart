@@ -39,7 +39,7 @@ class _PaymentScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final paymentConfig = PaymentConfig(
-      publishableApiKey: 'pk_test_KvY16gPmp6n5YxxyUmL61GPBbwUF3qxDUbErCyBE',
+      publishableApiKey: 'your api key',
       amount: amount,
       description: 'order #$bookingId',
       metadata: {'bookingId': bookingId},
