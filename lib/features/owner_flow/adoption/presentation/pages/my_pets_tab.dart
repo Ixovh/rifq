@@ -54,14 +54,7 @@ class MyPetsTab extends StatelessWidget {
             ),
           );
         }
-        if (state is PetAddedForAdoptionSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: const Text('Pet added for adoption successfully'),
-              backgroundColor: context.success,
-            ),
-          );
-        }
+        // to avoid duplicate snackbars
         if (state is AdoptionError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
