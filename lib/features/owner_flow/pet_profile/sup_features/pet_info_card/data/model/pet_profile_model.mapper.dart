@@ -61,7 +61,7 @@ class PetProfileModelMapper extends ClassMapperBase<PetProfileModel> {
   static const Field<PetProfileModel, String> _f$ownerId = Field(
     'ownerId',
     _$ownerId,
-    key: r'owner_id',
+    key: r'user_id',
   );
   static String _$gender(PetProfileModel v) => v.gender;
   static const Field<PetProfileModel, String> _f$gender = Field(

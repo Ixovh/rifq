@@ -1,6 +1,8 @@
 import 'package:get_storage/get_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:multiple_result/multiple_result.dart';
+import 'package:rifq/core/shared/shared_in_owner_flow/shared_auth/helpers/auth_helper.dart';
+import 'package:rifq/core/utils/Exception/custom_exception.dart';
 import '../../../../../core/shared/shared_in_owner_flow/shared_auth/models/auth_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -38,15 +40,13 @@ abstract class BaseAuthDataSource {
 @LazySingleton(as: BaseAuthDataSource)
 class SubaBaseDataSource implements BaseAuthDataSource {
   final SupabaseClient _supabase;
-  final GetStorage _box;
+
   String? email;
 
   SubaBaseDataSource({
     required SupabaseClient supabase,
     required GetStorage box,
-    // this.email,
-  }) : _supabase = supabase,
-       _box = box;
+  }) : _supabase = supabase;
 
   @override
   Future<Result<Null, Object>> signUp({
@@ -71,7 +71,9 @@ class SubaBaseDataSource implements BaseAuthDataSource {
       );
       return Success(null);
     } catch (e) {
-      return Error(e);
+      return Result.error(
+        CatchErrorMessage(error: e).getWriteMessage(),
+      );
     }
   }
 
@@ -94,18 +96,20 @@ class SubaBaseDataSource implements BaseAuthDataSource {
         return Error(Exception('No session returned from Supabase.'));
       }
 
-      final res = AuthModel(
+      await AuthHelper.saveLogin(
         token: session.accessToken,
         refreshToken: session.refreshToken!,
+        userId: session.user.id,
       );
-      await _box.write('login', res.toJson());
-      await _box.save();
 
       return Success(null);
     } catch (e) {
-      return Error(e);
+      return Result.error(
+        CatchErrorMessage(error: e).getWriteMessage(),
+      );
     }
   }
+
   //
   //
   //
@@ -121,24 +125,31 @@ class SubaBaseDataSource implements BaseAuthDataSource {
         token: otp,
         type: OtpType.email,
       );
-      final res = AuthModel(
+
+      await AuthHelper.saveLogin(
         token: user.session!.accessToken,
         refreshToken: user.session!.refreshToken!,
+        userId: user.user!.id,
       );
-      await _box.write('login', res.toJson());
-      await _box.save();
 
-      // by doing this query user id will equal auth.id
       await _supabase
           .from('users')
           .update({'id': user.user!.id})
           .eq('auth_id', user.user!.id);
 
-      return Success(res);
+      return Success(
+        AuthModel(
+          token: user.session!.accessToken,
+          refreshToken: user.session!.refreshToken!,
+        ),
+      );
     } catch (e) {
-      return Error(e);
+      return Result.error(
+        CatchErrorMessage(error: e).getWriteMessage(),
+      );
     }
   }
+
   //
   //
   //
@@ -147,11 +158,17 @@ class SubaBaseDataSource implements BaseAuthDataSource {
   Future<Result<Null, Object>> anonymousUser() async {
     try {
       await _supabase.auth.signInAnonymously();
+
+      await AuthHelper.saveGuestLogin();
+
       return Success(null);
     } catch (e) {
-      return Error(e);
+      return Result.error(
+        CatchErrorMessage(error: e).getWriteMessage(),
+      );
     }
   }
+
   //
   //
   //
@@ -160,13 +177,17 @@ class SubaBaseDataSource implements BaseAuthDataSource {
   Future<Result<Null, Object>> logOut() async {
     try {
       await _supabase.auth.signOut();
-      await _box.erase();
+
+      await AuthHelper.logout();
 
       return Success(null);
     } catch (e) {
-      return Error(e);
+      return Result.error(
+        CatchErrorMessage(error: e).getWriteMessage(),
+      );
     }
   }
+
   //
   //
   //
@@ -186,7 +207,9 @@ class SubaBaseDataSource implements BaseAuthDataSource {
 
       return Success(null);
     } catch (e) {
-      return Error(e);
+      return Result.error(
+        CatchErrorMessage(error: e).getWriteMessage(),
+      );
     }
   }
 
@@ -203,7 +226,9 @@ class SubaBaseDataSource implements BaseAuthDataSource {
       this.email = email;
       return Success(null);
     } catch (e) {
-      return Error(e);
+      return Result.error(
+        CatchErrorMessage(error: e).getWriteMessage(),
+      );
     }
   }
 }

@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import 'package:multiple_result/src/result.dart';
+import 'package:multiple_result/multiple_result.dart';
 
 import 'package:rifq/features/owner_flow/profile/domain/entities/user_profile_entity.dart';
 

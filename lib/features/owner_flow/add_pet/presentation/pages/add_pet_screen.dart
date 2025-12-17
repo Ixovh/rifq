@@ -11,26 +11,26 @@ import 'package:rifq/features/owner_flow/add_pet/presentation/widgets/step2_add_
 import 'package:rifq/core/di/setup.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class _AddPetFormState {
+class AddPetFormState {
   final String gender;
   final String species;
   final DateTime? birthdate;
   final File? photoFile;
 
-  const _AddPetFormState({
+  const AddPetFormState({
     this.gender = '',
     this.species = '',
     this.birthdate,
     this.photoFile,
   });
 
-  _AddPetFormState copyWith({
+  AddPetFormState copyWith({
     String? gender,
     String? species,
     DateTime? birthdate,
     File? photoFile,
   }) {
-    return _AddPetFormState(
+    return AddPetFormState(
       gender: gender ?? this.gender,
       species: species ?? this.species,
       birthdate: birthdate ?? this.birthdate,
@@ -44,8 +44,8 @@ class AddPetScreen extends StatelessWidget {
 
   final PageController controller = PageController();
   final ValueNotifier<int> currentStep = ValueNotifier(0);
-  final ValueNotifier<_AddPetFormState> formState = ValueNotifier(
-    const _AddPetFormState(),
+  final ValueNotifier<AddPetFormState> formState = ValueNotifier(
+    const AddPetFormState(),
   );
 
   final TextEditingController nameCtrl = TextEditingController();
@@ -55,19 +55,21 @@ class AddPetScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final _ = Supabase.instance.client;
 
-    // Future<String?> getOwnerId() async {
-    //   final authId = supabase.auth.currentUser?.id;
+    Future<String?> getOwnerId() async {
+      final supabase = Supabase.instance.client;
 
-    //   if (authId == null) return null;
+      final authId = supabase.auth.currentUser?.id;
 
-    //   final res = await supabase
-    //       .from('users')
-    //       .select('id')
-    //       .eq('auth_id', authId)
-    //       .maybeSingle();
+      if (authId == null) return null;
 
-    //   return res?['id'];
-    // }
+      final res = await supabase
+          .from('users')
+          .select('id')
+          .eq('auth_id', authId)
+          .maybeSingle();
+
+      return res?['id'];
+    }
 
     return BlocProvider(
       create: (_) => getIt<AddPetCubit>(),
@@ -75,10 +77,18 @@ class AddPetScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is AddPetLoading) {
           } else if (state is AddPetSuccess) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text("Pet added successfully")));
-            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: context.green10,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                margin: EdgeInsets.only(bottom: 10, left: 16, right: 16),
+                content: Text("Pet added successfully"),
+              ),
+            );
+            Navigator.pop(context, true);
           } else if (state is AddPetFailure) {
             ScaffoldMessenger.of(
               context,
@@ -94,7 +104,6 @@ class AddPetScreen extends StatelessWidget {
             leading: IconButton(
               icon: Icon(CupertinoIcons.back, color: context.neutral1000),
               onPressed: () {
-
                 if (currentStep.value == 0) {
                   Navigator.pop(context);
                 } else {
@@ -121,7 +130,7 @@ class AddPetScreen extends StatelessWidget {
 
               // ---------------pages----------------
               Expanded(
-                child: ValueListenableBuilder<_AddPetFormState>(
+                child: ValueListenableBuilder<AddPetFormState>(
                   valueListenable: formState,
                   builder: (_, form, _) {
                     return PageView(
@@ -177,7 +186,7 @@ class AddPetScreen extends StatelessWidget {
                         if (step == 0) {
                           currentStep.value = 1;
                           controller.nextPage(
-                            duration: const Duration(milliseconds: 300),
+                            duration: Duration(milliseconds: 300),
                             curve: Curves.ease,
                           );
                           return;
@@ -190,34 +199,34 @@ class AddPetScreen extends StatelessWidget {
                             form.species.isEmpty ||
                             form.birthdate == null) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
+                            SnackBar(
                               content: Text("Please complete all fields"),
                             ),
                           );
                           return;
                         }
 
-                        // final ownerId = await getOwnerId();
+                        final ownerId = await getOwnerId();
 
-                        // if (ownerId == null) {
-                        //   ScaffoldMessenger.of(context).showSnackBar(
-                        //     SnackBar(
-                        //       content: Text("Could not find user profile"),
-                        //     ),
-                        //   );
-                        //   return;
-                        // } 
-                        final ownerId = "004bdc95-297a-4ff4-addd-e7c4d70941d8"; //just for testing
-
-                        context.read<AddPetCubit>().addPet(
-                          ownerId: ownerId,
-                          name: nameCtrl.text,
-                          species: form.species,
-                          gender: form.gender,
-                          breed: breedCtrl.text,
-                          birthdate: form.birthdate!,
-                          photoFile: form.photoFile!,
-                        );
+                        if (ownerId == null) {
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("User profile not found")),
+                            );
+                          }
+                          return;
+                        }
+                        if (context.mounted) {
+                          context.read<AddPetCubit>().addPet(
+                            ownerId: ownerId,
+                            name: nameCtrl.text,
+                            species: form.species,
+                            gender: form.gender,
+                            breed: breedCtrl.text,
+                            birthdate: form.birthdate!,
+                            photoFile: form.photoFile!,
+                          );
+                        }
                       },
                       buttonWidth: 366,
                       buttonhight: 58,

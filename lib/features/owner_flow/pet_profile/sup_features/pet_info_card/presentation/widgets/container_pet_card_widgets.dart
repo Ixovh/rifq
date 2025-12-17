@@ -1,28 +1,16 @@
-
-import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rifq/core/theme/app_color.dart';
 import 'package:rifq/core/theme/app_theme.dart';
+import '../../../../../../../core/routes/base_routes.dart';
+import '../../domain/entity/pet_entity.dart';
 
-import '../../domain/entity/pet_profile_entity.dart';
 class ContainerPetCardWidgets extends StatelessWidget {
   final PetProfileEntity pet;
-
-  // final String petName;
-  // final String gender;
-  // final String age;
-  // final String breed;
-  // final String photo;
-
   const ContainerPetCardWidgets({
     super.key,
     required this.pet,
-    // required this.petName,
-    // required this.gender,
-    // required this.age,
-    // required this.breed,
-    // required this.photo,
   });
 
   @override
@@ -38,30 +26,31 @@ class ContainerPetCardWidgets extends StatelessWidget {
             color: Colors.black12,
             blurRadius: 12,
             offset: Offset(0, 4),
-          )
+          ),
         ],
       ),
 
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
-          /// Pet Profile + edit icon
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 "Pet Profile",
-                style: context.body3.copyWith(color: context.neutral500)
+                style: context.body3.copyWith(color: context.neutral500),
               ),
-              IconButton(onPressed: (){},
-                  icon: Icon(Icons.edit_outlined, color: AppColors.neutral900))
+              IconButton(
+                onPressed: () {
+                  context.push(Routes.editpetprofile, extra: pet);
+                },
+                icon: Icon(Icons.edit_outlined),
+              ),
+
             ],
           ),
 
           SizedBox(height: 12.h),
-
-          /// Card Header with mint background
           Container(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
             decoration: BoxDecoration(
@@ -73,11 +62,9 @@ class ContainerPetCardWidgets extends StatelessWidget {
                 CircleAvatar(
                   radius: 22.r,
                   backgroundColor: Colors.white,
-                  child: Image.asset(pet.photoUrl),
+                  child: Image.network(pet.photoUrl),
                 ),
-
                 SizedBox(width: 12.w),
-
                 Expanded(
                   child: Text(
                     pet.name,
@@ -87,15 +74,35 @@ class ContainerPetCardWidgets extends StatelessWidget {
                     ),
                   ),
                 ),
-                IconButton(onPressed: (){}, 
-                    icon: Icon(Icons.arrow_forward_ios,size: 20.r,))
+                IconButton(
+                  onPressed: () {
+                    try {
+                      final petEntity = pet.toPetEntity(
+                        healthRecords: [],
+                        reservations: [],
+                      );
+                      context.push(Routes.healthRecourdpet, extra: petEntity);
+                    } catch (_) {}
+                  },
+                  icon: Icon(Icons.arrow_forward),
+                ),
+
               ],
             ),
           ),
           SizedBox(height: 18.h),
-          Text("Gender: ${pet.gender}",style: TextStyle(color: AppColors.neutral500),),
-          Text("Age:  ${pet.birthdate}",style: TextStyle(color: AppColors.neutral500),),
-          Text("Breed:  ${pet.breed}",style: TextStyle(color: AppColors.neutral500),),
+          Text(
+            "Gender: ${pet.gender}",
+            style: TextStyle(color: AppColors.neutral500),
+          ),
+          Text(
+            "Age:  ${pet.birthdate}",
+            style: TextStyle(color: AppColors.neutral500),
+          ),
+          Text(
+            "Breed:  ${pet.breed}",
+            style: TextStyle(color: AppColors.neutral500),
+          ),
         ],
       ),
     );

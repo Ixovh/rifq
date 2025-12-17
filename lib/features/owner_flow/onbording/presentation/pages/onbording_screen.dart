@@ -133,7 +133,6 @@ class OnbordingScreen extends StatelessWidget {
                         children: [
                           Expanded(
                             //كانت sizedBox
-                            // height: 0.5.sh,
                             child: Stack(
                               clipBehavior: Clip.none,
                               children: pageImages[index],
@@ -195,36 +194,7 @@ class OnbordingScreen extends StatelessWidget {
               ),
             );
 
-            // بعد تجربة رند وحاتم احذفه
-
-            // return Scaffold(
-            //       backgroundColor: Colors.transparent,
-            //       body:PageView.builder(
-            //           controller: controller,
-            //           itemCount: 3,
-            //           onPageChanged: (index){
-            //             context.read<OnbordingCubit>().changePage(index);
-            //           },
-            //           itemBuilder: (context,index){
-            //             return Column(
-            //               children: [
-            //                 SizedBox(
-            //                   height: 0.5.sh,
-            //                   width: double.infinity,
-            //                   child: Stack(
-            //                       children: pageImages[index]
-            //                   ),
-            //                 ),
-            //                 CustomeContainerWidgets(
-            //                   title: title[index],
-            //                   subTitle: subTitle[index],
-            //                   pageIndex: state,
-            //                   controller: controller,
-            //                 ), ],
-            //             );
-            //
-            //           })
-            //   );
+          
           },
         ),
       ),

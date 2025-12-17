@@ -1,6 +1,5 @@
-import 'package:multiple_result/multiple_result.dart';
 
-import '../entity/pet_profile_entity.dart';
+import '../entity/pet_entity.dart';
 
 
 abstract class PetProfileRepoDomain {
@@ -8,6 +7,5 @@ abstract class PetProfileRepoDomain {
 
   Future<PetProfileEntity> getPetById(String petId);// عشان ادخل على تفاصيل كل حيوان
 
-  // Future<PetProfileEntity> updatePetProfile(PetProfileEntity  petId);
 
 }

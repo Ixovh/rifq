@@ -26,7 +26,6 @@ class ChoosePathScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-
             Column(
               children: [
                 SizedBox(height: 150.h),
@@ -48,14 +47,12 @@ class ChoosePathScreen extends StatelessWidget {
                   style: context.body1.copyWith(color: context.neutral100),
                 ),
 
-                // SizedBox(height: 40.h),
-
               ],
             ),
 
             Column(
               children: [
-                     Align(
+                Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
                     "Choose your path to start:",
@@ -74,7 +71,9 @@ class ChoosePathScreen extends StatelessWidget {
                 PathButton(
                   title: "I provide care services",
                   icon: Icons.add_circle_outline,
-                  onTap: () {},
+                  onTap: () {
+                    context.push(Routes.providerAuth);
+                  },
                 ),
 
                 SizedBox(height: 60.h),

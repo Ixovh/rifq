@@ -21,7 +21,7 @@ class SendsToEmailScreen extends StatelessWidget {
     return Builder(
       builder: (context) {
         final cubit = context.read<AuthCubit>();
-        return BlocListener<AuthCubit, AuthState>(
+        return BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
             switch (state) {
               case AuthPasswordResetEmailSentState _:
@@ -30,102 +30,99 @@ class SendsToEmailScreen extends StatelessWidget {
                   extra: {"cubit": cubit, "isPassword": true},
                 );
                 break;
-              case AuthLoadingState _:
-                Center(child: CircularProgressIndicator());
-                break;
               case AuthErrorState _:
                 ScaffoldMessenger.of(
                   context,
                 ).showSnackBar(SnackBar(content: Text(state.msg)));
                 break;
               default:
-                Center(child: CircularProgressIndicator());
                 break;
             }
           },
-          child: Scaffold(
-            backgroundColor: context.neutral100,
-            resizeToAvoidBottomInset: false,
-            bottomSheet: CustomBottomSheet(
-              content: Column(
-                mainAxisAlignment: .center,
-                crossAxisAlignment: .start,
-                children: [
-                  Center(
-                    child: Text(
-                      'Reset Password',
-                      style: context.h5.copyWith(
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.w500,
-                        color: context.primary400,
+          builder: (context, state) {
+            final isLoading = state is AuthLoadingState;
+            return Scaffold(
+              backgroundColor: context.neutral100,
+              resizeToAvoidBottomInset: false,
+              bottomSheet: CustomBottomSheet(
+                content: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Text(
+                        'Reset Password',
+                        style: context.h5.copyWith(
+                          fontSize: 24.sp,
+                          fontWeight: FontWeight.w500,
+                          color: context.primary400,
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 8.h),
-
-                  Text(
-                    'Enter your email to verify and reset your password.',
-                    style: context.body2.copyWith(color: context.neutral800),
-                  ),
-                  SizedBox(height: 24.h),
-                  FormBuilder(
-                    key: cubit.resetVerfiyEmailFormKey,
-                    child: CustomFormBuilderTextField(
-                      name: 'email',
-                      label: 'Email',
-                      iconData: CupertinoIcons.mail_solid,
-                      controller: cubit.resetEmailController,
-                      validators: [
-                        FormBuilderValidators.required(
-                          errorText: '(e.g., username@example.com).',
-                        ),
-                        FormBuilderValidators.email(
-                          errorText: '(e.g., username@example.com).',
-                        ),
-                      ],
+                    SizedBox(height: 8.h),
+                    Text(
+                      'Enter your email to verify and reset your password.',
+                      style: context.body2.copyWith(color: context.neutral800),
                     ),
-                  ),
-                  SizedBox(height: 32.h),
-
-                  ContainerButton(
-                    label: 'verfiy',
-                    containerColor: context.primary300,
-                    textColor: context.neutral100,
-                    fontSize: 20,
-                    onTap: () async {
-                      if (cubit.resetVerfiyEmailFormKey.currentState
-                              ?.saveAndValidate() ??
-                          false) {
-                        await cubit.sendPasswordResetEmail(
-                          email: cubit.resetEmailController.text,
-                        );
-                      }
-                    },
-                  ),
-                  SizedBox(height: 12.h),
-
-                  ContainerButton(
-                    label: 'Cancel',
-                    containerColor: context.neutral100,
-                    textColor: context.primary300,
-                    fontSize: 20,
-                    onTap: () {
-                      if (context.canPop()) {
-                        context.pop();
-                      }
-                    },
-                  ),
-                  Spacer(),
-                ],
+                    SizedBox(height: 24.h),
+                    FormBuilder(
+                      key: cubit.resetVerfiyEmailFormKey,
+                      child: CustomFormBuilderTextField(
+                        name: 'email',
+                        label: 'Email',
+                        iconData: CupertinoIcons.mail_solid,
+                        controller: cubit.resetEmailController,
+                        validators: [
+                          FormBuilderValidators.required(
+                            errorText: '(e.g., username@example.com).',
+                          ),
+                          FormBuilderValidators.email(
+                            errorText: '(e.g., username@example.com).',
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 32.h),
+                    ContainerButton(
+                      label: 'verfiy',
+                      containerColor: context.primary300,
+                      textColor: context.neutral100,
+                      fontSize: 20,
+                      isLoading: isLoading,
+                      onTap: () async {
+                        if (cubit.resetVerfiyEmailFormKey.currentState
+                                ?.saveAndValidate() ??
+                            false) {
+                          await cubit.sendPasswordResetEmail(
+                            email: cubit.resetEmailController.text,
+                          );
+                        }
+                      },
+                    ),
+                    SizedBox(height: 12.h),
+                    ContainerButton(
+                      label: 'Cancel',
+                      containerColor: context.neutral100,
+                      textColor: context.primary300,
+                      fontSize: 20,
+                      onTap: () {
+                        if (context.canPop()) {
+                          context.pop();
+                        }
+                      },
+                    ),
+                    Spacer(),
+                  ],
+                ),
               ),
-            ),
-            body: SafeArea(
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: SvgPicture.asset('assets/icon/logo.svg'),
+              body: SafeArea(
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: SvgPicture.asset('assets/icon/logo.svg'),
+                ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
     );

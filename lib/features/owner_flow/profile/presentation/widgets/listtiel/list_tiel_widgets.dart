@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rifq/core/theme/app_theme.dart';
@@ -24,9 +23,3 @@ class ListTielWidgets extends StatelessWidget {
    );
   }
 }
-
-//ListTile(
-//      leading:Image.asset(images),
-//      title: Text(text,style: TextStyle(fontSize: 16.sp)),
-//
-//    );

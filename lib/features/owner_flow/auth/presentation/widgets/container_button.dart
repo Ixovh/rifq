@@ -14,6 +14,7 @@ class ContainerButton extends StatelessWidget {
     this.height = 58,
     this.onTap,
     this.borderColor = AppColors.primary300,
+    this.isLoading = false,
   });
   final String label;
   final Color containerColor;
@@ -23,11 +24,12 @@ class ContainerButton extends StatelessWidget {
   final double width;
   final double height;
   final void Function()? onTap;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onTap: isLoading ? null : onTap,
       child: Container(
         width: width.w,
         height: height.h,
@@ -37,13 +39,22 @@ class ContainerButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(250.r),
         ),
         child: Center(
-          child: Text(
-            label,
-            style: context.bodyLarge.copyWith(
-              color: textColor,
-              fontSize: fontSize.sp,
-            ),
-          ),
+          child: isLoading
+              ? SizedBox(
+                  width: 24.w,
+                  height: 24.h,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(textColor),
+                  ),
+                )
+              : Text(
+                  label,
+                  style: context.bodyLarge.copyWith(
+                    color: textColor,
+                    fontSize: fontSize.sp,
+                  ),
+                ),
         ),
       ),
     );

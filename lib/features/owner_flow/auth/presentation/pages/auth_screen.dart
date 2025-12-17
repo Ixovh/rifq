@@ -26,18 +26,20 @@ class AuthScreen extends StatelessWidget {
             listener: (context, state) {
               switch (state) {
                 case AuthSuccessState _:
-                  context.go(Routes.home,);
+                  context.push(Routes.navbar);
                   break;
                 case AuthSignUPSuccessState _:
-                  context.push(Routes.otpScreen, extra: {"cubit":cubit, "isPassword": false});
+                  context.push(
+                    Routes.otpScreen,
+                    extra: {"cubit": cubit, "isPassword": false},
+                  );
                   break;
                 case AuthErrorState _:
                   ScaffoldMessenger.of(
                     context,
                   ).showSnackBar(SnackBar(content: Text(state.msg)));
                   break;
-                case AuthLoadingState _:
-                  Center(child: CircularProgressIndicator());
+                default:
                   break;
               }
             },

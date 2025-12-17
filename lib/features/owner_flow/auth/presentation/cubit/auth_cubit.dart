@@ -27,6 +27,26 @@ class AuthCubit extends Cubit<AuthState> {
 
   AuthCubit(this._authUseCase) : super(AuthInitial());
 
+  void clearAllControllers() {
+    // Clear all text controllers
+    loginEmailController.clear();
+    loginPasswordController.clear();
+    sinUpEmailController.clear();
+    sinUpPasswordController.clear();
+    nameController.clear();
+    resetEmailController.clear();
+    resetPasswordController.clear();
+
+    // Reset all form states
+    loginFormKey.currentState?.reset();
+    sinUpFormKey.currentState?.reset();
+    resetVerfiyEmailFormKey.currentState?.reset();
+    resetVerfiyPasswordFormKey.currentState?.reset();
+
+    // Clear email
+    email = null;
+  }
+
   Future signUp({
     required String name,
     required String email,
@@ -41,6 +61,7 @@ class AuthCubit extends Cubit<AuthState> {
     )).when(
       (whenSuccess) {
         this.email = email;
+        clearAllControllers();
         emit(AuthSignUPSuccessState());
       },
       (whenError) {
@@ -63,6 +84,7 @@ class AuthCubit extends Cubit<AuthState> {
     (await _authUseCase.login(email: email, password: password)).when(
       (whenSuccess) {
         this.email = email;
+        clearAllControllers();
         emit(AuthSuccessState());
       },
       (whenError) {
@@ -85,6 +107,7 @@ class AuthCubit extends Cubit<AuthState> {
     (await _authUseCase.verifyAccount(email: email, otp: otp)).when(
       (whenSuccess) {
         this.email = email;
+        clearAllControllers();
         emit(AuthSuccessState());
       },
       (whenError) {
@@ -97,36 +120,12 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  //
-  //
-  //
-
-  Future anonymousUser() async {
-    emit(AuthLoadingState());
-
-    (await _authUseCase.anonymousUser()).when(
-      (whenSuccess) {
-        emit(AuthAnonymousSuccessState());
-      },
-      (whenError) {
-        emit(
-          AuthErrorState(
-            msg: CatchErrorMessage(error: whenError).getWriteMessage(),
-          ),
-        );
-      },
-    );
-  }
-
-  //
-  //
-  //
-
   Future logOut() async {
     emit(AuthLoadingState());
 
     (await _authUseCase.logOut()).when(
       (whenSuccess) {
+        clearAllControllers();
         emit(AuthLogoutSuccessState());
       },
       (whenError) {
@@ -168,6 +167,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthLoadingState());
     (await _authUseCase.resetPassword(newPassword: newPassword)).when(
       (success) {
+        clearAllControllers();
         emit(AuthPasswordResetSuccessState());
       },
       (error) {

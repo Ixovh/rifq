@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:multiple_result/multiple_result.dart';
-import '../entity/pet_profile_entity.dart';
+import '../entity/pet_entity.dart';
 import '../repositories/pet_profile_repo_domain.dart';
 
 
@@ -34,12 +34,5 @@ class PetProfileUsecase {
   //
   //
 
-  // Future<Result<PetProfileEntity, String>> updatePetProfile(PetProfileEntity pet) async {
-  //   try {
-  //     final updatedPet = await repository.updatePetProfile(pet);
-  //     return Result.success(updatedPet);
-  //   } catch (e) {
-  //     return Result.error(e.toString());
-  //   }
-  // }
+
 }

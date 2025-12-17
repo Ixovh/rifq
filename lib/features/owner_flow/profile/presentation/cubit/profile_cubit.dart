@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-
 import '../../domain/entities/user_profile_entity.dart';
 import '../../domain/usecases/user_profile_usecase.dart';
 
