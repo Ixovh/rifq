@@ -237,9 +237,10 @@ The project follows a **feature-based clean architecture** with clear separation
 
 | Team Member | Role |
 |------------|------|
-| **Rand Aljarbou** | Developer |
-| **Shatha Alblawi** | Developer |
-| **Hattem Althobaity** | Developer |
+| **[Rand Aljarbou](https://github.com/Randjur)** | Developer |
+| **[Shatha Alblawi](https://github.com/ShathaAlblawi)** | Developer |
+| **[Hattem Althobaity](https://github.com/Ixovh)** | Developer |
+
 
 </div>
 
