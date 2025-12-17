@@ -18,7 +18,7 @@ class ClinicPetsList extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16),
         itemCount: pets.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 12),
+        separatorBuilder: (_, _) => const SizedBox(width: 12),
         itemBuilder: (_, index) {
           final pet = pets[index];
 
@@ -30,7 +30,7 @@ class ClinicPetsList extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black12.withOpacity(0.05),
+                  color: Colors.black12.withValues(alpha:  0.05),
                   blurRadius: 6,
                   offset: const Offset(0, 3),
                 )
@@ -45,7 +45,7 @@ class ClinicPetsList extends StatelessWidget {
                     height: 45,
                     width: 45,
                     fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) =>
+                    errorBuilder: (_, _, _) =>
                         Image.asset("assets/images/default_pet.png",
                             height: 45, width: 45),
                   ),

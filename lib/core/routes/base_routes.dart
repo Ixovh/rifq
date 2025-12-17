@@ -57,6 +57,11 @@ import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_he
 import 'package:rifq/features/owner_flow/profile/presentation/cubit/profile_cubit.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/edit_profile_screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/profile_screen.dart';
+import 'package:rifq/features/owner_flow/store/domain/entities/product_entity.dart';
+import 'package:rifq/features/owner_flow/store/presentation/cubit/store_cubit.dart';
+import 'package:rifq/features/owner_flow/store/presentation/pages/cart_screen.dart';
+import 'package:rifq/features/owner_flow/store/presentation/pages/product_details_screen.dart';
+import 'package:rifq/features/owner_flow/store/presentation/pages/store_screen.dart';
 import 'package:rifq/features/services_provider_flow/auth/data/datasources/provider_atuh_data_source.dart';
 import 'package:rifq/features/services_provider_flow/auth/presentation/cubit/provider_auth_cubit.dart';
 import 'package:rifq/features/services_provider_flow/auth/presentation/pages/provider_auth_screen.dart';
@@ -135,6 +140,10 @@ abstract class Routes {
   static String providerEditProfile = '/providerEditProfile';
   static String visitDetails = '/visitDetails';
 
+  static String store = '/store';
+  static String cart = '/cart';
+  static String productDetails = '/productDetails';
+
   static final routers = GoRouter(
     initialLocation: splash,
     routes: [
@@ -165,19 +174,19 @@ abstract class Routes {
           return AuthScreen();
         },
       ),
-      //------//
-      //------//
-      //------//
-      //------//
 
+      //------//
+      //------//
+      //------//
+      //------//
       GoRoute(
         path: aiScreen,
         builder: (context, state) {
           final AIDatasource datasource = RemoteDataSource();
           final AiRepoDomain repo = AIRepoData(datasource);
           final AIConfigUsecase usecase = AIConfigUsecase(repo);
-          return ChatScreen(useCase: usecase,);
-        }
+          return ChatScreen(useCase: usecase);
+        },
       ),
       GoRoute(
         path: otpScreen,
@@ -272,7 +281,6 @@ abstract class Routes {
       //     );
       //   },
       // ),
-
       GoRoute(path: healthScreen, builder: (context, state) => ClinicScreen()),
 
       GoRoute(
@@ -526,7 +534,24 @@ abstract class Routes {
 
       ///-----///
       ///-----///
+      GoRoute(
+        path: store,
+        builder: (context, state) =>
+            BlocProvider(create: (_) => StoreCubit(), child: StoreScreen()),
+      ),
+
+      GoRoute(
+        path: Routes.productDetails,
+        builder: (context, state) {
+          final product = state.extra as ProductEntity;
+          return ProductDetailsScreen(product: product);
+        },
+      ),
+      GoRoute(path: Routes.cart, builder: (_, _) => const CartScreen()),
+
       ///-----///
+      ///
+      ///
       GoRoute(
         path: paymentscreen,
         builder: (context, state) {

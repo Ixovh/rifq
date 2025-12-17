@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(402, 874),
-      builder: (_, _) => MaterialApp.router(routerConfig: Routes.routers),
+      builder: (_, _) => MaterialApp.router(routerConfig:Routes.routers, debugShowCheckedModeBanner: false),
     );
   }
 }

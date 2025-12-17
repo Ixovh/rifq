@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rifq/features/owner_flow/auth/presentation/cubit/auth_cubit.dart';
 import '../../../../../core/di/setup.dart';
 import '../../../../../core/routes/base_routes.dart';
 import '../../../../../core/shared/shared_in_owner_flow/shared_auth/helpers/auth_helper.dart';
@@ -146,30 +147,6 @@ class ProfileScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      // SingleChildScrollView(
-                      //   scrollDirection: Axis.horizontal,
-                      //   child: BlocProvider(
-                      //     create: (context) =>
-                      //     PetInfoCubit(getIt<PetProfileUsecase>())..getPets(user!.id),
-                      //
-                      //     child: BlocBuilder<PetInfoCubit, PetInfoState>(
-                      //       builder: (context, state) {
-                      //         if (state is PetLoading) {
-                      //           return Center(child: CircularProgressIndicator());
-                      //         }
-                      //         if (state is PetLoaded) {
-                      //           return Row(
-                      //             children: state.pets.map((pet) => ContainerPetCardWidgets(
-                      //               pet: pet,
-                      //             )).toList(),
-                      //           );
-                      //         }
-                      //         if (state is PetError) {
-                      //           return Text(state.msg);
-                      //         }
-                      //         return Container();
-                      //       },
-                      //     ),),),
                       SizedBox(height: 16.h),
                       ListTielWidgets(
                         images: 'assets/images/material.png',
@@ -183,11 +160,15 @@ class ProfileScreen extends StatelessWidget {
                       SizedBox(height: 13.h),
                       ListTielWidgets(
                         icone: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            //  context.read<AuthCubit>().logOut();
+                            context.go(Routes.welcomeScreen);
+                          },
                           icon: Icon(Icons.logout, size: 28.r),
                         ),
                         text: 'Log out',
                       ),
+                       SizedBox(height: 18.h),
                     ],
                   ),
                 ),
