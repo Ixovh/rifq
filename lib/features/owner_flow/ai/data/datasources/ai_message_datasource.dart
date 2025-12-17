@@ -12,7 +12,7 @@ abstract class AIDatasource {
 class RemoteDataSource implements AIDatasource {
   @override
   AIModel aiCongif() {
-    final apiKey =  'AIzaSyAkS4TuephJJ86JhH_IF1mOlXX_zPNMTBI';
+    final apiKey =  'your api key';
     final modelName =  'gemini-2.5-flash';
 
     const instructions = "You're a professional AI Assitant. You should only answer questions related to animals and pets";
@@ -25,5 +25,6 @@ class RemoteDataSource implements AIDatasource {
       welcomeMessage: welcomeMessage,
     );
   }
+
 
 }
