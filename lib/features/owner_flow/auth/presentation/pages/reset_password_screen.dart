@@ -22,14 +22,11 @@ class ResetPasswordScreen extends StatelessWidget {
     return Builder(
       builder: (context) {
         final cubit = context.read<AuthCubit>();
-        return BlocListener<AuthCubit, AuthState>(
+        return BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
             switch (state) {
               case AuthPasswordResetSuccessState _:
                 context.push(Routes.auth);
-                break;
-              case AuthLoadingState _:
-                LottieLoding();
                 break;
               case AuthErrorState _:
                 ScaffoldMessenger.of(
@@ -37,83 +34,90 @@ class ResetPasswordScreen extends StatelessWidget {
                 ).showSnackBar(SnackBar(content: Text(state.msg)));
                 break;
               default:
-                LottieLoding();
                 break;
             }
           },
-          child: Scaffold(
-            backgroundColor: context.neutral100,
-            resizeToAvoidBottomInset: false,
-            bottomSheet: CustomBottomSheet(
-              content: Column(
-                mainAxisAlignment: .center,
-                crossAxisAlignment: .center,
-                children: [
-                  Text(
-                    'Reset Password',
-                    style: context.h5.copyWith(
-                      fontSize: 24.sp,
-                      fontWeight: FontWeight.w500,
-                      color: context.primary400,
-                    ),
-                  ),
-                  SizedBox(height: 8.h),
-
-                  Text(
-                    'Please enter your new password to proceed.',
-                    style: context.body2.copyWith(color: context.neutral800),
-                  ),
-                  SizedBox(height: 24.h),
-                  FormBuilder(
-                    key: cubit.resetVerfiyPasswordFormKey,
-                    child: CustomFormBuilderTextField(
-                      name: 'password',
-                      label: 'Password',
-                      iconData: CupertinoIcons.lock_fill,
-                      controller: cubit.resetPasswordController,
-                      isPassword: true,
-                      validators: [
-                        FormBuilderValidators.required(
-                          errorText: 'Incorrect password. Please try again.',
+          builder: (context, state) {
+            final isLoading = state is AuthLoadingState;
+            return Scaffold(
+              backgroundColor: context.neutral100,
+              resizeToAvoidBottomInset: false,
+              bottomSheet: CustomBottomSheet(
+                content: Stack(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Reset Password',
+                          style: context.h5.copyWith(
+                            fontSize: 24.sp,
+                            fontWeight: FontWeight.w500,
+                            color: context.primary400,
+                          ),
                         ),
-                        FormBuilderValidators.minLength(
-                          6,
-                          errorText:
-                              'Includes at least one number or symbol (e.g., @, #, \$, !).',
+                        SizedBox(height: 8.h),
+                        Text(
+                          'Please enter your new password to proceed.',
+                          style: context.body2.copyWith(
+                            color: context.neutral800,
+                          ),
                         ),
+                        SizedBox(height: 24.h),
+                        FormBuilder(
+                          key: cubit.resetVerfiyPasswordFormKey,
+                          child: CustomFormBuilderTextField(
+                            name: 'password',
+                            label: 'Password',
+                            iconData: CupertinoIcons.lock_fill,
+                            controller: cubit.resetPasswordController,
+                            isPassword: true,
+                            validators: [
+                              FormBuilderValidators.required(
+                                errorText:
+                                    'Incorrect password. Please try again.',
+                              ),
+                              FormBuilderValidators.minLength(
+                                6,
+                                errorText:
+                                    'Includes at least one number or symbol (e.g., @, #, \$, !).',
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 32.h),
+                        ContainerButton(
+                          label: 'verfiy',
+                          containerColor: context.primary300,
+                          textColor: context.neutral100,
+                          fontSize: 20,
+                          onTap: () async {
+                            if (cubit.resetVerfiyPasswordFormKey.currentState
+                                    ?.saveAndValidate() ??
+                                false) {
+                              await cubit.resetPassword(
+                                newPassword: cubit.resetPasswordController.text,
+                              );
+                            }
+                          },
+                        ),
+                        SizedBox(height: 12.h),
+                        Spacer(),
                       ],
                     ),
-                  ),
-                  SizedBox(height: 32.h),
-
-                  ContainerButton(
-                    label: 'verfiy',
-                    containerColor: context.primary300,
-                    textColor: context.neutral100,
-                    fontSize: 20,
-                    onTap: () async {
-                      if (cubit.resetVerfiyPasswordFormKey.currentState
-                              ?.saveAndValidate() ??
-                          false) {
-                        await cubit.resetPassword(
-                          newPassword: cubit.resetPasswordController.text,
-                        );
-                      }
-                    },
-                  ),
-                  SizedBox(height: 12.h),
-
-                  Spacer(),
-                ],
+                    if (isLoading) LottieLoding(),
+                  ],
+                ),
               ),
-            ),
-            body: SafeArea(
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: SvgPicture.asset('assets/icon/logo.svg'),
+              body: SafeArea(
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: SvgPicture.asset('assets/icon/logo.svg'),
+                ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
     );
