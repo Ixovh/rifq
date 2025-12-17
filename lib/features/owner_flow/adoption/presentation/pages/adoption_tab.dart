@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rifq/core/routes/base_routes.dart';
 import 'package:rifq/core/theme/app_theme.dart';
+import 'package:rifq/core/common/widgets/lottie_loading/lottie_loding.dart';
 import 'package:rifq/features/owner_flow/adoption/presentation/cubit/adoption_cubit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -62,20 +63,13 @@ class AdoptionTab extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SvgPicture.asset(
-                  'assets/icon/logo.svg',
-                  colorFilter: ColorFilter.mode(
-                    context.neutral300,
-                    BlendMode.srcIn,
-                  ),
-                ),
+                LottieLoding(),
                 SizedBox(height: 16.h),
                 Text(
                   'just a moment we will load available pets',
                   style: context.body2.copyWith(color: context.neutral300),
                 ),
                 SizedBox(height: 16.h),
-                CircularProgressIndicator(color: context.neutral300),
               ],
             ),
           );

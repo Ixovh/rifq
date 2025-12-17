@@ -79,15 +79,7 @@ class TreatmentInputSection extends StatelessWidget {
                   disabledBackgroundColor: context.neutral400,
                 ),
                 child: isSending
-                    ? SizedBox(
-                        height: 20.h,
-                        width: 20.w,
-                        child: CircularProgressIndicator(
-                          color: context.primary,
-                          strokeWidth: 2,
-                          backgroundColor: context.background,
-                        ),
-                      )
+                    ? CircularProgressIndicator(color: context.primary)
                     : Text(
                         'Send',
                         style: context.bodyLarge.copyWith(

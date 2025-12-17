@@ -6,6 +6,7 @@ import 'package:rifq/core/theme/app_theme.dart';
 import 'package:rifq/features/services_provider_flow/home/presentation/cubit/home_cubit.dart';
 import 'package:rifq/features/services_provider_flow/home/presentation/widgets/reservation_card.dart';
 import '../../../../../core/common/widgets/lottie_loading/lottie_loding.dart';
+
 class ProviderHomeScreen extends StatelessWidget {
   const ProviderHomeScreen({super.key});
 
@@ -171,9 +172,7 @@ class ProviderHomeScreen extends StatelessWidget {
                 ),
                 Container(
                   color: Colors.black.withValues(alpha: 0.3),
-                  child: Center(
-                    child: CircularProgressIndicator(color: context.primary),
-                  ),
+                  child: LottieLoding(),
                 ),
               ],
             );

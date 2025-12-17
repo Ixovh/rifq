@@ -40,7 +40,7 @@ class PaymentSuccesfull extends StatelessWidget {
                   SizedBox(height: 17.h),
                   TextButton(
                     onPressed: () {
-                      context.pushReplacement(Routes.hotel);
+                      context.pushReplacement(Routes.navbar);
                     },
                     child: Text(
                       "Back",

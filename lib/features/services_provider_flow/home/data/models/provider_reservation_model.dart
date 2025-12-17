@@ -6,76 +6,22 @@ import 'package:rifq/features/services_provider_flow/home/domain/entities/provid
 part 'provider_reservation_model.mapper.dart';
 
 @MappableClass()
-class ProviderReservationModel extends ProviderReservationEntity with ProviderReservationModelMappable {
-  @MappableField(key: 'user_id')
-  final String userId;
-
-  @MappableField(key: 'pet_id')
-  @override
-  final String petId;
-
-  @MappableField(key: 'provider_id')
-  @override
-  final String providerId;
-
-  @MappableField(key: 'service_item_id')
-  @override
-  final String serviceItemId;
-
-  @MappableField(key: 'notes')
-  @override
-  final String? notes;
-
-  @MappableField(key: 'status')
-  @override
-  final String status;
-
-  @MappableField(key: 'start_date')
-  @override
-  final DateTime? startDate;
-
-  @MappableField(key: 'end_date')
-  @override
-  final DateTime? endDate;
-
-  @MappableField(key: 'time')
-  @override
-  final String? time;
-
-  @MappableField(key: 'created_at')
-  @override
-  final DateTime? createdAt;
-
-  // Pet is handled manually in fromMap since it's nested data
-  @override
-  final AddPetEntity? pet;
-
+class ProviderReservationModel extends ProviderReservationEntity
+    with ProviderReservationModelMappable {
   const ProviderReservationModel({
     required super.id,
-    required this.userId,
-    required this.petId,
-    required this.providerId,
-    required this.serviceItemId,
-    this.notes,
-    required this.status,
-    this.startDate,
-    this.endDate,
-    this.time,
-    this.createdAt,
-    this.pet,
-  }) : super(
-         userId: userId,
-         petId: petId,
-         providerId: providerId,
-         serviceItemId: serviceItemId,
-         notes: notes,
-         status: status,
-         startDate: startDate,
-         endDate: endDate,
-         time: time,
-         createdAt: createdAt,
-         pet: pet,
-       );
+    @MappableField(key: 'user_id') required super.userId,
+    @MappableField(key: 'pet_id') required super.petId,
+    @MappableField(key: 'provider_id') required super.providerId,
+    @MappableField(key: 'service_item_id') required super.serviceItemId,
+    @MappableField(key: 'notes') super.notes,
+    @MappableField(key: 'status') required super.status,
+    @MappableField(key: 'start_date') super.startDate,
+    @MappableField(key: 'end_date') super.endDate,
+    @MappableField(key: 'time') super.time,
+    @MappableField(key: 'created_at') super.createdAt,
+    super.pet,
+  });
 
   static ProviderReservationModel fromMap(Map<String, dynamic> map) {
     // Extract and parse pet data first

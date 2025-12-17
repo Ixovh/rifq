@@ -8,9 +8,14 @@ part 'ai_model.mapper.dart';
 @MappableClass()
 class AIModel extends AIEntity with AIModelMappable {
   AIModel({
-    required super.apiKey,
-    required super.model,
-    required super.instructions,
-    required super.welcomeMessage,
-  });
+    required String apiKey,
+    required String model,
+    required String instructions,
+    required String welcomeMessage,
+  }) : super(
+         apiKey: apiKey,
+         model: model,
+         instructions: instructions,
+         welcomeMessage: welcomeMessage,
+       );
 }

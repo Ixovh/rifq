@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rifq/core/theme/app_theme.dart';
+import 'package:rifq/core/common/widgets/lottie_loading/lottie_loding.dart';
 import 'package:rifq/features/owner_flow/adoption/presentation/cubit/adoption_cubit.dart';
 import 'package:rifq/features/owner_flow/adoption/presentation/widgets/pet_card.dart';
 
@@ -46,20 +47,13 @@ class SelectPetForAdoptionScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: .center,
                 children: [
-                  SvgPicture.asset(
-                    'assets/icon/logo.svg',
-                    colorFilter: ColorFilter.mode(
-                      context.neutral300,
-                      BlendMode.srcIn,
-                    ),
-                  ),
+                  LottieLoding(),
                   SizedBox(height: 16.h),
                   Text(
                     'just a moment we will load your pets',
                     style: context.body2.copyWith(color: context.neutral300),
                   ),
                   SizedBox(height: 16.h),
-                  CircularProgressIndicator(color: context.neutral300),
                 ],
               ),
             ),
@@ -163,27 +157,27 @@ class SelectPetForAdoptionScreen extends StatelessWidget {
         return BuildScaffold(
           context: context,
           cubit: cubit,
-            body: Center(
-              child: Column(
-                mainAxisAlignment: .center,
-                children: [
-                  SvgPicture.asset(
-                    'assets/icon/logo.svg',
-                    colorFilter: ColorFilter.mode(
-                      context.neutral300,
-                      BlendMode.srcIn,
-                    ),
+          body: Center(
+            child: Column(
+              mainAxisAlignment: .center,
+              children: [
+                SvgPicture.asset(
+                  'assets/icon/logo.svg',
+                  colorFilter: ColorFilter.mode(
+                    context.neutral300,
+                    BlendMode.srcIn,
                   ),
-                  SizedBox(height: 16.h),
-                  Text(
-                    'just a moment we will load your pets',
-                    style: context.body2.copyWith(color: context.neutral300),
-                  ),
-                  SizedBox(height: 16.h),
-                  CircularProgressIndicator(color: context.neutral300),
-                ],
-              ),
+                ),
+                SizedBox(height: 16.h),
+                Text(
+                  'just a moment we will load your pets',
+                  style: context.body2.copyWith(color: context.neutral300),
+                ),
+                SizedBox(height: 16.h),
+                LottieLoding(),
+              ],
             ),
+          ),
         );
       },
     );

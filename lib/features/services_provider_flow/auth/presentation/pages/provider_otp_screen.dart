@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 import 'package:rifq/core/routes/base_routes.dart';
 import 'package:rifq/core/theme/app_theme.dart';
+import 'package:rifq/core/common/widgets/lottie_loading/lottie_loding.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/widgets/container_button.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/widgets/custom_bottom_sheet.dart';
 import 'package:rifq/features/services_provider_flow/auth/presentation/cubit/provider_auth_cubit.dart';
@@ -123,12 +124,7 @@ class ProviderOtpScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    if (isLoading)
-                      Center(
-                        child: CircularProgressIndicator(
-                          color: context.primary300,
-                        ),
-                      ),
+                    if (isLoading) LottieLoding(),
                   ],
                 ),
               ),

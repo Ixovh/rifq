@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rifq/core/theme/app_theme.dart';
+import 'package:rifq/core/common/widgets/lottie_loading/lottie_loding.dart';
 import 'package:rifq/features/owner_flow/adoption/presentation/cubit/adoption_cubit.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/widgets/custom_form_builder_text_field.dart';
 import 'package:rifq/features/owner_flow/add_pet/domain/entities/add_pet_entity.dart';
@@ -280,7 +281,7 @@ class PetDetailsScreen extends StatelessWidget {
                             ),
                           ),
                           child: state is AdoptionLoading
-                              ? CircularProgressIndicator(color: Colors.white)
+                              ? LottieLoding()
                               : Text(
                                   'Send Request',
                                   style: context.body1.copyWith(

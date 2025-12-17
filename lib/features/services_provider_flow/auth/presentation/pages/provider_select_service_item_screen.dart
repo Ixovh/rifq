@@ -22,7 +22,7 @@ class ProviderSelectServiceItemScreen extends StatelessWidget {
       listener: (context, state) {
         switch (state) {
           case ProviderAuthServiceItemAddedSuccessState _:
-            context.go(Routes.providerHome);
+            context.go(Routes.providerNavbar);
             break;
           case ProviderAuthErrorState _:
             ScaffoldMessenger.of(

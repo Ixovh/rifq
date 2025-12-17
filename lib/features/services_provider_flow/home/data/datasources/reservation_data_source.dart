@@ -6,18 +6,19 @@ import 'package:rifq/features/services_provider_flow/home/data/models/provider_r
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class BaseReservationDataSource {
-  Future<Result<List<ProviderReservationModel>, String>> getAllReservations(
+  Future<Result<String?, Object>> getProviderIdByAuthId();
+  Future<Result<List<ProviderReservationModel>, Object>> getAllReservations(
     String providerId,
   );
-  Future<Result<PetModel, String>> getSpecificPet(String petId);
-  Future<Result<ProviderReservationModel, String>> getSpecificReservation(
+  Future<Result<PetModel, Object>> getSpecificPet(String petId);
+  Future<Result<ProviderReservationModel, Object>> getSpecificReservation(
     String reservationId,
   );
-  Future<Result<void, String>> acceptReservation(String reservationId);
-  Future<Result<void, String>> rejectReservation(String reservationId);
-  Future<Result<int?, String>> getProviderServiceType(String providerId);
-  Future<Result<String?, String>> getServiceItemName(String serviceItemId);
-  Future<Result<void, String>> updateReservationTreatment(
+  Future<Result<void, Object>> acceptReservation(String reservationId);
+  Future<Result<void, Object>> rejectReservation(String reservationId);
+  Future<Result<int?, Object>> getProviderServiceType(String providerId);
+  Future<Result<String?, Object>> getServiceItemName(String serviceItemId);
+  Future<Result<void, Object>> updateReservationTreatment(
     String reservationId,
     String treatment,
   );
@@ -29,12 +30,38 @@ class ReservationDataSource implements BaseReservationDataSource {
 
   ReservationDataSource(this.supabase);
 
-  String _extractErrorMessage(Object error) {
-    return CatchErrorMessage(error: error).getWriteMessage();
+  @override
+  Future<Result<String?, Object>> getProviderIdByAuthId() async {
+    try {
+      final authId = supabase.auth.currentUser?.id;
+      if (authId == null) {
+        return Result.error(CustomException(message: 'Please login first.'));
+      }
+
+      final provider = await supabase
+          .from('providers')
+          .select('id')
+          .eq('auth_id', authId)
+          .maybeSingle();
+
+      if (provider == null) {
+        return Result.error(
+          CustomException(
+            message: 'Provider account not found. Please sign up first.',
+          ),
+        );
+      }
+
+      return Result.success(provider['id'] as String?);
+    } catch (e) {
+      return Result.error(
+        CustomException(message: CatchErrorMessage(error: e).getWriteMessage()),
+      );
+    }
   }
 
   @override
-  Future<Result<List<ProviderReservationModel>, String>> getAllReservations(
+  Future<Result<List<ProviderReservationModel>, Object>> getAllReservations(
     String providerId,
   ) async {
     try {
@@ -49,17 +76,22 @@ class ReservationDataSource implements BaseReservationDataSource {
       }
 
       final reservations = (response as List)
-          .map((item) => ProviderReservationModel.fromMap(item as Map<String, dynamic>))
+          .map(
+            (item) =>
+                ProviderReservationModel.fromMap(item as Map<String, dynamic>),
+          )
           .toList();
 
       return Result.success(reservations);
     } catch (e) {
-      return Result.error(_extractErrorMessage(e));
+      return Result.error(
+        CustomException(message: CatchErrorMessage(error: e).getWriteMessage()),
+      );
     }
   }
 
   @override
-  Future<Result<PetModel, String>> getSpecificPet(String petId) async {
+  Future<Result<PetModel, Object>> getSpecificPet(String petId) async {
     try {
       final response = await supabase
           .from('pets')
@@ -68,18 +100,20 @@ class ReservationDataSource implements BaseReservationDataSource {
           .maybeSingle();
 
       if (response == null) {
-        return Result.error('Pet not found');
+        return Result.error(CustomException(message: 'Pet not found'));
       }
 
       final pet = PetModelMapper.fromMap(response);
       return Result.success(pet);
     } catch (e) {
-      return Result.error(_extractErrorMessage(e));
+      return Result.error(
+        CustomException(message: CatchErrorMessage(error: e).getWriteMessage()),
+      );
     }
   }
 
   @override
-  Future<Result<ProviderReservationModel, String>> getSpecificReservation(
+  Future<Result<ProviderReservationModel, Object>> getSpecificReservation(
     String reservationId,
   ) async {
     try {
@@ -90,18 +124,20 @@ class ReservationDataSource implements BaseReservationDataSource {
           .maybeSingle();
 
       if (response == null) {
-        return Result.error('Reservation not found');
+        return Result.error(CustomException(message: 'Reservation not found'));
       }
 
       final reservation = ProviderReservationModel.fromMap(response);
       return Result.success(reservation);
     } catch (e) {
-      return Result.error(_extractErrorMessage(e));
+      return Result.error(
+        CustomException(message: CatchErrorMessage(error: e).getWriteMessage()),
+      );
     }
   }
 
   @override
-  Future<Result<void, String>> acceptReservation(String reservationId) async {
+  Future<Result<void, Object>> acceptReservation(String reservationId) async {
     try {
       final response = await supabase
           .from('reservations')
@@ -112,18 +148,22 @@ class ReservationDataSource implements BaseReservationDataSource {
 
       if (response == null) {
         return Result.error(
-          'Failed to accept reservation. Reservation not found.',
+          CustomException(
+            message: 'Failed to accept reservation. Reservation not found.',
+          ),
         );
       }
 
       return Result.success(null);
     } catch (e) {
-      return Result.error(_extractErrorMessage(e));
+      return Result.error(
+        CustomException(message: CatchErrorMessage(error: e).getWriteMessage()),
+      );
     }
   }
 
   @override
-  Future<Result<void, String>> rejectReservation(String reservationId) async {
+  Future<Result<void, Object>> rejectReservation(String reservationId) async {
     try {
       final response = await supabase
           .from('reservations')
@@ -134,18 +174,22 @@ class ReservationDataSource implements BaseReservationDataSource {
 
       if (response == null) {
         return Result.error(
-          'Failed to reject reservation. Reservation not found.',
+          CustomException(
+            message: 'Failed to reject reservation. Reservation not found.',
+          ),
         );
       }
 
       return Result.success(null);
     } catch (e) {
-      return Result.error(_extractErrorMessage(e));
+      return Result.error(
+        CustomException(message: CatchErrorMessage(error: e).getWriteMessage()),
+      );
     }
   }
 
   @override
-  Future<Result<int?, String>> getProviderServiceType(String providerId) async {
+  Future<Result<int?, Object>> getProviderServiceType(String providerId) async {
     try {
       // Get the service type ID from provider_services table
       // Check for clinic (1) or boarding (4)
@@ -164,12 +208,14 @@ class ReservationDataSource implements BaseReservationDataSource {
       final serviceTypeId = response['service_type_id'] as int?;
       return Result.success(serviceTypeId);
     } catch (e) {
-      return Result.error(_extractErrorMessage(e));
+      return Result.error(
+        CustomException(message: CatchErrorMessage(error: e).getWriteMessage()),
+      );
     }
   }
 
   @override
-  Future<Result<String?, String>> getServiceItemName(
+  Future<Result<String?, Object>> getServiceItemName(
     String serviceItemId,
   ) async {
     try {
@@ -186,12 +232,14 @@ class ReservationDataSource implements BaseReservationDataSource {
       final serviceName = response['name'] as String?;
       return Result.success(serviceName);
     } catch (e) {
-      return Result.error(_extractErrorMessage(e));
+      return Result.error(
+        CustomException(message: CatchErrorMessage(error: e).getWriteMessage()),
+      );
     }
   }
 
   @override
-  Future<Result<void, String>> updateReservationTreatment(
+  Future<Result<void, Object>> updateReservationTreatment(
     String reservationId,
     String treatment,
   ) async {
@@ -205,13 +253,17 @@ class ReservationDataSource implements BaseReservationDataSource {
 
       if (response == null) {
         return Result.error(
-          'Failed to update treatment. Reservation not found.',
+          CustomException(
+            message: 'Failed to update treatment. Reservation not found.',
+          ),
         );
       }
 
       return Result.success(null);
     } catch (e) {
-      return Result.error(_extractErrorMessage(e));
+      return Result.error(
+        CustomException(message: CatchErrorMessage(error: e).getWriteMessage()),
+      );
     }
   }
 }

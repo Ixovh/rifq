@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rifq/core/common/widgets/appbar/custom_app_bar.dart';
 import 'package:rifq/core/di/setup.dart';
+import 'package:rifq/core/theme/app_theme.dart';
 import 'package:rifq/features/owner_flow/clinic/presentation/cubit/clinic_cubit.dart';
-import '../../../../../core/common/widgets/lottie_loading/lottie_loding.dart';
 import '../widgets/clinic_header.dart';
 import '../widgets/clinic_search_bar.dart';
 import '../widgets/clinic_section_title.dart';
@@ -29,12 +29,13 @@ class _ClinicView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: "Clinics"),
-      backgroundColor: const Color(0xFFF7F7F7),
+      backgroundColor: context.background,
       body: SafeArea(
         child: BlocBuilder<ClinicCubit, ClinicState>(
           builder: (context, state) {
+
             if (state is ClinicLoading) {
-              return const Center(child: LottieLoding());
+              // return const Center(child: CircularProgressIndicator());
             }
 
             //!!--------------Guest View------------
@@ -68,7 +69,7 @@ class _ClinicView extends StatelessWidget {
               return Center(child: Text(state.message));
             }
 
-            return SizedBox();
+            return   SizedBox();
           },
         ),
       ),

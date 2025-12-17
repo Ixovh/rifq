@@ -22,10 +22,7 @@ class ClinicScreenLoaded extends ClinicState {
   final List<PetModel> pets;
   final List<ProviderEntity> clinics;
 
-  ClinicScreenLoaded({
-    required this.pets,
-    required this.clinics,
-  });
+  ClinicScreenLoaded({required this.pets, required this.clinics});
 
   @override
   List<Object?> get props => [pets, clinics];

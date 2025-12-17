@@ -8,6 +8,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rifq/core/routes/base_routes.dart';
 import 'package:rifq/core/theme/app_theme.dart';
+import 'package:rifq/core/common/widgets/lottie_loading/lottie_loding.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/cubit/auth_cubit.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/widgets/container_button.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/widgets/custom_bottom_sheet.dart';
@@ -31,7 +32,7 @@ class SendsToEmailScreen extends StatelessWidget {
                 );
                 break;
               case AuthLoadingState _:
-                Center(child: CircularProgressIndicator());
+                LottieLoding();
                 break;
               case AuthErrorState _:
                 ScaffoldMessenger.of(
@@ -39,7 +40,7 @@ class SendsToEmailScreen extends StatelessWidget {
                 ).showSnackBar(SnackBar(content: Text(state.msg)));
                 break;
               default:
-                Center(child: CircularProgressIndicator());
+                LottieLoding();
                 break;
             }
           },

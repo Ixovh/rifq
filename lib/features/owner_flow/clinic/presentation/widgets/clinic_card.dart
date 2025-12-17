@@ -57,7 +57,7 @@ class ClinicCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-
+                    // clinic.description ??
                     "Pet care + supplies",
                     style: const TextStyle(color: Colors.black54),
                   ),

@@ -5,8 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:rifq/core/di/setup.dart';
 import 'package:rifq/core/routes/base_routes.dart';
 import 'package:rifq/core/theme/app_theme.dart';
-// ignore: library_prefixes
-import '../../../../../../../core/common/widgets/appbar/custom_app_bar.dart'as AuthHelper;
+import 'package:rifq/core/common/widgets/lottie_loading/lottie_loding.dart';
+import '../../../../../../../core/common/widgets/appbar/custom_app_bar.dart'
+    as auth_helper;
 import '../../../../../../../core/common/widgets/button/custome_button_widgets.dart';
 import '../../../../../../../core/shared/shared_in_owner_flow/shared/entities/provider_items_view_entity.dart';
 import '../../../../../../../core/shared/shared_in_owner_flow/shared/entities/reservation_opt_entity.dart';
@@ -35,7 +36,7 @@ class BookingHotel extends StatelessWidget {
         BlocProvider(
           create: (context) {
             final cubit = ProfileCubit(getIt<UserProfileUsecase>());
-            AuthHelper.getUserId().then((userId) {
+            auth_helper.getUserId().then((userId) {
               if (userId != null) {
                 cubit.getUserProfile(userId);
               }
@@ -43,7 +44,7 @@ class BookingHotel extends StatelessWidget {
             return cubit;
           },
         ),
-     
+
         BlocProvider(
           create: (context) => PetInfoCubit(getIt<PetProfileUsecase>()),
         ),
@@ -76,7 +77,7 @@ class BookingHotel extends StatelessWidget {
                       child: BlocBuilder<ProfileCubit, ProfileState>(
                         builder: (context, state) {
                           if (state is ProfileLoading) {
-                            return Center(child: CircularProgressIndicator());
+                            return LottieLoding();
                           }
                           if (state is ProfileLoaded) {
                             final user = state.user;
@@ -97,7 +98,7 @@ class BookingHotel extends StatelessWidget {
                     BlocBuilder<PetInfoCubit, PetInfoState>(
                       builder: (context, state) {
                         if (state is PetLoading) {
-                          return Center(child: CircularProgressIndicator());
+                          return LottieLoding();
                         }
                         if (state is PetLoaded) {
                           return SizedBox(

@@ -6,10 +6,10 @@ import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 import 'package:rifq/core/routes/base_routes.dart';
 import 'package:rifq/core/theme/app_theme.dart';
+import 'package:rifq/core/common/widgets/lottie_loading/lottie_loding.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/cubit/auth_cubit.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/widgets/container_button.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/widgets/custom_bottom_sheet.dart';
-
 
 class OtpScreen extends StatelessWidget {
   const OtpScreen({super.key, this.isResetPassword = false});
@@ -26,7 +26,7 @@ class OtpScreen extends StatelessWidget {
                 context.go(Routes.home);
                 break;
               case AuthLoadingState _:
-                Center(child: CircularProgressIndicator());
+                LottieLoding();
                 break;
               case AuthErrorState _:
                 ScaffoldMessenger.of(
@@ -34,7 +34,7 @@ class OtpScreen extends StatelessWidget {
                 ).showSnackBar(SnackBar(content: Text(state.msg)));
                 break;
               default:
-                Center(child: CircularProgressIndicator());
+                LottieLoding();
                 break;
             }
           },
@@ -104,7 +104,7 @@ class OtpScreen extends StatelessWidget {
                           otp: pin,
                         );
                       } else {
-                        context.push(Routes.resetPassword, extra:  cubit);
+                        context.push(Routes.resetPassword, extra: cubit);
                       }
                     },
                   ),

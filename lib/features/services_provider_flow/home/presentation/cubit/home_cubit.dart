@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:rifq/core/utils/Exception/custom_exception.dart';
 import 'package:rifq/features/services_provider_flow/home/domain/entities/provider_reservation_entity.dart';
 import 'package:rifq/features/services_provider_flow/home/domain/usecases/reservation_usecase.dart';
 
@@ -17,7 +18,9 @@ class ProviderHomeCubit extends Cubit<HomeState> {
     final providerIdResult = await reservationUseCase.getProviderIdByAuthId();
 
     final providerId = providerIdResult.when((success) => success, (error) {
-      emit(HomeError(error));
+      emit(
+        HomeError(error is CustomException ? error.message : error.toString()),
+      );
       return null;
     });
 
@@ -33,7 +36,9 @@ class ProviderHomeCubit extends Cubit<HomeState> {
     int? serviceTypeId;
     bool hasError = false;
     serviceTypeResult.when((success) => serviceTypeId = success, (error) {
-      emit(HomeError(error));
+      emit(
+        HomeError(error is CustomException ? error.message : error.toString()),
+      );
       hasError = true;
     });
 
@@ -57,7 +62,11 @@ class ProviderHomeCubit extends Cubit<HomeState> {
         );
       },
       (error) {
-        emit(HomeError(error));
+        emit(
+          HomeError(
+            error is CustomException ? error.message : error.toString(),
+          ),
+        );
       },
     );
   }
@@ -81,7 +90,11 @@ class ProviderHomeCubit extends Cubit<HomeState> {
         loadHomeData();
       },
       (error) {
-        emit(HomeError(error));
+        emit(
+          HomeError(
+            error is CustomException ? error.message : error.toString(),
+          ),
+        );
       },
     );
   }
@@ -105,7 +118,11 @@ class ProviderHomeCubit extends Cubit<HomeState> {
         loadHomeData();
       },
       (error) {
-        emit(HomeError(error));
+        emit(
+          HomeError(
+            error is CustomException ? error.message : error.toString(),
+          ),
+        );
       },
     );
   }

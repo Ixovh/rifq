@@ -8,6 +8,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rifq/core/routes/base_routes.dart';
 import 'package:rifq/core/theme/app_theme.dart';
+import 'package:rifq/core/common/widgets/lottie_loading/lottie_loding.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/widgets/container_button.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/widgets/custom_bottom_sheet.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/widgets/custom_form_builder_text_field.dart';
@@ -105,12 +106,7 @@ class ProviderResetPasswordScreen extends StatelessWidget {
                         Spacer(),
                       ],
                     ),
-                    if (isLoading)
-                      Center(
-                        child: CircularProgressIndicator(
-                          color: context.primary300,
-                        ),
-                      ),
+                    if (isLoading) LottieLoding(),
                   ],
                 ),
               ),

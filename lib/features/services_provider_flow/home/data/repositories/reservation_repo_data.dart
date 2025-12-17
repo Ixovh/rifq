@@ -1,7 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:multiple_result/multiple_result.dart';
 import 'package:rifq/features/owner_flow/add_pet/domain/entities/add_pet_entity.dart';
-import 'package:rifq/features/services_provider_flow/auth/data/datasources/provider_atuh_data_source.dart';
 import 'package:rifq/features/services_provider_flow/home/data/datasources/reservation_data_source.dart';
 import 'package:rifq/features/services_provider_flow/home/domain/entities/provider_reservation_entity.dart';
 import 'package:rifq/features/services_provider_flow/home/domain/repositories/reservation_repo_domain.dart';
@@ -9,23 +8,23 @@ import 'package:rifq/features/services_provider_flow/home/domain/repositories/re
 @LazySingleton(as: ReservationRepoDomain)
 class ReservationRepoData implements ReservationRepoDomain {
   final BaseReservationDataSource dataSource;
-  final ProviderBaseAuthDataSource authDataSource;
 
-  ReservationRepoData(this.dataSource, this.authDataSource);
+  ReservationRepoData(this.dataSource);
 
   @override
-  Future<Result<String?, String>> getProviderIdByAuthId() async {
-    final result = await authDataSource.getProviderIdByAuthId();
-    return result.mapError((error) => error.toString());
+  Future<Result<String?, Object>> getProviderIdByAuthId() async {
+    final result = await dataSource.getProviderIdByAuthId();
+    return result;
   }
+
   @override
-  Future<Result<int?, String>> getProviderServiceType(String providerId) async {
+  Future<Result<int?, Object>> getProviderServiceType(String providerId) async {
     final result = await dataSource.getProviderServiceType(providerId);
     return result;
   }
 
   @override
-  Future<Result<List<ProviderReservationEntity>, String>> getAllReservations(
+  Future<Result<List<ProviderReservationEntity>, Object>> getAllReservations(
     String providerId,
   ) async {
     final result = await dataSource.getAllReservations(providerId);
@@ -33,13 +32,13 @@ class ReservationRepoData implements ReservationRepoDomain {
   }
 
   @override
-  Future<Result<AddPetEntity, String>> getSpecificPet(String petId) async {
+  Future<Result<AddPetEntity, Object>> getSpecificPet(String petId) async {
     final result = await dataSource.getSpecificPet(petId);
     return result;
   }
 
   @override
-  Future<Result<ProviderReservationEntity, String>> getSpecificReservation(
+  Future<Result<ProviderReservationEntity, Object>> getSpecificReservation(
     String reservationId,
   ) async {
     final result = await dataSource.getSpecificReservation(reservationId);
@@ -47,19 +46,19 @@ class ReservationRepoData implements ReservationRepoDomain {
   }
 
   @override
-  Future<Result<void, String>> acceptReservation(String reservationId) async {
+  Future<Result<void, Object>> acceptReservation(String reservationId) async {
     final result = await dataSource.acceptReservation(reservationId);
     return result;
   }
 
   @override
-  Future<Result<void, String>> rejectReservation(String reservationId) async {
+  Future<Result<void, Object>> rejectReservation(String reservationId) async {
     final result = await dataSource.rejectReservation(reservationId);
     return result;
   }
 
   @override
-  Future<Result<String?, String>> getServiceItemName(
+  Future<Result<String?, Object>> getServiceItemName(
     String serviceItemId,
   ) async {
     final result = await dataSource.getServiceItemName(serviceItemId);
@@ -67,7 +66,7 @@ class ReservationRepoData implements ReservationRepoDomain {
   }
 
   @override
-  Future<Result<void, String>> updateReservationTreatment(
+  Future<Result<void, Object>> updateReservationTreatment(
     String reservationId,
     String treatment,
   ) async {

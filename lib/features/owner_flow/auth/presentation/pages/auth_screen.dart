@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rifq/core/routes/base_routes.dart';
+import 'package:rifq/core/common/widgets/lottie_loading/lottie_loding.dart';
 import 'package:rifq/features/owner_flow/auth/domain/usecases/auth_use_case.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/auth_tab_bar.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/login_tab.dart';
@@ -29,7 +30,10 @@ class AuthScreen extends StatelessWidget {
                   context.push(Routes.navbar);
                   break;
                 case AuthSignUPSuccessState _:
-                  context.push(Routes.otpScreen, extra: {"cubit":cubit, "isPassword": false});
+                  context.push(
+                    Routes.otpScreen,
+                    extra: {"cubit": cubit, "isPassword": false},
+                  );
                   break;
                 case AuthErrorState _:
                   ScaffoldMessenger.of(
@@ -37,7 +41,7 @@ class AuthScreen extends StatelessWidget {
                   ).showSnackBar(SnackBar(content: Text(state.msg)));
                   break;
                 case AuthLoadingState _:
-                  Center(child: CircularProgressIndicator());
+                  LottieLoding();
                   break;
               }
             },

@@ -3,19 +3,19 @@ import 'package:rifq/features/owner_flow/add_pet/domain/entities/add_pet_entity.
 import 'package:rifq/features/services_provider_flow/home/domain/entities/provider_reservation_entity.dart';
 
 abstract class ReservationRepoDomain {
-  Future<Result<String?, String>> getProviderIdByAuthId();
-  Future<Result<int?, String>> getProviderServiceType(String providerId);
-  Future<Result<List<ProviderReservationEntity>, String>> getAllReservations(
+  Future<Result<String?, Object>> getProviderIdByAuthId();
+  Future<Result<int?, Object>> getProviderServiceType(String providerId);
+  Future<Result<List<ProviderReservationEntity>, Object>> getAllReservations(
     String providerId,
   );
-  Future<Result<AddPetEntity, String>> getSpecificPet(String petId);
-  Future<Result<ProviderReservationEntity, String>> getSpecificReservation(
+  Future<Result<AddPetEntity, Object>> getSpecificPet(String petId);
+  Future<Result<ProviderReservationEntity, Object>> getSpecificReservation(
     String reservationId,
   );
-  Future<Result<void, String>> acceptReservation(String reservationId);
-  Future<Result<void, String>> rejectReservation(String reservationId);
-  Future<Result<String?, String>> getServiceItemName(String serviceItemId);
-  Future<Result<void, String>> updateReservationTreatment(
+  Future<Result<void, Object>> acceptReservation(String reservationId);
+  Future<Result<void, Object>> rejectReservation(String reservationId);
+  Future<Result<String?, Object>> getServiceItemName(String serviceItemId);
+  Future<Result<void, Object>> updateReservationTreatment(
     String reservationId,
     String treatment,
   );

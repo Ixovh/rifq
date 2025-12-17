@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../pet_profile/sup_features/pet_info_card/domain/entity/pet_entity.dart';
+
 class PetNameCardinfoWidgets extends StatelessWidget {
   final Widget? icon;
   final PetProfileEntity pet;
@@ -32,16 +33,12 @@ class PetNameCardinfoWidgets extends StatelessWidget {
         child: ListTile(
           leading: CircleAvatar(
             radius: 22.r,
-            backgroundImage:
-            pet.photoUrl != null ? NetworkImage(pet.photoUrl!) : null,
-            child: pet.photoUrl == null
-                ? const Icon(Icons.pets)
+            backgroundImage: pet.photoUrl.isNotEmpty
+                ? NetworkImage(pet.photoUrl)
                 : null,
+            child: pet.photoUrl.isEmpty ? const Icon(Icons.pets) : null,
           ),
-          // leading: CircleAvatar(
-          //   radius: 22.r,
-          //   backgroundImage: NetworkImage(pet.photoUrl),
-          // ),
+
           title: Text(
             pet.name,
             style: TextStyle(
@@ -51,9 +48,7 @@ class PetNameCardinfoWidgets extends StatelessWidget {
             ),
           ),
           trailing: Icon(
-            isSelected
-                ? Icons.check_box
-                : Icons.check_box_outline_blank,
+            isSelected ? Icons.check_box : Icons.check_box_outline_blank,
             color: isSelected ? Colors.green : Colors.grey,
           ),
           contentPadding: EdgeInsets.zero,

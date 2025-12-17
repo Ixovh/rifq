@@ -12,7 +12,6 @@ class CreateClinicBookingUseCase {
   Future<Result<ReservationOptEntity, String>> call(
     ReservationOptEntity booking,
   ) async {
-
     //!!! VALIDATION
 
     if (booking.userId.isEmpty) {

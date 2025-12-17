@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+
 import 'package:rifq/features/owner_flow/adoption/presentation/cubit/adoption_cubit.dart';
 import 'package:rifq/core/theme/app_theme.dart';
+import 'package:rifq/core/common/widgets/lottie_loading/lottie_loding.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rifq/features/owner_flow/add_pet/domain/entities/add_pet_entity.dart';
 import 'package:rifq/features/owner_flow/adoption/presentation/widgets/adoption_request_card.dart';
@@ -102,20 +103,13 @@ class SeeRequesetScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SvgPicture.asset(
-                    'assets/icon/logo.svg',
-                    colorFilter: ColorFilter.mode(
-                      context.neutral300,
-                      BlendMode.srcIn,
-                    ),
-                  ),
+                  LottieLoding(),
                   SizedBox(height: 16.h),
                   Text(
                     'just a moment we will load your pets',
                     style: context.body2.copyWith(color: context.neutral300),
                   ),
                   SizedBox(height: 16.h),
-                  CircularProgressIndicator(color: context.neutral300),
                 ],
               ),
             );
@@ -127,9 +121,7 @@ class SeeRequesetScreen extends StatelessWidget {
           if (state is PetRequestsLoaded) {
             // Only show requests if they belong to the current pet
             if (state.petId != pet.id) {
-              return Center(
-                child: CircularProgressIndicator(color: context.primary300),
-              );
+              return LottieLoding();
             }
             return RefreshIndicator(
               color: context.primary,

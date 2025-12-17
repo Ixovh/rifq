@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rifq/core/common/widgets/lottie_loading/lottie_loding.dart';
 import 'package:rifq/features/owner_flow/hotel/presentation/cubit/hotel_cubit.dart';
-import 'package:rifq/features/owner_flow/hotel/presentation/widgets/hotel_info.dart' show HotelInfoTabContent;
+import 'package:rifq/features/owner_flow/hotel/presentation/widgets/hotel_info.dart'
+    show HotelInfoTabContent;
 import 'package:rifq/features/owner_flow/hotel/presentation/widgets/room_content.dart';
 import 'package:rifq/features/owner_flow/hotel/presentation/widgets/tab_bar.dart';
 import '../../../../../core/shared/shared_in_owner_flow/shared/entities/provider_entity.dart';
 import '../../../../../core/theme/app_theme.dart';
 import '../widgets/hotel_image_carousel.dart';
-
 
 class HotelDetailsScreen extends StatelessWidget {
   final ProviderEntity hotel;
@@ -29,7 +30,7 @@ class HotelDetailsScreen extends StatelessWidget {
       body: BlocBuilder<HotelCubit, HotelState>(
         builder: (context, state) {
           if (state is HotelLoading) {
-            return Center(child: CircularProgressIndicator());
+            return LottieLoding();
           }
           if (state is HotelError) {
             return Center(
@@ -41,10 +42,11 @@ class HotelDetailsScreen extends StatelessWidget {
                   Text(state.message),
                 ],
               ),
-            );}
+            );
+          }
           if (state is HotelDetailLoaded) {
-            final hotelItems=state.hotelItems;
-            final hotelDetails=hotelItems.first;
+            final hotelItems = state.hotelItems;
+            final hotelDetails = hotelItems.first;
             return DefaultTabController(
               length: 2,
               child: Column(
@@ -56,7 +58,8 @@ class HotelDetailsScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           HotelImagesCarousel(
-                              images: [hotelDetails.providerImage ?? '']),
+                            images: [hotelDetails.providerImage ?? ''],
+                          ),
                           SizedBox(height: 6.h),
                           Padding(
                             padding: EdgeInsets.all(6),
@@ -70,23 +73,27 @@ class HotelDetailsScreen extends StatelessWidget {
                             child: Row(
                               children: [
                                 Image.asset(
-                                    "assets/images/Frame 1984077898.png"
+                                  "assets/images/Frame 1984077898.png",
                                 ),
                                 SizedBox(width: 5.w),
                                 Text(
                                   hotelDetails.location ?? '',
                                   style: context.body2.copyWith(
-                                      color: context.neutral600
+                                    color: context.neutral600,
                                   ),
-                                )
-                              ],),),
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
-                      ),),),
+                      ),
+                    ),
+                  ),
                   CustomTabBar(),
                   Expanded(
                     child: TabBarView(
                       children: [
-                        RoomsTabContent(hotelItems: hotelItems,),
+                        RoomsTabContent(hotelItems: hotelItems),
                         HotelInfoTabContent(hotel: hotelDetails),
                       ],
                     ),
@@ -95,8 +102,7 @@ class HotelDetailsScreen extends StatelessWidget {
               ),
             );
           }
-          return Center(
-              child: CircularProgressIndicator());
+          return LottieLoding();
         },
       ),
     );

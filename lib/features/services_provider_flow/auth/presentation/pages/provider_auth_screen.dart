@@ -27,7 +27,7 @@ class ProviderAuthScreen extends StatelessWidget {
             listener: (context, state) {
               switch (state) {
                 case ProviderAuthLoginSuccessState _:
-                  context.go(Routes.providerHome);
+                  context.go(Routes.providerNavbar);
                   break;
                 case ProviderAuthSignUPSuccessState _:
                   context.push(

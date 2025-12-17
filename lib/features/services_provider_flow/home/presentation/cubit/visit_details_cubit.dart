@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rifq/core/utils/Exception/custom_exception.dart';
 import 'package:rifq/features/services_provider_flow/home/domain/usecases/reservation_usecase.dart';
 
 part 'visit_details_state.dart';
@@ -31,7 +32,11 @@ class VisitDetailsCubit extends Cubit<VisitDetailsState> {
         emit(VisitDetailsSendSuccess());
       },
       (error) {
-        emit(VisitDetailsSendError(error));
+        emit(
+          VisitDetailsSendError(
+            error is CustomException ? error.message : error.toString(),
+          ),
+        );
       },
     );
   }

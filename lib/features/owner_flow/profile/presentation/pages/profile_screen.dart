@@ -122,7 +122,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 32.h),
                       user == null
-                          ? Center(child: CircularProgressIndicator())
+                          ? LottieLoding()
                           : SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: BlocProvider(
@@ -132,9 +132,7 @@ class ProfileScreen extends StatelessWidget {
                                 child: BlocBuilder<PetInfoCubit, PetInfoState>(
                                   builder: (context, state) {
                                     if (state is PetLoading) {
-                                      return Center(
-                                        child: CircularProgressIndicator(),
-                                      );
+                                      return LottieLoding();
                                     }
                                     if (state is PetLoaded) {
                                       return Row(

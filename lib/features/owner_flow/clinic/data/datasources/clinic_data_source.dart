@@ -61,9 +61,6 @@ class ClinicDataSource implements BaseClinicDataSource {
     }
   }
 
-  //!!---------------------GET CLINIC DETAILS-----------------------------
-
-
   //!!----------------FETCH PETS--------------------
   @override
   Future<List<Map<String, dynamic>>> fetchUserPets(String ownerId) async {

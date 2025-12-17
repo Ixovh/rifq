@@ -45,7 +45,7 @@ extension PetProfileToPetEntity on PetProfileEntity {
       petSpecies: species,
       petBreed: breed,
       petBirthdate: birthdate,
-      petPhoto: photoUrl!,
+      petPhoto: photoUrl,
       petGender: gender,
       healthRecords: healthRecords,
       reservations: reservations,

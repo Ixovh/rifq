@@ -1,9 +1,12 @@
+// lib/features/owner_flow/home/presentation/pages/home_screen.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rifq/core/common/widgets/appbar/custom_app_bar.dart';
 import 'package:rifq/core/common/widgets/guest_card/guest_card_widget.dart';
+import 'package:rifq/core/common/widgets/lottie_loading/lottie_loding.dart';
 import 'package:rifq/core/routes/base_routes.dart';
 import 'package:rifq/core/theme/app_theme.dart';
 import 'package:rifq/features/owner_flow/add_pet/data/models/pet_model.dart';
@@ -13,8 +16,6 @@ import 'package:rifq/features/owner_flow/home/presentation/widgets/pet_circle_wi
 import 'package:rifq/features/owner_flow/home/presentation/widgets/quick_service_widget.dart';
 import 'package:rifq/features/owner_flow/home/presentation/widgets/recommendation_carousel_widget.dart';
 import 'package:rifq/features/owner_flow/nav/presentation/cubit/nav_cubit.dart';
-
-import '../../../../../core/common/widgets/lottie_loading/lottie_loding.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -26,7 +27,7 @@ class HomeScreen extends StatelessWidget {
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
           if (state is HomeLoading || state is HomeInitial) {
-            return Center(child: LottieLoding());
+            return LottieLoding();
           }
 
           //!!==========guest=============
@@ -100,76 +101,106 @@ class HomeContent extends StatelessWidget {
                 Text("Your Pets", style: context.body2),
                 SizedBox(height: 12),
 
-                Row(
-                  children: [
-                    ...pets.map((pet) {
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: PetCircleWidget(
-                          petName: pet.name,
-                          imageUrl: pet.photoUrl,
-                          onTap: () {
-                            if(context.mounted) {
+                SingleChildScrollView(
+                  scrollDirection: .horizontal,
+                  child: Row(
+                    children: [
+                      ...pets.map((pet) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 8),
+                          child: PetCircleWidget(
+                            petName: pet.name,
+                            imageUrl: pet.photoUrl,
+                            onTap: () {
+                              //TODO : navigate to pet profile !!!!!!!!!!!!!!!!
                               context.push(Routes.healthRecourdpet);
-                            }
-                          },
-                        ),
-                      );
-                    }),
-                    SizedBox(width: 10),
-                    AddPetCircleWidget(
-                      onTap: () async {
-                        final result = await context.push(Routes.addpet);
+                            },
+                          ),
+                        );
+                      }),
+                      SizedBox(width: 10),
+                      AddPetCircleWidget(
+                        onTap: () async {
+                          final result = await context.push(Routes.addpet);
 
-                        if (result == true) {
-                          //!!---load pets---
-                          if(context.mounted) {
-                            context.read<HomeCubit>().loadHomeData();
+                          if (result == true) {
+                            //!!---load pets---
+                            if (context.mounted) {
+                              context.read<HomeCubit>().loadHomeData();
+                            }
                           }
-                        }
-                      },
-                    ),
-                    SizedBox(width: 16),
-                  ],
+                        },
+                      ),
+                      SizedBox(width: 16),
+                    ],
+                  ),
                 ),
               ],
               //!!--------quick services----------
               SizedBox(height: 20),
-              Text("Quick Service", style: context.body1),
-              SizedBox(height: 12),
-
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  QuickService(
-                    imagePath: 'assets/images/clinic.png',
-                    title: 'Clinic Visit',
-                    onTap: () {
-                      context.read<NavCubit>().changeIndex(index: 1);
-                    },
-                  ),
-                  QuickService(
-                    imagePath: 'assets/images/Frame 1984077916.png',
-                    title: 'Pet Hotel',
-                    onTap: () {
-                      context.read<NavCubit>().changeIndex(index: 2);
-                    },
-                  ),
-                  QuickService(
-                    imagePath: 'assets/images/Frame 1984077917.png',
-                    title: 'Adopt',
-                    onTap: () {
-                      context.read<NavCubit>().changeIndex(index: 3);
-                    },
+                  Text("Quick Service", style: context.body1),
+                  Spacer(),
+                  // Icon(Icons.arrow_forward_ios, color: ,)
+                  Text(
+                    "See More..",
+                    style: context.body3.copyWith(color: context.neutral600),
                   ),
                 ],
               ),
+              SizedBox(height: 10),
+
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 6,
+                  vertical: 10,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    QuickService(
+                      imagePath: 'assets/images/clinic.png',
+                      title: 'Clinic Visit',
+                      onTap: () {
+                        context.read<NavCubit>().changeIndex(index: 1);
+                      },
+                    ),
+                    SizedBox(width: 10),
+                    QuickService(
+                      imagePath: 'assets/images/Frame 1984077916.png',
+                      title: 'Pet Hotel',
+                      onTap: () {
+                        context.read<NavCubit>().changeIndex(index: 2);
+                      },
+                    ),
+                    SizedBox(width: 10),
+                    QuickService(
+                      imagePath: 'assets/images/Frame 1984077917.png',
+                      title: 'Adopt',
+                      onTap: () {
+                        context.read<NavCubit>().changeIndex(index: 3);
+                      },
+                    ),
+                    SizedBox(width: 12),
+                    QuickService(
+                      imagePath: 'assets/images/store.png',
+                      title: 'Pet Store',
+                      onTap: () {
+                        context.push(Routes.store);
+                        // context.read<NavCubit>().changeIndex(index: 3);
+                      },
+                    ),
+                  ],
+                ),
+              ),
 
               //!!--------recommendations----------
-              SizedBox(height: 24),
-              Text("Recommendations", style: context.body1),
+              SizedBox(height: 30),
+              Text("Exclusive Deals", style: context.body1),
               SizedBox(height: 12),
-               RecommendationCarousel(),
+              RecommendationCarousel(),
             ],
           ),
         ),

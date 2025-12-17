@@ -19,7 +19,5 @@ class ProviderNavCubit extends Cubit<ProviderNavState> {
   }
 
   @override
-  Future<void> close() {
-    return super.close();
-  }
+  Future<void> close() => super.close();
 }

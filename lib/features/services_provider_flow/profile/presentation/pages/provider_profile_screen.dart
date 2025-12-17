@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rifq/core/routes/base_routes.dart';
 import 'package:rifq/core/theme/app_theme.dart';
+import 'package:rifq/core/common/widgets/lottie_loading/lottie_loding.dart';
 import 'package:rifq/features/services_provider_flow/profile/domain/entities/provider_profile_entity.dart';
 import 'package:rifq/features/services_provider_flow/profile/presentation/cubit/provider_profile_cubit.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -30,9 +31,7 @@ class ProviderProfileScreen extends StatelessWidget {
         child: BlocBuilder<ProviderProfileCubit, ProviderProfileState>(
           builder: (context, state) {
             if (state is ProviderProfileLoading) {
-              return Center(
-                child: CircularProgressIndicator(color: context.primary),
-              );
+              return LottieLoding();
             }
             ProviderProfileEntity? provider;
             if (state is ProviderProfileLoaded) {

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rifq/core/routes/base_routes.dart';
 import 'package:rifq/core/theme/app_theme.dart';
+import 'package:rifq/core/common/widgets/lottie_loading/lottie_loding.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/widgets/container_button.dart';
 import 'package:rifq/features/services_provider_flow/auth/presentation/cubit/provider_auth_cubit.dart';
 import 'package:rifq/features/services_provider_flow/auth/presentation/widgets/build_service_type_option.dart';
@@ -72,20 +73,44 @@ class ProviderSelectServiceTypesScreen extends StatelessWidget {
                   SizedBox(height: 32.h),
                   Expanded(
                     child: isLoading
-                        ? Center(
-                            child: CircularProgressIndicator(
-                              color: context.primary300,
-                            ),
-                          )
+                        ? LottieLoding()
                         : ListView(
                             children: [
-                              BuildServiceTypeOption(context: context, cubit: cubit, id: 1, title: 'Clinic', icon: Icons.local_hospital, isSelected: selectedServiceTypes.contains(1)),
+                              BuildServiceTypeOption(
+                                context: context,
+                                cubit: cubit,
+                                id: 1,
+                                title: 'Clinic',
+                                icon: Icons.local_hospital,
+                                isSelected: selectedServiceTypes.contains(1),
+                              ),
                               SizedBox(height: 16.h),
-                              BuildServiceTypeOption(context: context, cubit: cubit, id: 2, title: 'Store', icon: Icons.store, isSelected: selectedServiceTypes.contains(2)),
+                              BuildServiceTypeOption(
+                                context: context,
+                                cubit: cubit,
+                                id: 2,
+                                title: 'Store',
+                                icon: Icons.store,
+                                isSelected: selectedServiceTypes.contains(2),
+                              ),
                               SizedBox(height: 16.h),
-                              BuildServiceTypeOption(context: context, cubit: cubit, id: 3, title: 'External Service', icon: Icons.build_circle, isSelected: selectedServiceTypes.contains(3)),
+                              BuildServiceTypeOption(
+                                context: context,
+                                cubit: cubit,
+                                id: 3,
+                                title: 'External Service',
+                                icon: Icons.build_circle,
+                                isSelected: selectedServiceTypes.contains(3),
+                              ),
                               SizedBox(height: 16.h),
-                              BuildServiceTypeOption(context: context, cubit: cubit, id: 4, title: 'Boarding', icon: Icons.home, isSelected: selectedServiceTypes.contains(4)),
+                              BuildServiceTypeOption(
+                                context: context,
+                                cubit: cubit,
+                                id: 4,
+                                title: 'Boarding',
+                                icon: Icons.home,
+                                isSelected: selectedServiceTypes.contains(4),
+                              ),
                             ],
                           ),
                   ),

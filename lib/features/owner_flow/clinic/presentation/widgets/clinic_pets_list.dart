@@ -41,7 +41,7 @@ class ClinicPetsList extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(50),
                   child: Image.network(
-                    pet.photoUrl,
+                    pet.photoUrl ?? "",
                     height: 45,
                     width: 45,
                     fit: BoxFit.cover,

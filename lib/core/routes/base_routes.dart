@@ -50,6 +50,11 @@ import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_he
 import 'package:rifq/features/owner_flow/profile/presentation/cubit/profile_cubit.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/edit_profile_screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/pages/profile_screen.dart';
+import 'package:rifq/features/owner_flow/store/domain/entities/product_entity.dart';
+import 'package:rifq/features/owner_flow/store/presentation/cubit/store_cubit.dart';
+import 'package:rifq/features/owner_flow/store/presentation/pages/cart_screen.dart';
+import 'package:rifq/features/owner_flow/store/presentation/pages/product_details_screen.dart';
+import 'package:rifq/features/owner_flow/store/presentation/pages/store_screen.dart';
 import 'package:rifq/features/services_provider_flow/auth/presentation/cubit/provider_auth_cubit.dart';
 import 'package:rifq/features/services_provider_flow/auth/presentation/pages/provider_auth_screen.dart';
 import 'package:rifq/features/services_provider_flow/auth/presentation/pages/provider_otp_screen.dart';
@@ -104,6 +109,10 @@ abstract class Routes {
   static String paymentscreen = '/paymentScreen';
   static String successfullpay = '/successfullpay';
 
+  static String store = '/store';
+  static String cart = '/cart';
+  static String productDetails = '/productDetails';
+
   ///
   ///
   static String providerAuth = '/providerAuth';
@@ -148,7 +157,6 @@ abstract class Routes {
           return AuthScreen();
         },
       ),
-
 
       //------//
       //------//
@@ -616,6 +624,21 @@ abstract class Routes {
           );
         },
       ),
+
+      GoRoute(
+        path: store,
+        builder: (context, state) =>
+            BlocProvider(create: (_) => StoreCubit(), child: StoreScreen()),
+      ),
+
+      GoRoute(
+        path: Routes.productDetails,
+        builder: (context, state) {
+          final product = state.extra as ProductEntity;
+          return ProductDetailsScreen(product: product);
+        },
+      ),
+      GoRoute(path: Routes.cart, builder: (_, _) => const CartScreen()),
     ],
   );
 }

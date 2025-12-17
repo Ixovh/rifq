@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import 'package:multiple_result/src/result.dart';
+import 'package:multiple_result/multiple_result.dart';
 import 'package:rifq/core/shared/shared_in_owner_flow/shared/entities/provider_entity.dart';
 import '../../../../../core/shared/shared_in_owner_flow/shared/models/provider_items_view_model.dart';
 import '../../../../../core/shared/shared_in_owner_flow/shared/models/provider_model.dart';

@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rifq/core/shared/shared_in_owner_flow/shared/entities/provider_entity.dart';
-
 import 'package:rifq/core/shared/shared_in_owner_flow/shared_auth/helpers/auth_helper.dart';
 import 'package:rifq/features/owner_flow/add_pet/data/models/pet_model.dart';
 import 'package:rifq/features/owner_flow/clinic/domain/usecases/clinic_use_case.dart';
@@ -19,7 +18,7 @@ class ClinicCubit extends Cubit<ClinicState> {
   Future<void> loadClinicScreen() async {
     emit(ClinicLoading());
 
-    final isGuest =  AuthHelper.isGuestUser();
+    final isGuest = await AuthHelper.isGuestUser();
 
     if (isGuest) {
       emit(ClinicGuestState());
@@ -27,7 +26,7 @@ class ClinicCubit extends Cubit<ClinicState> {
     }
 
     // ---------- get current logged-in user ID ----------
-    final ownerId =  AuthHelper.getUserId();
+    final ownerId = await AuthHelper.getUserId();
 
     if (ownerId == null) {
       emit(ClinicError("Unable to determine user ID"));
@@ -56,7 +55,6 @@ class ClinicCubit extends Cubit<ClinicState> {
     emit(ClinicScreenLoaded(pets: pets, clinics: clinics));
   }
 
-
   //!!-------------SEARCH CLINIC----------------
   Future<void> searchClinics(String query) async {
     emit(ClinicLoading());
@@ -68,6 +66,5 @@ class ClinicCubit extends Cubit<ClinicState> {
       (error) => emit(ClinicError(error)),
     );
   }
-
 
 }
