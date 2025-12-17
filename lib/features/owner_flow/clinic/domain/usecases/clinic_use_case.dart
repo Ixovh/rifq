@@ -18,6 +18,10 @@ class ClinicUseCase {
     return repository.searchClinics(query);
   }
 
+  // Future<Result<List<ProviderItemsViewEntity>, String>> getClinicDetails(String providerId) {
+  //   return repository.getClinicDetails(providerId);
+  // }
+
   Future<Result<List<PetModel>, String>> getUserPets(String ownerId) {
     return repository.getUserPets(ownerId);
   }

@@ -55,6 +55,17 @@ class ClinicCubit extends Cubit<ClinicState> {
     emit(ClinicScreenLoaded(pets: pets, clinics: clinics));
   }
 
+  // //!!---------Get Clinics type = 1 ------
+
+  // Future<void> getClinics() async {
+  //   final result = await useCase.getClinics();
+
+  //   result.when(
+  //     (clinics) => emit(ClinicsLoaded(clinics)),
+  //     (error) => emit(ClinicError(error)),
+  //   );
+  // }
+
   //!!-------------SEARCH CLINIC----------------
   Future<void> searchClinics(String query) async {
     emit(ClinicLoading());
@@ -67,4 +78,15 @@ class ClinicCubit extends Cubit<ClinicState> {
     );
   }
 
+  //!!------------GET CLINIC DETAILS-----------
+  // Future<void> getClinicDetails(String providerId) async {
+  //   emit(ClinicLoading());
+
+  //   final result = await useCase.getClinicDetails(providerId);
+
+  //   result.when(
+  //     (details) => emit(ClinicDetailsLoaded(details)),
+  //     (error) => emit(ClinicError(error)),
+  //   );
+  // }
 }

@@ -40,8 +40,6 @@ class ConfirmationScreen extends StatelessWidget {
               ),
 
                SizedBox(height: 20),
-              //TODO: IMAGE
-              // Image.asset('assets/images/confirmed.png', height: 220),
               Icon(Icons.event_available, size: 140, color: context.primary50),
 
                SizedBox(height: 14),
@@ -119,7 +117,6 @@ class ConfirmationScreen extends StatelessWidget {
                       children: [
                         OutlinedButton.icon(
                           onPressed: () {
-                            //TODO: LOCATION URL
                           },
                           icon:  Icon(Icons.location_on_outlined, size: 18),
                           label:  Text("Get Directions"),
@@ -127,7 +124,6 @@ class ConfirmationScreen extends StatelessWidget {
                          SizedBox(height: 10),
                         OutlinedButton.icon(
                           onPressed: () {
-                            //TODO: CALENDER
                           },
                           icon:  Icon(Icons.calendar_month, size: 18),
                           label:  Text("Add to calendar"),
@@ -144,9 +140,7 @@ class ConfirmationScreen extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    //TODO: APPOINTMENT PROFILE TAB
-                    // context.go(Routes.myAppointments);
-                    // context.go(Routes.home);
+
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: context.primary50,

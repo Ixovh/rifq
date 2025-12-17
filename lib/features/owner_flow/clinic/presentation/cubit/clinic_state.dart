@@ -22,7 +22,10 @@ class ClinicScreenLoaded extends ClinicState {
   final List<PetModel> pets;
   final List<ProviderEntity> clinics;
 
-  ClinicScreenLoaded({required this.pets, required this.clinics});
+  ClinicScreenLoaded({
+    required this.pets,
+    required this.clinics,
+  });
 
   @override
   List<Object?> get props => [pets, clinics];
@@ -36,3 +39,13 @@ class ClinicError extends ClinicState {
   @override
   List<Object?> get props => [message];
 }
+
+//!!---------------------CLINIC DETAILS STATE-----------------------------
+// class ClinicDetailsLoaded extends ClinicState {
+//   final List<ProviderItemsViewEntity> details;
+
+//   ClinicDetailsLoaded(this.details);
+
+//   @override
+//   List<Object?> get props => [details];
+// }

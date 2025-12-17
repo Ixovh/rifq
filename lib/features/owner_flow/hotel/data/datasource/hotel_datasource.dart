@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:multiple_result/multiple_result.dart';
+import 'package:rifq/core/utils/Exception/custom_exception.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../../core/shared/shared_in_owner_flow/shared/models/provider_items_view_model.dart';
 import '../../../../../core/shared/shared_in_owner_flow/shared/models/provider_model.dart';
@@ -28,7 +29,7 @@ class HotelDataBase implements BaseHotelDataSourc {
           .toList();
       return Result.success(data);
     } catch (e) {
-      return Result.error(e.toString());
+      return Result.error(CatchErrorMessage(error: e).getWriteMessage());
     }
   }
   //
@@ -54,7 +55,7 @@ class HotelDataBase implements BaseHotelDataSourc {
 
       return Result.success(data);
     } catch (e) {
-      return Result.error(e.toString());
+      return Result.error(CatchErrorMessage(error: e).getWriteMessage());
     }
   }
 
@@ -72,7 +73,7 @@ class HotelDataBase implements BaseHotelDataSourc {
 
       return Result.success(data);
     } catch (e) {
-      return Result.error(e.toString());
+      return Result.error(CatchErrorMessage(error: e).getWriteMessage());
     }
   }
 }

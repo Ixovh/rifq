@@ -12,6 +12,7 @@ class CreateClinicBookingUseCase {
   Future<Result<ReservationOptEntity, String>> call(
     ReservationOptEntity booking,
   ) async {
+
     //!!! VALIDATION
 
     if (booking.userId.isEmpty) {
@@ -25,6 +26,10 @@ class CreateClinicBookingUseCase {
     if (booking.petId.isEmpty) {
       return Result.error('Pet ID is required');
     }
+
+    // if (booking.startDate == null) {
+    //   return Result.error('Start date is required');
+    // }
 
     if (booking.time == null) {
       return Result.error('Time is required');

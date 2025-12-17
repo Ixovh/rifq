@@ -45,6 +45,7 @@ import 'package:rifq/features/owner_flow/pet_profile/sup_features/edit_pet_profi
 import 'package:rifq/features/owner_flow/pet_profile/sup_features/edit_pet_profile/presentaion/cubit/edit_pet_profile_cubit.dart';
 import 'package:rifq/features/owner_flow/pet_profile/sup_features/edit_pet_profile/presentaion/pages/edit_pet_profile.dart';
 import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_info_card/domain/entity/pet_entity.dart';
+import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_info_card/presentation/cubit/pet_info_cubit.dart';
 import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_health_record/domain/entity/pet_profile_records_entity.dart';
 import 'package:rifq/features/owner_flow/pet_profile/sup_features/pet_profile_health_record/presentaion/pages/pet_profile_health_appointment_Screen.dart';
 import 'package:rifq/features/owner_flow/profile/presentation/cubit/profile_cubit.dart';
@@ -73,6 +74,7 @@ import 'package:rifq/features/services_provider_flow/nav/presentation/pages/prov
 import 'package:rifq/features/services_provider_flow/profile/presentation/cubit/provider_profile_cubit.dart';
 import 'package:rifq/features/services_provider_flow/profile/presentation/pages/provider_edit_profile_screen.dart';
 import 'package:rifq/features/services_provider_flow/profile/presentation/pages/provider_profile_screen.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class Routes {
   static String splash = '/';
@@ -380,9 +382,15 @@ abstract class Routes {
         path: Routes.bookingDetails,
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>;
-
-          return BlocProvider(
-            create: (_) => getIt<BookingDetailsCubit>(),
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => getIt<BookingDetailsCubit>()),
+              BlocProvider(
+                create: (_) =>
+                    getIt<PetInfoCubit>()
+                      ..getPets(Supabase.instance.client.auth.currentUser!.id),
+              ),
+            ],
             child: BookingDetailsScreen(
               entity: extra['entity'],
               petIds: List<String>.from(extra['petIds']),

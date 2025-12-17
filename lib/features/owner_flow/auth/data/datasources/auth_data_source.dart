@@ -2,6 +2,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:multiple_result/multiple_result.dart';
 import 'package:rifq/core/shared/shared_in_owner_flow/shared_auth/helpers/auth_helper.dart';
+import 'package:rifq/core/utils/Exception/custom_exception.dart';
 import '../../../../../core/shared/shared_in_owner_flow/shared_auth/models/auth_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -70,7 +71,9 @@ class SubaBaseDataSource implements BaseAuthDataSource {
       );
       return Success(null);
     } catch (e) {
-      return Error(e);
+      return Result.error(
+        CatchErrorMessage(error: e).getWriteMessage(),
+      );
     }
   }
 
@@ -101,7 +104,9 @@ class SubaBaseDataSource implements BaseAuthDataSource {
 
       return Success(null);
     } catch (e) {
-      return Error(e);
+      return Result.error(
+        CatchErrorMessage(error: e).getWriteMessage(),
+      );
     }
   }
 
@@ -139,7 +144,9 @@ class SubaBaseDataSource implements BaseAuthDataSource {
         ),
       );
     } catch (e) {
-      return Error(e);
+      return Result.error(
+        CatchErrorMessage(error: e).getWriteMessage(),
+      );
     }
   }
 
@@ -156,7 +163,9 @@ class SubaBaseDataSource implements BaseAuthDataSource {
 
       return Success(null);
     } catch (e) {
-      return Error(e);
+      return Result.error(
+        CatchErrorMessage(error: e).getWriteMessage(),
+      );
     }
   }
 
@@ -173,7 +182,9 @@ class SubaBaseDataSource implements BaseAuthDataSource {
 
       return Success(null);
     } catch (e) {
-      return Error(e);
+      return Result.error(
+        CatchErrorMessage(error: e).getWriteMessage(),
+      );
     }
   }
 
@@ -196,7 +207,9 @@ class SubaBaseDataSource implements BaseAuthDataSource {
 
       return Success(null);
     } catch (e) {
-      return Error(e);
+      return Result.error(
+        CatchErrorMessage(error: e).getWriteMessage(),
+      );
     }
   }
 
@@ -213,7 +226,9 @@ class SubaBaseDataSource implements BaseAuthDataSource {
       this.email = email;
       return Success(null);
     } catch (e) {
-      return Error(e);
+      return Result.error(
+        CatchErrorMessage(error: e).getWriteMessage(),
+      );
     }
   }
 }
