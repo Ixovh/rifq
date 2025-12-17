@@ -296,7 +296,13 @@ class AdoptionCubit extends Cubit<AdoptionState> {
         availablePets.removeWhere((pet) => pet.id == petId);
         // Clear the pet's requests cache since it's no longer owned by this user
         _petRequestsCache.remove(petId);
-        // Invalidate all caches to ensure fresh data
+
+        // Emit updated list so UI refreshes immediately
+        emit(
+          OfferedPetsLoaded(List<AddPetEntity>.from(offeredForAdoptionPets)),
+        );
+
+        // Invalidate all caches to ensure fresh data on next load
         invalidateOfferedCache();
         invalidateAvailableCache();
         invalidateMyPetsCache();

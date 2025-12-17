@@ -54,6 +54,16 @@ class MyPetsTab extends StatelessWidget {
             ),
           );
         }
+        // Refresh list when adoption is accepted
+        if (state is AdoptionRequestStatusUpdated) {
+          final isAccepted =
+              state.request.status == 'adopted' ||
+              state.request.status == 'accepted';
+          if (isAccepted && state.petId != null) {
+            // Refresh the offered pets list to show updated data
+            cubit.getOfferedPetsForAdoption(forceRefresh: true);
+          }
+        }
         // to avoid duplicate snackbars
         if (state is AdoptionError) {
           ScaffoldMessenger.of(context).showSnackBar(

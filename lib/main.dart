@@ -10,7 +10,7 @@ void main() async {
   await dotenv.load(fileName: ".env");
   await configureDependencies();
   //عشان اسجل خروج "بحذفها بعد مانسوي لوق اوت "
-  // await Supabase.instance.client.auth.signOut();
+  await Supabase.instance.client.auth.signOut();
   // await GetStorage().erase();
 
   runApp(MyApp());
