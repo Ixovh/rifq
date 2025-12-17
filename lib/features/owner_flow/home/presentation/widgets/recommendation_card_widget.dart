@@ -4,10 +4,7 @@ import 'package:rifq/core/theme/app_theme.dart';
 class RecommendationCard extends StatelessWidget {
   final String imagePath;
 
-  const RecommendationCard({
-    super.key,
-    required this.imagePath,
-  });
+  const RecommendationCard({super.key, required this.imagePath});
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +23,7 @@ class RecommendationCard extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(24),
-        child: Image.asset(
-          imagePath,
-          // height: double.infinity,
-          // width: double.infinity,
-          fit: BoxFit.fill,
-        ),
+        child: Image.asset(imagePath, fit: BoxFit.fill),
       ),
     );
   }

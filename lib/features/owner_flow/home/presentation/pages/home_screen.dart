@@ -1,5 +1,3 @@
-// lib/features/owner_flow/home/presentation/pages/home_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -112,7 +110,6 @@ class HomeContent extends StatelessWidget {
                             petName: pet.name,
                             imageUrl: pet.photoUrl,
                             onTap: () {
-                             
                               context.push(Routes.healthRecourdpet);
                             },
                           ),
@@ -142,7 +139,6 @@ class HomeContent extends StatelessWidget {
                 children: [
                   Text("Quick Service", style: context.body1),
                   Spacer(),
-                  // Icon(Icons.arrow_forward_ios, color: ,)
                   Text(
                     "See More..",
                     style: context.body3.copyWith(color: context.neutral600),
@@ -189,7 +185,7 @@ class HomeContent extends StatelessWidget {
                       title: 'Pet Store',
                       onTap: () {
                         context.push(Routes.store);
-                        // context.read<NavCubit>().changeIndex(index: 3);
+                        context.read<NavCubit>().changeIndex(index: 3);
                       },
                     ),
                   ],

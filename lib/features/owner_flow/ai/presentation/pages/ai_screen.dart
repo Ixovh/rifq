@@ -26,7 +26,7 @@ class ChatScreen extends StatelessWidget {
             ],
           ),
        backgroundColor: context.primary50,
-        // leading: ,
+
         ),
 
         body: BlocBuilder<AiChatBloc, AiChatState>(

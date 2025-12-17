@@ -39,7 +39,7 @@ class ClinicHeader extends StatelessWidget {
                 petName: pets[i].name,
                 imageUrl: pets[i].photoUrl,
                 onTap: () {
-                  // context.push(Ro)
+
                 },
               ),
               separatorBuilder: (_, _) => const SizedBox(width: 10),

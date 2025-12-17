@@ -141,26 +141,7 @@ class ClinicDetailsScreen extends StatelessWidget {
                           SizedBox(height: 10),
 
                           if (e.locationUrl != null)
-                            // ElevatedButton.icon(
-                            //   onPressed: () => _openLocation(
-                            //     e.locationUrl,
-                            //   ), //!!!!!!!!LOCATION METHOD
-                            //   style: ElevatedButton.styleFrom(
-                            //     backgroundColor: Colors.green[600],
-                            //     padding: const EdgeInsets.symmetric(
-                            //       vertical: 14,
-                            //       horizontal: 20,
-                            //     ),
-                            //     shape: RoundedRectangleBorder(
-                            //       borderRadius: BorderRadius.circular(16),
-                            //     ),
-                            //   ),
-                            //   icon: Icon(Icons.map),
-                            //   label: Text(
-                            //     "Open in Maps",
-                            //     style: TextStyle(fontSize: 16),
-                            //   ),
-                            // ),
+                            
                             Center(
                               child: SizedBox(
                                 width: 339.w,

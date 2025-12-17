@@ -63,25 +63,7 @@ class ClinicDataSource implements BaseClinicDataSource {
 
   //!!---------------------GET CLINIC DETAILS-----------------------------
 
-  // @override
-  // Future<Result<List<ProviderItemsViewModel>, String>> getClinicDetails(
-  //   String providerId,
-  // ) async {
-  //   try {
-  //     final response = await supabase
-  //         .from('provider_service_view')
-  //         .select()
-  //         .eq('provider_id', providerId);
 
-  //     final data = (response as List)
-  //         .map((e) => ProviderItemsViewModelMapper.fromMap(e))
-  //         .toList();
-
-  //     return Result.success(data);
-  //   } catch (e) {
-  //     return Result.error(e.toString());
-  //   }
-  // }
 
   //!!----------------FETCH PETS--------------------
   @override

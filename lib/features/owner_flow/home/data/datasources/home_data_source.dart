@@ -38,22 +38,7 @@ class HomeDataSource implements BaseHomeDataSource {
     }
 
   }
-  // @override
-  // Future<Map<String, dynamic>?> fetchUserProfile() async {
-  //   final isGuest = AuthHelper.isGuestUser();
-  //   if (isGuest) return null;
 
-  //   final userId = AuthHelper.getUserId();
-  //   if (userId == null) return null;
-
-  //   final profile = await supabase
-  //       .from('users')
-  //       .select('id, name')
-  //       .eq('id', userId)
-  //       .maybeSingle();
-
-  //   return profile;
-  // }
 
   //!!------------------USER PETS-----------------------------
   @override
@@ -74,15 +59,5 @@ class HomeDataSource implements BaseHomeDataSource {
     }
 
   }
-  // @override
-  // Future<List<PetModel>> fetchUserPets(String ownerId) async {
-  //   final petsData = await supabase
-  //       .from('pets')
-  //       .select()
-  //       .eq('owner_id', ownerId);
 
-  //   return (petsData as List<dynamic>)
-  //       .map((e) => PetModelMapper.fromJson(jsonEncode(e)))
-  //       .toList();
-  // }
 }

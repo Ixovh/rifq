@@ -21,22 +21,7 @@ class ReservationModel extends ReservationEntity with ReservationModelMappable {
   @MappableField(key: 'created_at') required super.createdAt,
  });
 
- /// Factory لتحويل Map (JSON) إلى ReservationModel
- // factory ReservationModel.fromMap(Map<String, dynamic> map) {
- //  return ReservationModel(
- //   id: map['id'],
- //   userId: map['user_id'],
- //   providerId: map['provider_id'],
- //   serviceItemId: map['service_item_id'],
- //   petId: map['pet_id'],
- //   time: map['time'],
- //   startDate: DateTime.parse(map['start_date']),
- //   endDate: DateTime.parse(map['end_date']),
- //   status: map['status'],
- //   notes: map['notes'] as String?,
- //   createdAt: DateTime.parse(map['created_at']),
- //  );
- // }
+
 
  factory ReservationModel.fromMap(Map<String, dynamic> map) {
   return ReservationModel(

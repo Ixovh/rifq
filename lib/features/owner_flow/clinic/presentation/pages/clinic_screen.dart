@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rifq/core/common/widgets/appbar/custom_app_bar.dart';
+import 'package:rifq/core/common/widgets/lottie_loading/lottie_loding.dart';
 import 'package:rifq/core/di/setup.dart';
 import 'package:rifq/core/theme/app_theme.dart';
 import 'package:rifq/features/owner_flow/clinic/presentation/cubit/clinic_cubit.dart';
@@ -33,9 +34,8 @@ class _ClinicView extends StatelessWidget {
       body: SafeArea(
         child: BlocBuilder<ClinicCubit, ClinicState>(
           builder: (context, state) {
-
             if (state is ClinicLoading) {
-              // return const Center(child: CircularProgressIndicator());
+              return LottieLoding();
             }
 
             //!!--------------Guest View------------
@@ -69,7 +69,7 @@ class _ClinicView extends StatelessWidget {
               return Center(child: Text(state.message));
             }
 
-            return   SizedBox();
+            return SizedBox();
           },
         ),
       ),

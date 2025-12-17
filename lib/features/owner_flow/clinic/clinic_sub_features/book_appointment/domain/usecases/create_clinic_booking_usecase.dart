@@ -27,9 +27,7 @@ class CreateClinicBookingUseCase {
       return Result.error('Pet ID is required');
     }
 
-    // if (booking.startDate == null) {
-    //   return Result.error('Start date is required');
-    // }
+    
 
     if (booking.time == null) {
       return Result.error('Time is required');
