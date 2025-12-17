@@ -8,6 +8,7 @@ import 'package:rifq/features/owner_flow/hotel/presentation/widgets/hotel_info.d
     show HotelInfoTabContent;
 import 'package:rifq/features/owner_flow/hotel/presentation/widgets/room_content.dart';
 import 'package:rifq/features/owner_flow/hotel/presentation/widgets/tab_bar.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../../core/shared/shared_in_owner_flow/shared/entities/provider_entity.dart';
 import '../../../../../core/theme/app_theme.dart';
 import '../widgets/hotel_image_carousel.dart';
@@ -20,13 +21,6 @@ class HotelDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          onPressed: () => context.pop(),
-          icon: Icon(Icons.arrow_back_ios),
-        ),
-      ),
       body: BlocBuilder<HotelCubit, HotelState>(
         builder: (context, state) {
           if (state is HotelLoading) {
@@ -57,33 +51,96 @@ class HotelDetailsScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          HotelImagesCarousel(
-                            images: [hotelDetails.providerImage ?? ''],
+                          // HotelImagesCarousel(
+                          //   images: [hotelDetails.providerImage ?? ''],
+                          // ),
+                          Stack(
+                            children: [
+                              Image.network(
+                                hotelDetails.providerImage ?? "",
+                                height: 250,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                              ),
+                              Positioned(
+                                top: 40,
+                                left: 16,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    context.pop();
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: Colors.black.withValues(
+                                        alpha: 0.5,
+                                      ),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Icon(
+                                      Icons.arrow_back,
+                                      color: Colors.white,
+                                      size: 22,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
+
                           SizedBox(height: 6.h),
                           Padding(
-                            padding: EdgeInsets.all(6),
-                            child: Text(
-                              hotelDetails.providerName,
-                              style: context.h5,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(7),
-                            child: Row(
+                            padding: const EdgeInsets.all(20),
+                            child: Column(
                               children: [
-                                Image.asset(
-                                  "assets/images/Frame 1984077898.png",
-                                ),
-                                SizedBox(width: 5.w),
                                 Text(
-                                  hotelDetails.location ?? '',
-                                  style: context.body2.copyWith(
-                                    color: context.neutral600,
-                                  ),
+                                  hotelDetails.providerName,
+                                  style: context.h5,
                                 ),
                               ],
                             ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                               SizedBox(width: 10,),
+                              Icon(
+                                  Icons.location_on,
+                                  size: 22,
+                                  color: context.red100,
+                                ),
+                                SizedBox(width: 10,),
+                              Expanded(
+                                child: Text(
+                                  hotelDetails.location ?? '',
+                                  style: context.body1.copyWith(
+                                    color: context.neutral600,
+                                  ),
+                                ),
+                              ),
+                               InkWell(
+                                  onTap: () => _call(hotelDetails.phone),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.phone,
+                                        size: 18,
+                                        color: context.primary500,
+                                      ),
+                                      SizedBox(width: 10),
+                                      Text(
+                                        hotelDetails.phone!,
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.blue,
+                                          // decoration: TextDecoration.underline,
+                                        ),
+                                      ),
+                                       SizedBox(width: 15,),
+                                    ],
+                                  ),
+                                ),
+                            ],
                           ),
                         ],
                       ),
@@ -106,5 +163,10 @@ class HotelDetailsScreen extends StatelessWidget {
         },
       ),
     );
+  }
+    void _call(String? phone) async {
+    if (phone == null) return;
+    final uri = Uri(scheme: 'tel', path: phone);
+    await launchUrl(uri);
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rifq/core/shared/shared_in_owner_flow/shared/entities/provider_items_view_entity.dart';
 import 'package:rifq/core/shared/shared_in_owner_flow/shared/entities/reservation_opt_entity.dart';
+import 'package:rifq/core/theme/app_theme.dart';
 
 import '../../../../../../../core/common/widgets/button/custome_button_widgets.dart';
 import '../../../../../../../core/routes/base_routes.dart';
@@ -21,7 +22,9 @@ class ConfirmAndPayScreen extends StatelessWidget {
         : 0;
     final total = (nights * hotel.price!).toDouble();
     return Scaffold(
+      backgroundColor: context.background,
     appBar: AppBar(
+       backgroundColor: context.background,
       title: Text("Confirm and Pay",style: TextStyle(color: Color(0xFF333333),fontSize: 18.sp,fontWeight: FontWeight.w600),),
       centerTitle: true,
       leading: IconButton(

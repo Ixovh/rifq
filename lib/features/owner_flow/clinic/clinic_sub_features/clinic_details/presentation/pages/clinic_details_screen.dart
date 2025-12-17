@@ -38,11 +38,36 @@ class ClinicDetailsScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Image.network(
-                      e.providerImage ?? "",
-                      height: 250,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
+                    Stack(
+                      children: [
+                        Image.network(
+                          e.providerImage ?? "",
+                          height: 250,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
+                        Positioned(
+                          top: 40,
+                          left: 16,
+                          child: GestureDetector(
+                            onTap: () {
+                              context.pop();
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withValues(alpha:  0.5),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.arrow_back,
+                                color: Colors.white,
+                                size: 22,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
 
                     Padding(
@@ -53,46 +78,120 @@ class ClinicDetailsScreen extends StatelessWidget {
                           //!------------------CLINIC NAME------------------
                           Text(
                             e.providerName,
-                            style: TextStyle(
-                              fontSize: 26,
-                              fontWeight: FontWeight.bold,
+                            style: context.h3.copyWith(
+                              color: context.primary500,
                             ),
                           ),
 
-                          const SizedBox(height: 8),
+                          SizedBox(height: 18),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              if (e.price != null)
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.payments,
+                                      size: 20,
+                                      color: context.primary500,
+                                    ),
+                                    SizedBox(width: 10),
+                                    Text(
+                                      "${e.price} SAR",
+                                      style: context.body1.copyWith(
+                                        color: context.green200,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              SizedBox(width: 20),
 
+                              if (e.phone != null)
+                                InkWell(
+                                  onTap: () => _call(e.phone),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.phone,
+                                        size: 18,
+                                        color: context.primary500,
+                                      ),
+                                      SizedBox(width: 10),
+                                      Text(
+                                        e.phone!,
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.blue,
+                                          // decoration: TextDecoration.underline,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                            ],
+                          ),
+
+                          Divider(),
                           //!------------------SERVICE NAME------------------
+                          SizedBox(height: 10),
+                          Text(
+                            "About",
+                            style: context.h5.copyWith(
+                              color: context.neutral1000,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            e.itemDescription ??
+                                "A general veterinary visit that includes examination & consultation.",
+                            style: context.body2.copyWith(
+                              color: context.neutral1000,
+                            ),
+                          ),
+
+                          SizedBox(height: 20),
+
+                          Text(
+                            "Services",
+                            style: context.h5.copyWith(
+                              color: context.neutral1000,
+                            ),
+                          ),
+                          SizedBox(height: 10),
                           Text(
                             e.itemName,
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black87,
+                            style: context.body2.copyWith(
+                              color: context.neutral1000,
                             ),
                           ),
 
                           SizedBox(height: 10),
 
-                          //!------------------DESCRIPTION------------------
                           Text(
-                            e.itemDescription ??
-                                "A general veterinary visit that includes examination & consultation.",
-                            style: const TextStyle(fontSize: 16, height: 1.4),
+                            "Location",
+                            style: context.h5.copyWith(
+                              color: context.neutral1000,
+                            ),
                           ),
 
-                          SizedBox(height: 20),
+                          SizedBox(height: 15),
 
-                          //!------------------PRICE------------------
-                          if (e.price != null)
+                          if (e.location != null)
                             Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Icon(Icons.payments, size: 22),
+                                Icon(
+                                  Icons.location_on,
+                                  size: 22,
+                                  color: context.red100,
+                                ),
                                 SizedBox(width: 10),
-                                Text(
-                                  "${e.price} SAR",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
+                                Expanded(
+                                  child: Text(
+                                    e.location!,
+                                    style: context.body2.copyWith(
+                                      color: context.neutral1000,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -100,79 +199,19 @@ class ClinicDetailsScreen extends StatelessWidget {
 
                           const SizedBox(height: 15),
 
-                          //!------------------PHONE------------------
-                          if (e.phone != null)
-                            InkWell(
-                              onTap: () => _call(e.phone),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.phone, size: 22),
-                                  SizedBox(width: 10),
-                                  Text(
-                                    e.phone!,
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: Colors.blue,
-                                      decoration: TextDecoration.underline,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-
-                          SizedBox(height: 15),
-
-                          //!------------------LOCATION------------------
-                          if (e.location != null)
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Icon(Icons.location_on, size: 22),
-                                SizedBox(width: 10),
-                                Expanded(
-                                  child: Text(
-                                    e.location!,
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
-                                ),
-                              ],
-                            ),
-
                           SizedBox(height: 10),
 
                           if (e.locationUrl != null)
-                            
-                            Center(
-                              child: SizedBox(
-                                width: 339.w,
-                                height: 26.h,
-                                child: ElevatedButton.icon(
-                                  onPressed: () {
-                                    _openLocation(e.locationUrl);
-                                  },
-                                  icon: Icon(
-                                    Icons.location_on,
-                                    color: AppColors.primary300,
-                                  ),
-                                  label: Text(
-                                    "Location",
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8.r),
-                                      side: BorderSide(
-                                        color: AppColors.primary300,
-                                        width: 1.w,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                            ContainerButton(
+                              label: 'Location',
+                              containerColor: context.background,
+                              textColor: context.primary50,
+                              fontSize: 21,
+                              onTap: () {
+                                _openLocation(e.locationUrl);
+                              },
                             ),
-
-                          SizedBox(height: 25),
+                          SizedBox(height: 10),
                           ContainerButton(
                             label: 'Book Now',
                             containerColor: context.primary50,

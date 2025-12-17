@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rifq/core/theme/app_color.dart';
 import 'package:rifq/core/theme/app_theme.dart';
+import 'package:rifq/features/owner_flow/auth/presentation/widgets/container_button.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../../core/shared/shared_in_owner_flow/shared/entities/provider_items_view_entity.dart';
 import '../cubit/hotel_cubit.dart';
 
@@ -17,10 +19,11 @@ class HotelInfoTabContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: .start,
         children: [
-          Text("About the Hotel :",style: context.body3.copyWith(color: context.neutral1000),),
-          Text(hotel.itemDescription!,style: TextStyle(fontSize: 12,color: AppColors.neutral700),),
+          Text("About the Hotel :",style: context.body1.copyWith(color: context.neutral1000),),
           SizedBox(height: 12.h),
-          Text(" Rules & Requirements : ",style: context.body3.copyWith(color: context.neutral1000),),
+          Text(hotel.itemDescription!,style: context.body3.copyWith(color: context.neutral1000),),
+          SizedBox(height: 12.h),
+          Text(" Rules & Requirements : ",style: context.body1.copyWith(color: context.neutral1000),),
           SizedBox(height: 20.h),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,11 +38,8 @@ class HotelInfoTabContent extends StatelessWidget {
                       Flexible(
                         child: Text(
                           "Must be vaccinated",
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.neutral600
-                          ),),),],
+                          style: context.body3.copyWith(color: context.neutral1000),
+                          ),),],
                   ),
                 ),
                 Expanded(
@@ -50,11 +50,7 @@ class HotelInfoTabContent extends StatelessWidget {
                       Flexible(
                         child: Text(
                           "Late Fee Applies",
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.neutral600
-                          ),
+                          style: context.body3.copyWith(color: context.neutral1000),
                         ),
                       ),
                     ],),),
@@ -70,11 +66,7 @@ class HotelInfoTabContent extends StatelessWidget {
                       Flexible(
                         child: Text(
                           "Pets must be flea-free",
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.neutral600
-                          ),
+                          style: context.body3.copyWith(color: context.neutral1000),
                         ),
                       ),
                     ],
@@ -88,11 +80,7 @@ class HotelInfoTabContent extends StatelessWidget {
                       Flexible(
                         child: Text(
                           "Bring Food if Allergic",
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.neutral600
-                          ),
+                          style:context.body3.copyWith(color: context.neutral1000),
                         ),
                       ),
                     ],
@@ -111,11 +99,7 @@ class HotelInfoTabContent extends StatelessWidget {
                       Flexible(
                         child: Text(
                           "Pet passport required",
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.neutral600
-                          ),
+                          style: context.body3.copyWith(color: context.neutral1000),
                         ),
                       ),
                     ],
@@ -127,27 +111,24 @@ class HotelInfoTabContent extends StatelessWidget {
         ),
           SizedBox(height: 70.h),
           if (hotel.locationUrl != null && hotel.locationUrl!.isNotEmpty)
-            //عشان النص و الصوره استخدمت   icon.
-            Center(
-              child: SizedBox(
-                width: 339.w,
-                height: 26.h,
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    context.read<HotelCubit>().openLocation(hotel.locationUrl);
-                  },
-                  icon: Icon(Icons.location_on,color: AppColors.primary300,),
-                  label: Text("Location",style: TextStyle(color: Colors.black),),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.r),
-                      side: BorderSide(color: AppColors.primary300,width: 1.w)
-                    )
-                  ),
-                ),
-              ),
-            ),]),
+             ContainerButton(
+                              label: 'Location',
+                              containerColor: context.background,
+                              textColor: context.primary50,
+                              fontSize: 21,
+                              onTap: () {
+                                _openLocation(hotel.locationUrl);
+                              },
+                            ),
+            ]),
     );
+  }
+
+    void _openLocation(String? url) async {
+    if (url == null) return;
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    }
   }
 }

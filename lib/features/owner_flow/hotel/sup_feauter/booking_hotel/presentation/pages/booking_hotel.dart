@@ -55,7 +55,9 @@ class BookingHotel extends StatelessWidget {
       child: Builder(
         builder: (context) {
           return Scaffold(
+            backgroundColor: context.background,
             appBar: AppBar(
+              backgroundColor: context.background,
               title: Text(
                 "Booking Details",
                 style: context.body1.copyWith(color: context.primary300),
@@ -84,9 +86,16 @@ class BookingHotel extends StatelessWidget {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Name: ${user.name}"),
+                                Text(
+                                  "Name: ${user.name}",
+                                  style: context.body2,
+                                ),
                                 SizedBox(height: 10.h),
-                                Text("Email: ${user.email}"),
+                                Text(
+                                  "Email: ${user.email}",
+                                  style: context.body2,
+                                ),
+                                SizedBox(height: 10.h),
                               ],
                             );
                           }
@@ -95,6 +104,9 @@ class BookingHotel extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 19.h),
+                    Text('Select Pet(s) :', style: context.h5),
+                    SizedBox(height: 19.h),
+
                     BlocBuilder<PetInfoCubit, PetInfoState>(
                       builder: (context, state) {
                         if (state is PetLoading) {
@@ -103,32 +115,56 @@ class BookingHotel extends StatelessWidget {
                         if (state is PetLoaded) {
                           return SizedBox(
                             height: 80.h,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              padding: EdgeInsets.symmetric(horizontal: 12.h),
+                            child: Wrap(
+                              spacing: 10,
+                              runSpacing: 8,
                               children: state.pets.map((pet) {
-                                return Padding(
-                                  padding: EdgeInsets.only(right: 12),
-                                  child: ValueListenableBuilder<List<String>>(
-                                    valueListenable: selectedPets,
-                                    builder: (context, selected, _) {
-                                      return PetNameCardinfoWidgets(
-                                        pet: pet,
-                                        isSelected: selected.contains(pet.id),
-                                        onTap: () {
-                                          if (selected.contains(pet.id)) {
-                                            selectedPets.value = List.from(
-                                              selected,
-                                            )..remove(pet.id);
-                                          } else {
-                                            selectedPets.value = List.from(
-                                              selected,
-                                            )..add(pet.id);
-                                          }
-                                        },
-                                      );
-                                    },
-                                  ),
+                                return ValueListenableBuilder<List<String>>(
+                                  valueListenable: selectedPets,
+                                  builder: (_, selectedList, _) {
+                                    final isSelected = selectedList.contains(
+                                      pet.id,
+                                    );
+
+                                    return GestureDetector(
+                                      onTap: () {
+                                        final list = [...selectedList];
+                                        isSelected
+                                            ? list.remove(pet.id)
+                                            : list.add(pet.id);
+                                        selectedPets.value = list;
+                                      },
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.all(3),
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                color: isSelected
+                                                    ? context.primary50
+                                                    : Colors.grey.shade300,
+                                                width: 2,
+                                              ),
+                                            ),
+                                            child: CircleAvatar(
+                                              radius: 25,
+                                              backgroundImage:
+                                                  pet.photoUrl != null
+                                                  ? NetworkImage(pet.photoUrl!)
+                                                  : null,
+                                              child: pet.photoUrl == null
+                                                  ? const Icon(Icons.pets)
+                                                  : null,
+                                            ),
+                                          ),
+                                          SizedBox(height: 6),
+                                          Text(pet.name, style: context.body3),
+                                        ],
+                                      ),
+                                    );
+                                  },
                                 );
                               }).toList(),
                             ),
@@ -137,30 +173,23 @@ class BookingHotel extends StatelessWidget {
                         return Container();
                       },
                     ),
+                    SizedBox(height: 20.h),
+                    Text('Service :', style: context.h5),
                     SizedBox(height: 16.h),
-                    Text(
-                      "Service : ",
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(hotel.itemName),
+                        Text(hotel.itemName, style: context.body1),
                         SizedBox(width: 20.w),
-                        Text("${hotel.price} SAR"),
+                        Text(
+                          "${hotel.price} SAR",
+                          style: context.body1.copyWith(color: Colors.green),
+                        ),
                       ],
                     ),
                     SizedBox(height: 20.h),
-                    Text(
-                      "Check-in Date",
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 8.h),
+                    Text("Check-in Date", style: context.h5),
+                    SizedBox(height: 18.h),
                     ValueListenableBuilder<DateTime?>(
                       valueListenable: checkIn,
                       builder: (context, value, _) {
@@ -181,14 +210,8 @@ class BookingHotel extends StatelessWidget {
                       },
                     ),
                     SizedBox(height: 20.h),
-                    Text(
-                      "Check-out Date",
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 11.h),
+                    Text("Check-out Date", style: context.h5),
+                    SizedBox(height: 18.h),
                     ValueListenableBuilder<DateTime?>(
                       valueListenable: checkOut,
                       builder: (context, value, _) {
