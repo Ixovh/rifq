@@ -4,13 +4,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rifq/core/routes/base_routes.dart';
+import 'package:rifq/core/theme/app_theme.dart';
 import 'package:rifq/features/owner_flow/auth/domain/usecases/auth_use_case.dart';
+import 'package:rifq/features/owner_flow/auth/presentation/cubit/auth_cubit.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/auth_tab_bar.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/login_tab.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/pages/sign_up_tab.dart';
 import 'package:rifq/features/owner_flow/auth/presentation/widgets/custom_bottom_sheet.dart';
-import '../../../../../core/theme/app_theme.dart';
-import 'package:rifq/features/owner_flow/auth/presentation/cubit/auth_cubit.dart';
 
 class AuthScreen extends StatelessWidget {
   const AuthScreen({super.key});
